@@ -11,6 +11,7 @@ namespace Application.Service
     public class ArticleServiceRepository
     {
         private readonly InterfaceArticle interfaceArticle;
+
         public ArticleServiceRepository(InterfaceArticle article) {
 
             this.interfaceArticle = article;
