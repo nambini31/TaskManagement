@@ -10,27 +10,38 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Domain.Entity
 {
-	public class UserTask
-	{
+    public class UserTask
+    {
 		[Key]
 		public int UserTaskId { get; set; }
 
 		[ForeignKey("Tasks")]
 		public int taskId { get; set; }
 
+        [ValidateNever]
+        public Tasks? Tasks { get; set; }
 
-		[ForeignKey("Leave")]
+
+        [ForeignKey("Leaves")]
         public int leaveId { get; set; }
 
         [ValidateNever]
+        public Leaves? Leaves { get; set; }
+
+        [ValidateNever]
+        [ForeignKey("User")]
 		public int userId { get; set; }
 
-        
+
+        [ValidateNever]
+        public User? User { get; set; }
+
+
         [Required]
-		public DateTime datetime { get; set; }
+		public DateTime date { get; set; }
 
 		[Required , Range(0 , 99999999999999999 , ErrorMessage = "Hour must greater than 0")]
 		public double hours { get; set; } 
-
+        
     }
 }

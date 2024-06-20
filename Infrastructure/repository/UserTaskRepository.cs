@@ -54,20 +54,44 @@ namespace Infrastructure.Repository
         }
         public async Task<IEnumerable<UserTaskVM>> GetUserTasksVM()
         {
-            //vrai IEnumerable<UserTask> data = await _db.Usertask.Include(u => u.category).ToListAsync();
 
-            string sql = @"select usertask.UserTaskId , usertask.hours , usertask.date , task.taskId , task.name taskName , leave.leaveId , leave.reason leaveName , user.userId from 
-                            usertask join task on task.taskId = usertask.taskId 
-                                     join leave on leave.leaveId = usertask.leaveId ";
+            string sql = @"select 
+                            usertask.UserTaskId, 
+                            usertask.hours, 
+                            usertask.date, 
+                            tasks.taskId, 
+                            CASE 
+                                WHEN leaves.leaveId IS NOT NULL THEN leaves.reason 
+                                ELSE tasks.name 
+                            END AS taskName, 
+                            leaves.leaveId, 
+                            leaves.reason AS leaveName, 
+                            user.userId,
+                            user.userName 
+                            from 
+                            usertask join tasks on tasks.taskId = usertask.taskId 
+                            join leaves on leaves.leaveId = usertask.leaveId join user on user.userId = usertask.userId";
 
-             
+            IEnumerable<UserTaskVM> data = await _db.UserTask.FromSqlRaw(sql).Select(a => 
+            new UserTaskVM
+{
+                datetime = a.date,
+                hours = a.hours,
+                leaveId = a.leaveId,
+                projectId = a.Tasks.projectId,
+                projectName = a.Tasks.Project.name,
+                taskId = a.taskId,
+                taskName = a.Tasks.name,
+                userId = a.userId,
+                userName = a.User.Username
+            }
+            ).ToListAsync();
 
-
-            return await _db.FromSqlRaw <UserTaskVM>(sql).ToListAsync();
+            return data;
         }
 
         public  async Task UpdateUserTask(UserTask Usertask)
-        {
+    {
              _db.UserTask.Update(Usertask);
 
              await _db.SaveChangesAsync();

@@ -2,7 +2,9 @@
 * demo.css
 * File include item demo only specific css only
 ******************************************************************************/
-
+div.card-datatable.dataTable, div.card-datatable .dataTable {
+    border: 1px solid #dbdade !important;
+}
 .light-style .menu .app-brand.demo {
   height: 64px;
 }

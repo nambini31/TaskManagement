@@ -27,7 +27,7 @@ namespace Domain.DTO.ViewModels
 
             public int userId { get; set; }
 
-            public int userName { get; set; }
+            public string? userName { get; set; }
 
             public DateTime datetime { get; set; }
 
