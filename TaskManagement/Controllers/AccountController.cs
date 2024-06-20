@@ -37,6 +37,7 @@ namespace TaskManagement.Controllers
             return View(model);
         }
 
+
         [HttpGet]
         public IActionResult Login()
         {
@@ -68,6 +69,12 @@ namespace TaskManagement.Controllers
             }
 
             return View(model);
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login");
         }
 
     }
