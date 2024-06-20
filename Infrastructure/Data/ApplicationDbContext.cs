@@ -9,15 +9,8 @@ namespace Infrastructure.Data
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
+        public DbSet<UserTask> UserTask { get; set; }
 
-        public DbSet<Article> article { get; set; }
-
-
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-        }
 
     }
 }

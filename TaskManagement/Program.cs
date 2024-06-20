@@ -1,3 +1,4 @@
+
 using Application.Service;
 using Domain.Interface;
 using Infrastructure.Data;
@@ -19,8 +20,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 
 // register articleRepository and service
-builder.Services.AddScoped<InterfaceArticle, ArticleRepository>();
-builder.Services.AddScoped<ArticleServiceRepository>();
+builder.Services.AddScoped<IUserTask, UserTaskRepository>();
+builder.Services.AddScoped<SUserTask>();
 
 var app = builder.Build();
 
