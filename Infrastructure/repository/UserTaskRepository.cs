@@ -56,14 +56,30 @@ namespace Infrastructure.Repository
         {
             //vrai IEnumerable<UserTask> data = await _db.Usertask.Include(u => u.category).ToListAsync();
 
-            string sql = @"select usertask.UserTaskId , usertask.hours , usertask.date , task.taskId , task.name taskName , leave.leaveId , leave.reason leaveName , user.userId from 
+            string sql = @"select 
+                            usertask.UserTaskId , 
+                            usertask.hours , 
+                            usertask.date , 
+                            task.taskId , 
+                            task.name taskName , 
+                            leaves.leaveId , 
+                            leaves.reason leaveName , 
+                            user.userId 
+                            from 
                             usertask join task on task.taskId = usertask.taskId 
-                                     join leave on leave.leaveId = usertask.leaveId ";
+                            join leaves on leaves.leaveId = usertask.leaveId ";
 
-             
+            IEnumerable<UserTaskVM> data = await _db.UserTask.FromSqlRaw(sql).Select(a => 
+            new UserTaskVM
+            {
+                datetime = a.datetime,
+                hours = a.hours,
+                leaveId = a.leaveId,
+                projectId = a.
+            }
+            ).ToListAsync();
 
-
-            return await _db.FromSqlRaw <UserTaskVM>(sql).ToListAsync();
+            return;
         }
 
         public  async Task UpdateUserTask(UserTask Usertask)
