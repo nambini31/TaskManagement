@@ -17,80 +17,8 @@ $("#table_usertask").DataTable({
         { data: '' }
     ],
     columnDefs: [
-        {
-            // For Responsive
-            className: 'control',
-            searchable: false,
-            orderable: false,
-            responsivePriority: 1,
-            targets: 0,
-            render: function (data, type, full, meta) {
-                return '';
-            }
-        },
-        {
-            // For Checkboxes
-            targets: 1,
-            orderable: false,
-            searchable: false,
-            responsivePriority: 4,
-            checkboxes: true,
-            render: function () {
-                return '<input type="checkbox" class="dt-checkboxes form-check-input">';
-            },
-            checkboxes: {
-                selectAllRender: '<input type="checkbox" class="form-check-input">'
-            }
-        },
-        {
-            // Categories and Category Detail
-            targets: 2,
-            responsivePriority: 2,
-            render: function (data, type, full, meta) {
-                var $name = full['categories'],
-                    $category_detail = full['category_detail'],
-                    $image = full['cat_image'],
-                    $id = full['id'];
-                if ($image) {
-                    // For Product image
-                    var $output =
-                        '<img src="' +
-                        assetsPath +
-                        'img/ecommerce-images/' +
-                        $image +
-                        '" alt="Product-' +
-                        $id +
-                        '" class="rounded-2">';
-                } else {
-                    // For Product badge
-                    var stateNum = Math.floor(Math.random() * 6);
-                    var states = ['success', 'danger', 'warning', 'info', 'dark', 'primary', 'secondary'];
-                    var $state = states[stateNum],
-                        $name = full['category_detail'],
-                        $initials = $name.match(/\b\w/g) || [];
-                    $initials = (($initials.shift() || '') + ($initials.pop() || '')).toUpperCase();
-                    $output = '<span class="avatar-initial rounded-2 bg-label-' + $state + '">' + $initials + '</span>';
-                }
-                // Creates full output for Categories and Category Detail
-                var $row_output =
-                    '<div class="d-flex align-items-center">' +
-                    '<div class="avatar-wrapper me-2 rounded-2 bg-label-secondary">' +
-                    '<div class="avatar">' +
-                    $output +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="d-flex flex-column justify-content-center">' +
-                    '<span class="text-body text-wrap fw-medium">' +
-                    $name +
-                    '</span>' +
-                    '<span class="text-muted text-truncate mb-0 d-none d-sm-block"><small>' +
-                    $category_detail +
-                    '</small></span>' +
-                    '</div>' +
-                    '</div>';
-                return $row_output;
-            }
-        },
+        
+        
         {
             // Total products
             targets: 3,
