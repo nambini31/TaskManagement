@@ -10,8 +10,8 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Domain.Entity
 {
-	public class UserTask
-	{
+    public class UserTask
+    {
 		[Key]
 		public int UserTaskId { get; set; }
 
@@ -31,6 +31,6 @@ namespace Domain.Entity
 
 		[Required , Range(0 , 99999999999999999 , ErrorMessage = "Hour must greater than 0")]
 		public double hours { get; set; } 
-
+        
     }
 }
