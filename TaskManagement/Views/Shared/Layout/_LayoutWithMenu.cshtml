@@ -1,0 +1,107 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@inject IHttpContextAccessor httpContextAccessor
+
+@{
+    Console.WriteLine(httpContextAccessor.HttpContext?.Request.PathBase);
+}
+
+<!DOCTYPE html>
+<html lang="en"
+  class="light-style layout-navbar-fixed layout-menu-fixed layout-wide"
+  dir="ltr"
+  data-theme="theme-default"
+      data-assets-path='@((httpContextAccessor.HttpContext?.Request.PathBase ?? "") + "/")'
+  data-template="vertical-menu-template-no-customizer">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <title> @ViewData["title"] </title>
+    <meta name="description" content="" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="~/img/favicon/favicon.ico" />
+
+    <!-- partial Link for the global styles in all project : not customisable-->
+    @await Html.PartialAsync("Section/_Styles")
+
+    <!-- Vendor Styles necesary for the page : not customisable -->
+    @RenderSection("VendorStyles", required: false)
+
+    <!-- Styles customisable for the specific page -->
+    @RenderSection("PageStyles", required: false)
+
+
+    <script src="~/vendor/js/helpers.dist.js"></script>
+    <script src="~/js/config.dist.js"></script>
+</head>
+
+<body>
+
+
+    <div class='layout-wrapper layout-content-navbar'>
+
+        <div class='layout-container'>
+
+             <!-- / Menu -->
+            @await Html.PartialAsync("Section/Menu/_Menu")
+             <!-- / Menu -->
+
+            <!-- Layout page -->
+            <div class="layout-page">
+
+
+                <!-- Navbar -->
+                    @await Html.PartialAsync("Section/Navbar/_Navbar")
+                <!-- / Navbar -->
+
+
+                <!-- Content wrapper -->
+                <div class="content-wrapper">
+
+
+                    <!-- Content -->
+                  
+                        @RenderBody()
+                   
+                    <!-- / Content -->
+
+                    <!-- Footer -->
+                   
+                     @await Html.PartialAsync("Section/Footer/_Footer")
+                    
+                    <!-- / Footer -->
+                    <div class="content-backdrop fade"></div>
+                </div>
+                <!--/ Content wrapper -->
+            </div>
+            <!-- / Layout page -->
+        </div>
+
+        <!-- Overlay -->
+        <div class="layout-overlay layout-menu-toggle"></div>
+
+        <!-- Drag Target Area To SlideIn Menu On Small Screens -->
+        <div class="drag-target"></div>
+    </div>
+
+
+
+    <!-- Core Scripts -->
+    @await Html.PartialAsync("Section/_Scripts")
+
+    <!-- Vendor Scripts necesary for the page : not customisable -->
+    @RenderSection("VendorScripts", required: false)
+
+
+    <script src='~/js/main.dist.js'></script>
+
+    <!-- Page Scripts customisable for specific scripts ( must run after main.dist.js )-->
+    @RenderSection("PageScripts", required: false)
+
+
+</body>
+
+</html>

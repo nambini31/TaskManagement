@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 // configuration de la connexion a la base de données
 var ConnectionString = builder.Configuration.GetConnectionString("Mysql");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
