@@ -28,7 +28,7 @@ namespace TaskManagement.Controllers
         [HttpPost]
         public IActionResult Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid)  
             {
                 _userService.RegisterUser(model.Name, model.Surname, model.Username, model.Password, model.Email, model.Role);
                 return RedirectToAction("Index", "Home");
