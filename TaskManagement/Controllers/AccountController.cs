@@ -21,7 +21,7 @@ namespace TaskManagement.Controllers
             _userService = userService;
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             return View("User");
@@ -50,7 +50,7 @@ namespace TaskManagement.Controllers
                 return RedirectToAction("Index", "Account");
             }
 
-            return View(model);
+            return View("~/Views/Account/User.cshtml", model);
         }
 
 

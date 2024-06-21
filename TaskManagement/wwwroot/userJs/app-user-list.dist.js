@@ -39,142 +39,103 @@ $(function () {
   // Users datatable
   if (dt_user_table.length) {
     var dt_user = dt_user_table.DataTable({
-        ajax: 'Account/GetAll', // JSON file to add data
-      columns: [
-        // columns according to JSON
-        { data: '' },
-        { data: 'full_name' },
-        { data: 'role' },
-        { data: 'current_plan' },
-        { data: 'billing' },
-        { data: 'status' },
-        { data: 'action' }
-      ],
-      columnDefs: [
-        {
-          // For Responsive
-          className: 'control',
-          searchable: false,
-          orderable: false,
-          responsivePriority: 2,
-          targets: 0,
-          render: function (data, type, full, meta) {
-            return '';
-          }
-        },
-        {
-          // User full name and email
-          targets: 1,
-          responsivePriority: 4,
-          render: function (data, type, full, meta) {
-            var $name = full['full_name'],
-              $email = full['email'],
-              $image = full['avatar'];
-            if ($image) {
-              // For Avatar image
-              var $output =
-                '<img src="' + assetsPath + 'img/avatars/' + $image + '" alt="Avatar" class="rounded-circle">';
-            } else {
-              // For Avatar badge
-              var stateNum = Math.floor(Math.random() * 6);
-              var states = ['success', 'danger', 'warning', 'info', 'primary', 'secondary'];
-              var $state = states[stateNum],
-                $name = full['full_name'],
-                $initials = $name.match(/\b\w/g) || [];
-              $initials = (($initials.shift() || '') + ($initials.pop() || '')).toUpperCase();
-              $output = '<span class="avatar-initial rounded-circle bg-label-' + $state + '">' + $initials + '</span>';
+        ajax: {
+            url: '/Account/GetAll', // Ajustez l'URL à votre point de terminaison de données
+            type: 'POST',
+            dataSrc: '' // Si les données sont directement au niveau de la racine de la réponse JSON
+        }, // JSON file to add data
+        columns: [
+            { data: 'userId' },
+            { data: 'name' },
+            { data: 'surname' },
+            { data: 'username' },
+            { data: 'email' },
+            { data: 'password' }
+        ],
+        columnDefs: [
+            {
+                // Pour Responsive
+                className: 'control',
+                searchable: false,
+                orderable: false,
+                responsivePriority: 1,
+                targets: 0,
+                render: function (data, type, full, meta) {
+                    return '';
+                }
+            },
+            {
+                // User ID
+                targets: 1,
+                responsivePriority: 2,
+                render: function (data, type, full, meta) {
+                    return full['userId'];
+                }
+            },
+            {
+                // Name
+                targets: 2,
+                responsivePriority: 3,
+                render: function (data, type, full, meta) {
+                    return full['name'];
+                }
+            },
+            {
+                // Surname
+                targets: 3,
+                responsivePriority: 4,
+                render: function (data, type, full, meta) {
+                    return full['surname'];
+                }
+            },
+            {
+                // Username
+                targets: 4,
+                responsivePriority: 5,
+                render: function (data, type, full, meta) {
+                    return full['username'];
+                }
+            },
+            {
+                // Email
+                targets: 5,
+                responsivePriority: 6,
+                render: function (data, type, full, meta) {
+                    return full['email'];
+                }
+            },
+            {
+                // Password (hidden)
+                targets: 6,
+                responsivePriority: 7,
+                render: function (data, type, full, meta) {
+                    return full['password']; // Masquer le mot de passe réel
+                }
+            },
+            {
+                // Actions
+                targets: 7,
+                title: 'Actions',
+                searchable: false,
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    return (
+                        '<div class="d-flex align-items-center">' +
+                        '<a href="javascript:;" class="text-body"><i class="ti ti-edit ti-sm me-2"></i></a>' +
+                        '<a href="javascript:;" class="text-body delete-record"><i class="ti ti-trash ti-sm mx-2"></i></a>' +
+                        '<a href="javascript:;" class="text-body dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ti ti-dots-vertical ti-sm mx-1"></i></a>' +
+                        '<div class="dropdown-menu dropdown-menu-end m-0">' +
+                        '<a href="javascript:;" class="dropdown-item">Suspend</a>' +
+                        '</div>' +
+                        '</div>'
+                    );
+                }
             }
-            // Creates full output for row
-            var $row_output =
-              '<div class="d-flex justify-content-start align-items-center user-name">' +
-              '<div class="avatar-wrapper">' +
-              '<div class="avatar me-3">' +
-              $output +
-              '</div>' +
-              '</div>' +
-              '<div class="d-flex flex-column">' +
-              '<a href="' +
-              userView +
-              '" class="text-body text-truncate"><span class="fw-medium">' +
-              $name +
-              '</span></a>' +
-              '<small class="text-muted">' +
-              $email +
-              '</small>' +
-              '</div>' +
-              '</div>';
-            return $row_output;
-          }
-        },
-        {
-          // User Role
-          targets: 2,
-          render: function (data, type, full, meta) {
-            var $role = full['role'];
-            var roleBadgeObj = {
-              Subscriber:
-                '<span class="badge badge-center rounded-pill bg-label-warning w-px-30 h-px-30 me-2"><i class="ti ti-user ti-sm"></i></span>',
-              Author:
-                '<span class="badge badge-center rounded-pill bg-label-success w-px-30 h-px-30 me-2"><i class="ti ti-circle-check ti-sm"></i></span>',
-              Maintainer:
-                '<span class="badge badge-center rounded-pill bg-label-primary w-px-30 h-px-30 me-2"><i class="ti ti-chart-pie-2 ti-sm"></i></span>',
-              Editor:
-                '<span class="badge badge-center rounded-pill bg-label-info w-px-30 h-px-30 me-2"><i class="ti ti-edit ti-sm"></i></span>',
-              Admin:
-                '<span class="badge badge-center rounded-pill bg-label-secondary w-px-30 h-px-30 me-2"><i class="ti ti-device-laptop ti-sm"></i></span>'
-            };
-            return "<span class='text-truncate d-flex align-items-center'>" + roleBadgeObj[$role] + $role + '</span>';
-          }
-        },
-        {
-          // Plans
-          targets: 3,
-          render: function (data, type, full, meta) {
-            var $plan = full['current_plan'];
+        ],
 
-            return '<span class="fw-medium">' + $plan + '</span>';
-          }
-        },
-        {
-          // User Status
-          targets: 5,
-          render: function (data, type, full, meta) {
-            var $status = full['status'];
 
-            return (
-              '<span class="badge ' +
-              statusObj[$status].class +
-              '" text-capitalized>' +
-              statusObj[$status].title +
-              '</span>'
-            );
-          }
-        },
-        {
-          // Actions
-          targets: -1,
-          title: 'Actions',
-          searchable: false,
-          orderable: false,
-          render: function (data, type, full, meta) {
-            return (
-              '<div class="d-flex align-items-center">' +
-              '<a href="javascript:;" class="text-body"><i class="ti ti-edit ti-sm me-2"></i></a>' +
-              '<a href="javascript:;" class="text-body delete-record"><i class="ti ti-trash ti-sm mx-2"></i></a>' +
-              '<a href="javascript:;" class="text-body dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ti ti-dots-vertical ti-sm mx-1"></i></a>' +
-              '<div class="dropdown-menu dropdown-menu-end m-0">' +
-              '<a href="' +
-              userView +
-              '" class="dropdown-item">View</a>' +
-              '<a href="javascript:;" class="dropdown-item">Suspend</a>' +
-              '</div>' +
-              '</div>'
-            );
-          }
-        }
-      ],
-      order: [[1, 'desc']],
-      dom:
+        order: [[1, 'asc']],
+        dom:
         '<"row me-2"' +
         '<"col-md-2"<"me-3"l>>' +
         '<"col-md-10"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-end flex-md-row flex-column mb-3 mb-md-0"fB>>' +
@@ -183,13 +144,14 @@ $(function () {
         '<"col-sm-12 col-md-6"i>' +
         '<"col-sm-12 col-md-6"p>' +
         '>',
-      language: {
+        language: {
         sLengthMenu: '_MENU_',
         search: '',
         searchPlaceholder: 'Search..'
-      },
-      // Buttons with Dropdown
-      buttons: [
+        },
+
+        // Buttons with Dropdown
+        buttons: [
         {
           extend: 'collection',
           className: 'btn btn-label-secondary dropdown-toggle mx-3',
@@ -338,7 +300,8 @@ $(function () {
             'data-bs-target': '#offcanvasAddUser'
           }
         }
-      ],
+        ],
+
       // For responsive popup
       responsive: {
         details: {
@@ -479,23 +442,62 @@ $(function () {
   // Add New User Form Validation
   const fv = FormValidation.formValidation(addNewUserForm, {
     fields: {
-      userFullname: {
-        validators: {
-          notEmpty: {
-            message: 'Please enter fullname '
-          }
-        }
-      },
-      userEmail: {
-        validators: {
-          notEmpty: {
-            message: 'Please enter your email'
+        name: {
+            validators: {
+                notEmpty: {
+                message: 'Please enter Name '
+                }
+            }
+        },
+        surname: {
+            validators: {
+                notEmpty: {
+                    message: 'Please enter Surname '
+                }
+            }
+        },
+        email: {
+            validators: {
+                notEmpty: {
+                message: 'Please enter your email'
+                },
+                emailAddress: {
+                message: 'The value is not a valid email address'
+                }
+            }
           },
-          emailAddress: {
-            message: 'The value is not a valid email address'
+          username: {
+              validators: {
+                  notEmpty: {
+                      message: 'Please enter your username'
+                  }
+              }
+          },
+          password: {
+              validators: {
+                  notEmpty: {
+                      message: 'Please enter a password'
+                  },
+                  stringLength: {
+                      min: 6,
+                      message: 'Password must be at least 6 characters long'
+                  }
+              }
+          },
+          confirmPassword: {
+              validators: {
+                  notEmpty: {
+                      message: 'Please confirm your password'
+                  },
+                  identical: {
+                      compare: function () {
+                          return addNewUserForm.querySelector('[name="password"]').value;
+                      },
+                      message: 'The password and its confirm are not the same'
+                  },
+              }
           }
-        }
-      }
+
     },
     plugins: {
       trigger: new FormValidation.plugins.Trigger(),
@@ -513,4 +515,36 @@ $(function () {
       autoFocus: new FormValidation.plugins.AutoFocus()
     }
   });
+
+    //------- Ajout à la base de sonnée -----
+    
+    $('#addNewUserForm').on('submit', function (e) {
+        e.preventDefault();
+
+        alert("biby");
+
+        fv.validate().then(function (status) {
+            if (status === 'Valid') {
+                $.ajax({
+                    url: '/Account/Register', // Change this URL to your actual endpoint
+                    type: 'POST',
+                    data: $(addNewUserForm).serialize(),
+                    success: function (response) {
+                        // Handle success response
+                        alert('User added successfully!');
+                        // Optionally, you can reload the table or reset the form here
+                        addNewUserForm.reset();
+                        fv.resetForm(true);
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error response
+                        alert('An error occurred while adding the user: ' + error);
+                    }
+                });
+            }
+        });
+    });
+
 })();
+
+
