@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TaskManagement.Models.AccountVM;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNet.Identity;
 
 namespace TaskManagement.Controllers
 {
@@ -19,6 +21,20 @@ namespace TaskManagement.Controllers
             _userService = userService;
         }
 
+        //[Authorize(Roles = "Admin")]
+        public IActionResult Index()
+        {
+            return View("User");
+        }
+
+        //-- get all User for data table
+        [HttpPost]
+        public IActionResult GetAll()
+        {
+            var users = _userService.GetUser();
+            return Json(users);
+        }
+
         [HttpGet]
         public IActionResult Register()
         {
@@ -28,53 +44,61 @@ namespace TaskManagement.Controllers
         [HttpPost]
         public IActionResult Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid)  
             {
                 _userService.RegisterUser(model.Name, model.Surname, model.Username, model.Password, model.Email, model.Role);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Account");
             }
 
-            return View(model);
+            return View("~/Views/Account/User.cshtml", model);
         }
 
 
         [HttpGet]
         public IActionResult Login()
         {
-            return View();
+            TempData["appName"] = "GesPro";
+            return View("~/Views/Auth/login.cshtml");
         }
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
+
             if (ModelState.IsValid)
             {
                 var user = _userService.Authenticate(model.Username, model.Password);
                 if (user != null)
                 {
+                    var role = _userService.GetRoleByUserId(user.UserId);
                     var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, user.Username),
-                    // Add other claims as needed
-                };
+                    {
+                        new Claim(ClaimTypes.Name, user.Username),
+                        new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
+                    };
+                    if (role != null)
+                    {
+                        claims.Add(new Claim(ClaimTypes.Role, role.Name));
+                    }
 
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-
-                    return RedirectToAction("Index", "Home");
+                   
+                    
+                    return RedirectToAction("Index", "Account");
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             }
 
-            return View(model);
+            return View("~/Views/Auth/login.cshtml", model);
         }
 
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login");
+            return RedirectToAction("Login", "Account");
         }
 
     }

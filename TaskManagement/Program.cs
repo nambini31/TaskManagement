@@ -34,6 +34,16 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
             {
                 options.LoginPath = "/Account/Login";
                 options.AccessDeniedPath = "/Account/AccessDenied";
+
+                //gere la redirection pour souvenir les pages precedent
+                //options.Events = new CookieAuthenticationEvents
+                //{
+                //    OnRedirectToLogin = context =>
+                //    {
+                //        context.Response.Redirect(context.RedirectUri + "&returnUrl=" + context.Request.Path);
+                //        return Task.CompletedTask;
+                //    }
+                //};
             });
 builder.Services.AddScoped<IUserTask, UserTaskRepository>();
 builder.Services.AddScoped<SUserTask>();

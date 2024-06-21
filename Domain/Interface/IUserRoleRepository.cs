@@ -12,6 +12,7 @@ namespace Domain.Interface
     {
         IEnumerable<UserRole> GetAll(Expression<Func<UserRole, bool>>? filter = null, string? includeProperties = null);
         UserRole Get(Expression<Func<UserRole, bool>>? filter, string? includeProperties = null);
+        UserRole GetByUserId(int userId);
         void Add(UserRole entity);
         void Update(UserRole entity);
         void Remove(UserRole entity);
