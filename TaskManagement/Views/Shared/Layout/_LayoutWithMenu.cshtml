@@ -13,7 +13,7 @@
   class="light-style layout-navbar-fixed layout-menu-fixed layout-wide"
   dir="ltr"
   data-theme="theme-default"
-      data-assets-path='@((httpContextAccessor.HttpContext?.Request.PathBase ?? "") + "/")'
+      data-assets-path='@((httpContextAccessor.HttpContext?.Request.PathBase ?? "") + "/assets/")'
   data-template="vertical-menu-template-no-customizer">
 
 <head>
@@ -34,59 +34,48 @@
     @RenderSection("PageStyles", required: false)
 
 
-    <script src="~/vendor/js/helpers.dist.js"></script>
-    <script src="~/js/config.dist.js"></script>
 </head>
 
-<body>
+<body data-sidebar="dark">
 
 
-    <div class='layout-wrapper layout-content-navbar'>
-
-        <div class='layout-container'>
+        <div id='wrapper'>
 
              <!-- / Menu -->
             @await Html.PartialAsync("Section/Menu/_Menu")
              <!-- / Menu -->
 
+            <!-- Navbar -->
+            @await Html.PartialAsync("Section/Navbar/_Navbar")
+            <!-- / Navbar -->
             <!-- Layout page -->
-            <div class="layout-page">
-
-
-                <!-- Navbar -->
-                    @await Html.PartialAsync("Section/Navbar/_Navbar")
-                <!-- / Navbar -->
-
+            <div class="content-page">
 
                 <!-- Content wrapper -->
-                <div class="content-wrapper">
+                <div class="content">
+
+
+                <div class="container-fluid">
 
 
                     <!-- Content -->
-                  
-                        @RenderBody()
-                   
+                    @RenderBody()
+
                     <!-- / Content -->
 
-                    <!-- Footer -->
-                   
-                     @await Html.PartialAsync("Section/Footer/_Footer")
+
+
+                </div>
+
                     
-                    <!-- / Footer -->
-                    <div class="content-backdrop fade"></div>
+
                 </div>
                 <!--/ Content wrapper -->
+            <!-- Footer -->
+                @await Html.PartialAsync("Section/Footer/_Footer")
             </div>
             <!-- / Layout page -->
         </div>
-
-        <!-- Overlay -->
-        <div class="layout-overlay layout-menu-toggle"></div>
-
-        <!-- Drag Target Area To SlideIn Menu On Small Screens -->
-        <div class="drag-target"></div>
-    </div>
-
 
 
     <!-- Core Scripts -->
@@ -96,7 +85,7 @@
     @RenderSection("VendorScripts", required: false)
 
 
-    <script src='~/js/main.dist.js'></script>
+    <script src="~/assets/js/app.min.js"></script>
 
     <!-- Page Scripts customisable for specific scripts ( must run after main.dist.js )-->
     @RenderSection("PageScripts", required: false)

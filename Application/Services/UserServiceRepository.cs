@@ -14,7 +14,7 @@ namespace Application.Services
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
         private readonly IUserRoleRepository _userRoleRepository;
-
+        
         public UserServiceRepository(IUserRepository userRepository, IRoleRepository roleRepository, IUserRoleRepository userRoleRepository)
         {
             _userRepository = userRepository;
@@ -72,6 +72,21 @@ namespace Application.Services
             }
 
             return user;
+        }
+
+        public Role GetRoleByUserId(int userId)
+        {
+            var userRole = _userRoleRepository.GetByUserId(userId);
+            if (userRole != null)
+            {
+                return _roleRepository.Get(r => r.RoleId == userRole.RoleId);
+            }
+            return null;
+        }
+
+        public IEnumerable<User> GetUser()
+        {
+            return _userRepository.GetAll();
         }
     }
 }

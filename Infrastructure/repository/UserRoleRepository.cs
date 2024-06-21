@@ -63,6 +63,12 @@ namespace Infrastructure.repository
             return query.ToList();
         }
 
+        public UserRole GetByUserId(int userId)
+        {
+            return _context.UserRole.FirstOrDefault(ur => ur.UserId == userId);
+        }
+
+
         public void Remove(UserRole entity)
         {
             _context.Remove(entity);
