@@ -8,13 +8,12 @@ $('#table_usertask').empty();
 $("#table_usertask").DataTable({
     ajax: assetsPath + 'json/ecommerce-category-list.json', // JSON file to add data
     columns: [
-        // columns according to JSON
-        { data: '' },
+        { data: 'propriete_inconnue' },  // Ceci doit correspondre à une clé réelle dans votre JSON
         { data: 'id' },
         { data: 'categories' },
         { data: 'total_products' },
         { data: 'total_earnings' },
-        { data: '' }
+        { data: 'autre_propriete_inconnue' }  // Assurez-vous que chaque 'data' correspond à une clé valide
     ],
     columnDefs: [
         
