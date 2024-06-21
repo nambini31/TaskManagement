@@ -7,10 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Models\ViewModels\**" />
-    <Content Remove="Models\ViewModels\**" />
-    <EmbeddedResource Remove="Models\ViewModels\**" />
-    <None Remove="Models\ViewModels\**" />
+    <Content Remove="wwwroot\js\UserTask.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+<<<<<<< HEAD
     <Folder Include="wwwroot\userJs\" />
   </ItemGroup>
 
@@ -83,6 +81,9 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+=======
+    <TypeScriptCompile Include="wwwroot\js\UserTask.js" />
+>>>>>>> origin/nicoBranch
   </ItemGroup>
 
 </Project>

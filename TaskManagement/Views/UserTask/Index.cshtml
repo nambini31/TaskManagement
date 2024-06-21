@@ -1,0 +1,93 @@
+﻿@{
+    Layout = "Layout/_LayoutWithMenu";
+    ViewData["Title"] = "Login";
+}
+
+@section VendorStyles {
+    <link rel="stylesheet" href="~/vendor/libs/datatables-bs5/datatables.bootstrap5.dist.css">
+    <link rel="stylesheet" href="~/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.dist.css">
+
+    <link rel="stylesheet" href="~/vendor/libs/bootstrap-select/bootstrap-select.dist.css" />
+
+    <link rel="stylesheet" href="~/vendor/libs/flatpickr/flatpickr.dist.css" />
+    <link rel="stylesheet" href="~/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.dist.css" />
+    <link rel="stylesheet" href="~/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.dist.css" />
+    <link rel="stylesheet" href="~/vendor/libs/jquery-timepicker/jquery-timepicker.dist.css" />
+
+}
+
+
+
+@section VendorScripts {
+    <script src="~/vendor/libs/datatables-bs5/datatables-bootstrap5.dist.js"></script>
+    <script src="~/vendor/libs/bootstrap-select/bootstrap-select.dist.js"></script>
+    <script src="~/vendor/libs/moment/moment.dist.js"></script>
+
+    <script src="~/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.dist.js"></script>
+}
+
+@section PageScripts {
+    <script src="~/js/UserTask.js"></script>
+}
+
+
+<div class="container-fluid flex-grow-1 container-p-y">
+    <!-- Layout Demo -->
+
+
+    
+
+
+    <!-- Bordered Table -->
+    <div class="card">
+
+        
+        <div class="card-body">
+            <div class="card-header" style="padding-top: 0px;">
+                <div class="row" style="display: flex; justify-content: center;">
+
+
+                    <div class="col-md-3 col-sm-12">
+                        <label class="form-label" for="basicPost">Date</label>
+
+                        <input type="text" id="bs-rangepicker-week-num" class="form-control btn-sm">
+
+                    </div>
+                    <div class="col-md-3 col-sm-12">
+                        <label class="form-label" for="basicPost">User</label>
+                            <select id="selectpickerLiveSearch" class="selectpicker w-100" data-style="btn-default btn-sm" data-live-search="true" tabindex="null">
+                                <option data-tokens="ketchup mustard">All</option>
+                                <option data-tokens="mustard">Nico</option>
+                                <option data-tokens="frosting">Jean pierre</option>
+                            </select>
+                        
+                    </div>
+
+                    <div class="col-md-1 col-sm-12 mt-4">
+                        <button class="btn btn-primary d-grid btn-sm w-100" formaction="/Home/Privacy">Filter</button>
+                    </div>
+
+                    <div class="col-md-2 col-sm-12 mt-4">
+                        <button class="btn btn-success d-grid btn-sm w-100" formaction="/Home/Privacy"><i class="ti ti-excel"></i> Generate excel</button>
+                    </div>
+
+
+                </div>
+
+
+
+            </div>
+            <div class="card-datatable table-responsive">
+                <table id="table_usertask" class="table table-bordered table-sm">
+                
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--/ Bordered Table -->
+
+   
+  
+    <!--/ Multilingual -->
+    <!--/ Layout Demo -->
+</div>

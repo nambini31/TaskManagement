@@ -1,3 +1,4 @@
+
 using Application.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,18 +12,24 @@ namespace TaskManagement.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        private readonly ArticleServiceRepository _articleServiceRepository;
+        private readonly SUserTask _SUserTask;
 
-        public HomeController(ILogger<HomeController> logger , ArticleServiceRepository articleServiceRepository)
+        public HomeController(ILogger<HomeController> logger , SUserTask _SUserTask)
         {
             _logger = logger;
-            _articleServiceRepository = articleServiceRepository;
+
+            this._SUserTask = _SUserTask ;
+
+
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var data = await _SUserTask.GetUserTaskVM();
+
             return View();
         }
+        
 
         public IActionResult Privacy()
         {

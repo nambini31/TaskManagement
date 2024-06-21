@@ -1,3 +1,4 @@
+
 using Application.Service;
 using Application.Services;
 using Domain.Interface;
@@ -22,11 +23,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 
 // register articleRepository and service
-builder.Services.AddScoped<InterfaceArticle, ArticleRepository>();
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
-builder.Services.AddScoped<ArticleServiceRepository>();
 builder.Services.AddScoped<UserServiceRepository>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -45,6 +45,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
                 //    }
                 //};
             });
+builder.Services.AddScoped<IUserTask, UserTaskRepository>();
+builder.Services.AddScoped<SUserTask>();
 
 var app = builder.Build();
 
@@ -65,6 +67,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=Login}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
