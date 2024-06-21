@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -31,12 +31,9 @@ namespace Domain.DTO.ViewModels
             public string? userName { get; set; }
 
 
-            [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy HH:mm}", ApplyFormatInEditMode = true)]
             public DateTime datetime { get; set; }
 
             public double hours { get; set; }
-
-            public IEnumerable<SelectListItem>? selectUser { get; set; }
 
         }
     }

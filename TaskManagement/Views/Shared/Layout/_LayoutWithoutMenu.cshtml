@@ -13,7 +13,7 @@
       class="light-style layout-navbar-fixed layout-menu-fixed layout-wide"
       dir="ltr"
       data-theme="theme-default"
-      data-assets-path='@((httpContextAccessor.HttpContext?.Request.PathBase ?? "") + "/")'
+      data-assets-path='@((httpContextAccessor.HttpContext?.Request.PathBase ?? "") + "/assets/")'
       data-template="vertical-menu-template-no-customizer">
 
 <head>
@@ -25,7 +25,7 @@
     <link rel="icon" type="image/x-icon" href="~/img/favicon/favicon.ico" />
 
     <!-- partial Link for the global styles in all project : not customisable-->
-    @await Html.PartialAsync("Section/_Styles");
+    @await Html.PartialAsync("Section/_Styles")
 
     <!-- Vendor Styles necesary for the page : not customisable -->
     @RenderSection("VendorStyles", required: false)
@@ -33,14 +33,37 @@
     <!-- Styles customisable for the specific page -->
     @RenderSection("PageStyles", required: false)
 
-    <script src="~/vendor/js/helpers.dist.js"></script>
-    <script src="~/js/config.dist.js"></script>
+
 </head>
 
 <body>
-    <!-- Layout Content -->
-    @RenderBody()
-    <!--/ Layout Content -->
+
+
+    <div id='wrapper'>
+
+        
+            <div class="content">
+
+
+                <div class="container-fluid">
+
+
+                    <!-- Content -->
+                    @RenderBody()
+
+                    <!-- / Content -->
+
+
+
+                </div>
+
+
+
+            </div>
+
+       
+        <!-- / Layout page -->
+    </div>
 
 
     <!-- Core Scripts -->
@@ -49,7 +72,8 @@
     <!-- Vendor Scripts necesary for the page : not customisable -->
     @RenderSection("VendorScripts", required: false)
 
-    <script src='~/js/main.dist.js'></script>
+
+    <script src="~/assets/js/app.min.js"></script>
 
     <!-- Page Scripts customisable for specific scripts ( must run after main.dist.js )-->
     @RenderSection("PageScripts", required: false)

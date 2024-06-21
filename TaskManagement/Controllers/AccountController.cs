@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TaskManagement.Models.AccountVM;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNet.Identity;
 
 namespace TaskManagement.Controllers
 {
