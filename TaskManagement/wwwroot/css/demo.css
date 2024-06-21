@@ -36,9 +36,12 @@ div.card-datatable {
 
 div.dataTables_wrapper .card-header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding-top: 0px;
+    align-items: center;
+    padding: 0px;
+}
+div.dataTables_wrapper div.dataTables_filter input {
+    margin-left: 1em;
 }
 
 .light-style .menu .app-brand.demo {
