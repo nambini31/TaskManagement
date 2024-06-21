@@ -4,36 +4,29 @@
 }
 $('#table_usertask').empty();
 
-
 $("#table_usertask").DataTable({
-    ajax: assetsPath + 'json/ecommerce-category-list.json', // JSON file to add data
+    ajax: {
+        url: '/UserTask/UserTaskList', // URL du contrôleur pour récupérer les données JSON
+        dataSrc: '', // Si les données directes JSON
+    },
     columns: [
-        { data: 'propriete_inconnue' },  // Ceci doit correspondre à une clé réelle dans votre JSON
+        // columns according to JSON
+        { data: '' },
         { data: 'id' },
         { data: 'categories' },
         { data: 'total_products' },
         { data: 'total_earnings' },
-        { data: 'autre_propriete_inconnue' }  // Assurez-vous que chaque 'data' correspond à une clé valide
+        { data: '' }
     ],
     columnDefs: [
-        
-        
         {
-            // Total products
-            targets: 3,
-            responsivePriority: 3,
-            render: function (data, type, full, meta) {
-                var $total_products = full['total_products'];
-                return '<div class="text-sm-end">' + $total_products + '</div>';
-            }
-        },
-        {
-            // Total Earnings
-            targets: 4,
+            // For Responsive
+            className: 'control',
+            searchable: false,
             orderable: false,
+            targets: 0,
             render: function (data, type, full, meta) {
-                var $total_earnings = full['total_earnings'];
-                return "<div class='h6 mb-0 text-sm-end'>" + $total_earnings + '</div';
+                return '';
             }
         },
         {
@@ -53,6 +46,24 @@ $("#table_usertask").DataTable({
         }
     ],
     order: [2, 'desc'], //set any columns order asc/desc
+    
+    info: false,
+    lengthChange: false,
+    language: {
+        search: '',
+        searchPlaceholder: 'Search Category'
+    },
+    buttons: [
+        {
+            text: '<i class="ti ti-plus ti-xs me-0 me-sm-2"></i><span class="d-none d-sm-inline-block">Add Category</span>',
+            className: 'add-new btn btn-primary ms-2 btn-sm',
+            attr: {
+                'data-bs-toggle': 'offcanvas',
+                'data-bs-target': '#offcanvasEcommerceCategoryList'
+            }
+        }
+    ],
+    // Button for offcanvas
     dom:
         '<"card-header d-flex flex-wrap pb-2"' +
         '<f>' +
@@ -62,30 +73,13 @@ $("#table_usertask").DataTable({
         '<"col-sm-12 col-md-6"i>' +
         '<"col-sm-12 col-md-6"p>' +
         '>',
-    lengthMenu: [7, 10, 20, 50, 70, 100], //for length of menu
-    language: {
-        sLengthMenu: '_MENU_',
-        search: '',
-        searchPlaceholder: 'Search Category'
-    },
-    // Button for offcanvas
-    buttons: [
-        {
-            text: '<i class="ti ti-plus ti-xs me-0 me-sm-2"></i><span class="d-none d-sm-inline-block">Add Category</span>',
-            className: 'add-new btn btn-primary ms-2',
-            attr: {
-                'data-bs-toggle': 'offcanvas',
-                'data-bs-target': '#offcanvasEcommerceCategoryList'
-            }
-        }
-    ],
-    // For responsive popup
+    orderCellsTop: true,
     responsive: {
         details: {
             display: $.fn.dataTable.Responsive.display.modal({
                 header: function (row) {
                     var data = row.data();
-                    return 'Details of ' + data['categories'];
+                    return 'Details of ' + data['full_name'];
                 }
             }),
             type: 'column',
@@ -97,11 +91,11 @@ $("#table_usertask").DataTable({
                         '" data-dt-column="' +
                         col.columnIndex +
                         '">' +
-                        '<td> ' +
+                        '<td>' +
                         col.title +
                         ':' +
                         '</td> ' +
-                        '<td class="ps-0">' +
+                        '<td>' +
                         col.data +
                         '</td>' +
                         '</tr>'
@@ -113,3 +107,77 @@ $("#table_usertask").DataTable({
         }
     }
 });
+$('.dt-action-buttons').addClass('pt-0');
+$('.dataTables_filter').addClass('me-3 ps-0');
+
+
+
+var bsRangePickerBasic = $('#bs-rangepicker-basic'),
+    bsRangePickerSingle = $('#bs-rangepicker-single'),
+    bsRangePickerTime = $('#bs-rangepicker-time'),
+    bsRangePickerRange = $('#bs-rangepicker-range'),
+    bsRangePickerWeekNum = $('#bs-rangepicker-week-num'),
+    bsRangePickerDropdown = $('#bs-rangepicker-dropdown'),
+    bsRangePickerCancelBtn = document.getElementsByClassName('cancelBtn');
+
+// Basic
+if (bsRangePickerBasic.length) {
+    bsRangePickerBasic.daterangepicker({
+        opens: isRtl ? 'left' : 'right'
+    });
+}
+
+// Single
+if (bsRangePickerSingle.length) {
+    bsRangePickerSingle.daterangepicker({
+        singleDatePicker: true,
+        opens: isRtl ? 'left' : 'right'
+    });
+}
+
+// Time & Date
+if (bsRangePickerTime.length) {
+    bsRangePickerTime.daterangepicker({
+        timePicker: true,
+        timePickerIncrement: 30,
+        locale: {
+            format: 'MM/DD/YYYY h:mm A'
+        },
+        opens: isRtl ? 'left' : 'right'
+    });
+}
+
+if (bsRangePickerRange.length) {
+    bsRangePickerRange.daterangepicker({
+        ranges: {
+            Today: [moment(), moment()],
+            Yesterday: [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        opens: isRtl ? 'left' : 'right'
+    });
+}
+
+// Week Numbers
+if (bsRangePickerWeekNum.length) {
+    bsRangePickerWeekNum.daterangepicker({
+        showWeekNumbers: true,
+        opens: isRtl ? 'left' : 'right'
+    });
+}
+// Dropdown
+if (bsRangePickerDropdown.length) {
+    bsRangePickerDropdown.daterangepicker({
+        showDropdowns: true,
+        opens: isRtl ? 'left' : 'right'
+    });
+}
+
+// Adding btn-label-secondary class in cancel btn
+for (var i = 0; i < bsRangePickerCancelBtn.length; i++) {
+    bsRangePickerCancelBtn[i].classList.remove('btn-default');
+    bsRangePickerCancelBtn[i].classList.add('btn-label-primary');
+}

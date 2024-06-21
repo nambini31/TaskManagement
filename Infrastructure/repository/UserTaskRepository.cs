@@ -75,6 +75,7 @@ namespace Infrastructure.Repository
             IEnumerable<UserTaskVM> data = await _db.UserTask.FromSqlRaw(sql).Select(a => 
             new UserTaskVM
 {
+                UserTaskId = a.UserTaskId,
                 datetime = a.date,
                 hours = a.hours,
                 leaveId = a.leaveId,
