@@ -6,6 +6,9 @@
 
 // Datatable (jquery)
 $(function () {
+
+    alert("biby");
+
   let borderColor, bodyBg, headingColor;
 
   if (isDarkStyle) {
@@ -521,7 +524,7 @@ $(function () {
     $('#addNewUserForm').on('submit', function (e) {
         e.preventDefault();
 
-        alert("biby");
+       
 
         fv.validate().then(function (status) {
             if (status === 'Valid') {

@@ -2,6 +2,7 @@
  * Page User List
  */
 
+
 'use strict';
 
 // Datatable (jquery)
@@ -17,7 +18,7 @@ $(function () {
     bodyBg = config.colors.bodyBg;
     headingColor = config.colors.headingColor;
   }
-
+      
   // Variable declaration for table
   var dt_user_table = $('.datatables-users'),
     select2 = $('.select2'),
@@ -513,4 +514,32 @@ $(function () {
       autoFocus: new FormValidation.plugins.AutoFocus()
     }
   });
+
+    
 })();
+
+
+
+$('#addNewUserForm').on('submit', function (e) {
+    e.preventDefault();
+    fv.validate().then(function (status) {
+        if (status === 'Valid') {
+            $.ajax({
+                url: '/Account/AddUser', // Change this URL to your actual endpoint
+                type: 'POST',
+                data: $(addNewUserForm).serialize(),
+                success: function (response) {
+                    // Handle success response
+                    alert('User added successfully!');
+                    // Optionally, you can reload the table or reset the form here
+                    addNewUserForm.reset();
+                    fv.resetForm(true);
+                },
+                error: function (xhr, status, error) {
+                    // Handle error response
+                    alert('An error occurred while adding the user: ' + error);
+                }
+            });
+        }
+    });
+});

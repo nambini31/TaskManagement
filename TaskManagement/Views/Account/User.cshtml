@@ -27,7 +27,7 @@
 
 @section PageScripts {
     @* <script src="~/js/tables-datatables-basic.dist.js"></script> *@
-    <script src="~/userJs/app-user-list.dist.js"></script>
+    <script src="~/userJs/user.js"></script>
 }
 
 
@@ -38,8 +38,80 @@
         <span class="text-muted fw-light">User Management</span> 
     </h4>
 
+    <div class="card">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <h5 class="card-header">Create User</h5>
+                    <div class="card-body">
+                        <form asp-action="Register" method="post">
 
-    <hr class="my-5">
+                            <input type="hidden" name="ReturnUrl" value="@ViewData["ReturnUrl"]" />
+
+                            <div class="row">
+
+                                <div class="col-xl-4 col-md-6 col-sm-12 mb-4">
+                                    <label class="form-label" for="name">Name</label>
+                                    <input asp-for="Name" name="name" id="name" class="form-control credit-card-mask" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 col-sm-12 mb-4">
+                                    <label class="form-label">Surname</label>
+                                    <input asp-for="Surname" class="form-control credit-card-mask" />
+                                    <span asp-validation-for="Surname" class="text-danger"></span>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 col-sm-12 mb-4">
+                                    <label class="form-label" >Email</label>
+                                    <input asp-for="Email" class="form-control credit-card-mask" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3" hidden>
+                                    <label class="form-label" for="add-user-Username">Username</label>
+                                    <input asp-for="Username" value="tata" type="text" id="add-user-Username" class="form-control" placeholder="Enter Your Username..." name="username" />
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 col-sm-12 mb-4 form-password-toggle">
+                                    <label class="form-label">Password</label>
+                                    <div class="input-group input-group-merge">
+                                        <input asp-for="Password" class="form-control credit-card-mask" aria-describedby="multicol-password2" />
+                                        <span class="input-group-text cursor-pointer" id="multicol-confirm-password2"><i class="ti ti-eye-off"></i></span>                                  
+                                    </div>
+                                        <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 col-sm-12 mb-4 form-password-toggle">
+                                    <label class="form-label">Confirm Password</label>
+                                    <div class="input-group input-group-merge">
+                                        <input asp-for="ConfirmPassword" class="form-control" aria-describedby="confirm-password2" />
+                                        <span class="input-group-text cursor-pointer" id="confirm-password2"><i class="ti ti-eye-off"></i></span>                                    
+                                    </div>
+                                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>   
+
+                                <div class="col-xl-4 col-md-6 col-sm-12 mb-4">
+                                    <label class="form-label">Role</label>
+                                    <select asp-for="Role" class="form-control credit-card-mask" />
+                                        <option>User</option>
+                                        <option>Admin</option>
+                                    </select>
+                                </div>
+                                <div class="pt-4">
+                                    <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
+                                    <button type="reset" class="btn btn-label-secondary">Cancel</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <hr class="my-3">
 
     <!-- Users Tables Liste -->
     <div class="card">
@@ -67,68 +139,11 @@
                 </thead>
             </table>
         </div>
-        <!-- Offcanvas to add new user -->
-        <div class="card">
-            <div class="offcanvas-header">
-                <h5 id="offcanvasAddUserLabel" class="offcanvas-title">Add User</h5>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body mx-0 flex-grow-0 pt-0 h-100">
-                <form asp-action="Register" method="post" class="add-new-user pt-0">
-                    <div class="mb-3">
-                        <label class="form-label" for="add-user-fullname">Name</label>
-                        <input asp-for="Name" type="text" class="form-control" id="add-user-fullname" placeholder="John Doe" name="name" />
-                        <span asp-validation-for="Name" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="add-user-Surname">Surname</label>
-                        <input asp-for="Surname" type="text" id="add-user-Surname" class="form-control" placeholder="Enter Your Surname..." name="surname" />
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="add-user-email">Email</label>
-                        <input asp-for="Email" type="text" id="add-user-email" class="form-control" placeholder="john.doe&#64;example.com" name="email" />
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="add-user-Username">Username</label>
-                        <input asp-for="Username" type="text" id="add-user-Username" class="form-control" placeholder="Enter Your Username..." name="username" />
-                    </div>
-                    <div class="mb-3">
-                        <div class="form-password-toggle">
-                            <label class="form-label" for="formValidationPass">Password</label>
-                            <div class="input-group input-group-merge">
-                                <input asp-for="Password" name="password" class="form-control" type="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="multicol-password2" />
-                                <span class="input-group-text cursor-pointer" id="multicol-password2"><i class="ti ti-eye-off"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="form-password-toggle">
-                            <label class="form-label" for="formValidationPass">Confirm Password</label>
-                            <div class="input-group input-group-merge">
-                                <input asp-for="ConfirmPassword" name="confirmPassword" class="form-control" type="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="multicol-confirm-password2" />
-                                <span class="input-group-text cursor-pointer" id="multicol-confirm-password2"><i class="ti ti-eye-off"></i></span>
-                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label asp-for="Role" class="form-label" for="user-role">Role</label>
-                        <select asp-for="Role" id="user-role" class="form-select">
-                            <option>User</option>
-                            <option>Admin</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Save</button>
-                    <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>
-                </form>
-            </div>
-        </div>
+        <!-- Offcanvas to add new user -->        
     </div>
     <!--/ Users Table Liste -->
 </div>
-
+@* 
 @{
     await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
+} *@

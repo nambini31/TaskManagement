@@ -46,9 +46,12 @@
                     <!-- /Logo -->
                     <h4 class="mb-1 pt-2">Welcome to @TempData.Peek("appName")! 👋</h4>
                     <p class="mb-4">Please sign-in to your account</p>
-
+                    <h6 class="text-danger text-center">@TempData["message"]</h6>
                     <form method="post" action="@Url.Action("Login", "Account")" id=" formAuthentication" class="mb-3">
                         <input type="hidden" name="returnUrl" value="@returnUrl" />
+
+                        <div asp-validation-summary="All" class="text-danger"></div>
+
                         <div class="mb-3">
                             <label asp-for="Username" for="email" class="form-label">Username</label>
                             <input asp-for="Username" class="form-control" placeholder="Enter username" autofocus>
@@ -87,3 +90,9 @@
         </div>
     </div>
 </div>
+
+
+
+@{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
