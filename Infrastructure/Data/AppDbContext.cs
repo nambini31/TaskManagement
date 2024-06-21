@@ -16,7 +16,7 @@ namespace Infrastructure.Data
         }
 
         
-        public DbSet<Leaves> Leaves { get; set; }
+        public DbSet<Leave> Leaves { get; set; }
         public DbSet<Tasks> Tasks { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<UserTask> UserTasks { get; set; }
