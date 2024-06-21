@@ -1,4 +1,6 @@
-﻿@{
+﻿@model UserTaskVM 
+@{
+
     Layout = "Layout/_LayoutWithMenu";
     ViewData["Title"] = "Login";
 }
@@ -55,10 +57,7 @@
                     </div>
                     <div class="col-md-3 col-sm-12">
                         <label class="form-label" for="basicPost">User</label>
-                            <select id="selectpickerLiveSearch" class="selectpicker w-100" data-style="btn-default btn-sm" data-live-search="true" tabindex="null">
-                                <option data-tokens="ketchup mustard">All</option>
-                                <option data-tokens="mustard">Nico</option>
-                                <option data-tokens="frosting">Jean pierre</option>
+                            <select id="selectpickerLiveSearch" class="selectpicker w-100" asp-items="@Model" data-style="btn-default btn-sm" data-live-search="true" tabindex="null">
                             </select>
                         
                     </div>

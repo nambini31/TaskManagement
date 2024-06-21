@@ -113,54 +113,8 @@ $('.dataTables_filter').addClass('me-3 ps-0');
 
 
 
-var bsRangePickerBasic = $('#bs-rangepicker-basic'),
-    bsRangePickerSingle = $('#bs-rangepicker-single'),
-    bsRangePickerTime = $('#bs-rangepicker-time'),
-    bsRangePickerRange = $('#bs-rangepicker-range'),
-    bsRangePickerWeekNum = $('#bs-rangepicker-week-num'),
-    bsRangePickerDropdown = $('#bs-rangepicker-dropdown'),
-    bsRangePickerCancelBtn = document.getElementsByClassName('cancelBtn');
+var bsRangePickerWeekNum = $('#bs-rangepicker-week-num');
 
-// Basic
-if (bsRangePickerBasic.length) {
-    bsRangePickerBasic.daterangepicker({
-        opens: isRtl ? 'left' : 'right'
-    });
-}
-
-// Single
-if (bsRangePickerSingle.length) {
-    bsRangePickerSingle.daterangepicker({
-        singleDatePicker: true,
-        opens: isRtl ? 'left' : 'right'
-    });
-}
-
-// Time & Date
-if (bsRangePickerTime.length) {
-    bsRangePickerTime.daterangepicker({
-        timePicker: true,
-        timePickerIncrement: 30,
-        locale: {
-            format: 'MM/DD/YYYY h:mm A'
-        },
-        opens: isRtl ? 'left' : 'right'
-    });
-}
-
-if (bsRangePickerRange.length) {
-    bsRangePickerRange.daterangepicker({
-        ranges: {
-            Today: [moment(), moment()],
-            Yesterday: [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            'This Month': [moment().startOf('month'), moment().endOf('month')],
-            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        },
-        opens: isRtl ? 'left' : 'right'
-    });
-}
 
 // Week Numbers
 if (bsRangePickerWeekNum.length) {
@@ -169,16 +123,22 @@ if (bsRangePickerWeekNum.length) {
         opens: isRtl ? 'left' : 'right'
     });
 }
-// Dropdown
-if (bsRangePickerDropdown.length) {
-    bsRangePickerDropdown.daterangepicker({
-        showDropdowns: true,
-        opens: isRtl ? 'left' : 'right'
-    });
+
+function formatDate(date) {
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
 }
 
-// Adding btn-label-secondary class in cancel btn
-for (var i = 0; i < bsRangePickerCancelBtn.length; i++) {
-    bsRangePickerCancelBtn[i].classList.remove('btn-default');
-    bsRangePickerCancelBtn[i].classList.add('btn-label-primary');
-}
+// Date exacte une semaine avant aujourd'hui
+const today = new Date();
+const exactWeekBefore = new Date();
+exactWeekBefore.setDate(today.getDate() - 7);
+
+// Insérer les dates dans l'input
+const formattedExactWeekBefore = formatDate(exactWeekBefore);
+const formattedToday = formatDate(today);
+const combinedDates = `${formattedExactWeekBefore} - ${formattedToday}`;
+
+bsRangePickerWeekNum.val(combinedDates);
