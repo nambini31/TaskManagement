@@ -1,0 +1,23 @@
+.navbar-custom {
+    background-color: white !important;
+    padding: 0 calc(24px / 2) 0 0;
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: 70px;
+    z-index: 100;
+}
+
+.container-fluid, .container-lg, .container-md, .container-sm, .container-xl {
+    width: 100%;
+    padding-right: 12px;
+    padding-left: 12px;
+    margin-right: auto;
+    margin-left: auto;
+    display: inline;
+}
+.card-header.d-flex.flex-wrap.pb-2 {
+    display: flex !important;
+    justify-content: space-between; 
+        padding-left: 0;
+}

@@ -55,6 +55,7 @@ namespace Infrastructure.Repository
         public async Task<IEnumerable<UserTaskVM>> GetUserTasksVM()
         {
 
+
             string sql = @"select 
                             usertask.UserTaskId, 
                             usertask.hours, 
@@ -70,7 +71,7 @@ namespace Infrastructure.Repository
                             user.userName 
                             from 
                             usertask join tasks on tasks.taskId = usertask.taskId 
-                            join leaves on leaves.leaveId = usertask.leaveId join user on user.userId = usertask.userId";
+                            join leaves on leaves.leaveId = usertask.leaveId join user on user.userId = usertask.userId"  ;
 
             IEnumerable<UserTaskVM> data = await _db.UserTask.FromSqlRaw(sql).Select(a => 
             new UserTaskVM

@@ -27,123 +27,62 @@
 
 @section PageScripts {
     @* <script src="~/js/tables-datatables-basic.dist.js"></script> *@
-    <script src="~/userJs/user.js"></script>
+    <script src="~/userJs/app-user-list.dist.js"></script>
 }
 
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6 col-xl-5">
+        <div class="text-center">
+            <a href="index.html" class="logo">
+                <img src="assets/images/logo-light.png" alt="" height="22" class="logo-light mx-auto">
+                <img src="assets/images/logo-dark.png" alt="" height="22" class="logo-dark mx-auto">
+            </a>
+            <p class="text-muted mt-2 mb-4">Responsive Admin Dashboard</p>
+        </div>
+        <div class="card">
 
-<div class="container-fluid flex-grow-1 container-p-y">
-    <!-- Layout Demo -->
-    @* ************** Content ************** *@
-    <h4 class="py-3 mb-4">
-        <span class="text-muted fw-light">User Management</span> 
-    </h4>
+            <div class="card-body p-4">
 
-    <div class="card">
-        <div class="row">
-            <div class="col-12">
-                <div class="card mb-4">
-                    <h5 class="card-header">Create User</h5>
-                    <div class="card-body">
-                        <form asp-action="Register" method="post">
-
-                            <input type="hidden" name="ReturnUrl" value="@ViewData["ReturnUrl"]" />
-
-                            <div class="row">
-
-                                <div class="col-xl-4 col-md-6 col-sm-12 mb-4">
-                                    <label class="form-label" for="name">Name</label>
-                                    <input asp-for="Name" name="name" id="name" class="form-control credit-card-mask" />
-                                    <span asp-validation-for="Name" class="text-danger"></span>
-                                </div>
-
-                                <div class="col-xl-4 col-md-6 col-sm-12 mb-4">
-                                    <label class="form-label">Surname</label>
-                                    <input asp-for="Surname" class="form-control credit-card-mask" />
-                                    <span asp-validation-for="Surname" class="text-danger"></span>
-                                </div>
-
-                                <div class="col-xl-4 col-md-6 col-sm-12 mb-4">
-                                    <label class="form-label" >Email</label>
-                                    <input asp-for="Email" class="form-control credit-card-mask" />
-                                    <span asp-validation-for="Email" class="text-danger"></span>
-                                </div>
-
-                                <div class="mb-3" hidden>
-                                    <label class="form-label" for="add-user-Username">Username</label>
-                                    <input asp-for="Username" value="tata" type="text" id="add-user-Username" class="form-control" placeholder="Enter Your Username..." name="username" />
-                                </div>
-
-                                <div class="col-xl-4 col-md-6 col-sm-12 mb-4 form-password-toggle">
-                                    <label class="form-label">Password</label>
-                                    <div class="input-group input-group-merge">
-                                        <input asp-for="Password" class="form-control credit-card-mask" aria-describedby="multicol-password2" />
-                                        <span class="input-group-text cursor-pointer" id="multicol-confirm-password2"><i class="ti ti-eye-off"></i></span>                                  
-                                    </div>
-                                        <span asp-validation-for="Password" class="text-danger"></span>
-                                </div>
-
-                                <div class="col-xl-4 col-md-6 col-sm-12 mb-4 form-password-toggle">
-                                    <label class="form-label">Confirm Password</label>
-                                    <div class="input-group input-group-merge">
-                                        <input asp-for="ConfirmPassword" class="form-control" aria-describedby="confirm-password2" />
-                                        <span class="input-group-text cursor-pointer" id="confirm-password2"><i class="ti ti-eye-off"></i></span>                                    
-                                    </div>
-                                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                                </div>   
-
-                                <div class="col-xl-4 col-md-6 col-sm-12 mb-4">
-                                    <label class="form-label">Role</label>
-                                    <select asp-for="Role" class="form-control credit-card-mask" />
-                                        <option>User</option>
-                                        <option>Admin</option>
-                                    </select>
-                                </div>
-                                <div class="pt-4">
-                                    <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
-                                    <button type="reset" class="btn btn-label-secondary">Cancel</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                <div class="text-center mb-4">
+                    <h4 class="text-uppercase mt-0">Sign In</h4>
                 </div>
-            </div>
 
-        </div>
-    </div>
+                <form action="#">
 
-    <hr class="my-3">
+                    <div class="form-group mb-3">
+                        <label for="emailaddress">Email address</label>
+                        <input class="form-control" type="email" id="emailaddress" required="" placeholder="Enter your email">
+                    </div>
 
-    <!-- Users Tables Liste -->
-    <div class="card">
-        <div class="card-header border-bottom">
-            <h5 class="card-title mb-3">Search Filter</h5>
-            <div class="d-flex justify-content-between align-items-center row pb-2 gap-3 gap-md-0">
-                <div class="col-md-4 user_role"></div>
-                <div class="col-md-4 user_plan"></div>
-                <div class="col-md-4 user_status"></div>
-            </div>
+                    <div class="form-group mb-3">
+                        <label for="password">Password</label>
+                        <input class="form-control" type="password" required="" id="password" placeholder="Enter your password">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="checkbox-signin" checked>
+                            <label class="custom-control-label" for="checkbox-signin">Remember me</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-0 text-center">
+                        <button class="btn btn-primary btn-block" type="submit"> Log In </button>
+                    </div>
+
+                </form>
+
+            </div> <!-- end card-body -->
         </div>
-        <div class="card-datatable table-responsive">
-            <table class="datatables-users table">
-                <thead class="border-top">
-                    <tr>
-                        <th></th>
-                        <th>UserID</th>
-                        <th>Name</th>
-                        <th>Surname</th>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Password</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-            </table>
+        <!-- end card -->
+
+        <div class="row mt-3">
+            <div class="col-12 text-center">
+                <p> <a href="pages-recoverpw.html" class="text-muted ml-1"><i class="fa fa-lock mr-1"></i>Forgot your password?</a></p>
+                <p class="text-muted">Don't have an account? <a href="pages-register.html" class="text-dark ml-1"><b>Sign Up</b></a></p>
+            </div> <!-- end col -->
         </div>
-        <!-- Offcanvas to add new user -->        
-    </div>
-    <!--/ Users Table Liste -->
+        <!-- end row -->
+
+    </div> <!-- end col -->
 </div>
-@* 
-@{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
-} *@

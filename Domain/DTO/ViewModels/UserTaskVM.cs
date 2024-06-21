@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Web.Mvc;
 
 
 namespace Domain.DTO.ViewModels
@@ -28,6 +29,7 @@ namespace Domain.DTO.ViewModels
             public int userId { get; set; }
 
             public string? userName { get; set; }
+
 
             public DateTime datetime { get; set; }
 
