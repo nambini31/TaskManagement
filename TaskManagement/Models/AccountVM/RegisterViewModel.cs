@@ -23,6 +23,7 @@ namespace TaskManagement.Models.AccountVM
         public string ConfirmPassword { get; set; }
 
         [StringLength(50)]
+        [EmailAddress]
         public string? Email { get; set; }
 
         [Required]

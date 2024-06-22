@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace TaskManagement.Controllers
 {
+    
+    //[Authorize(Roles = "Admin")]
     public class AccountController : Controller
     {
        private readonly UserServiceRepository _userService;
@@ -20,13 +22,14 @@ namespace TaskManagement.Controllers
             _userService = userService;
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             return View("User");
         }
 
         //-- get all User for data table
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult GetAll()
         {
@@ -54,14 +57,15 @@ namespace TaskManagement.Controllers
 
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string? ReturnUrl = null)
         {
+            ViewData["ReturnUrl"] = ReturnUrl;
             TempData["appName"] = "GesPro";
             return View("~/Views/Auth/login.cshtml");
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model, string? ReturnUrl = null)
         {
 
             if (ModelState.IsValid)
@@ -72,7 +76,7 @@ namespace TaskManagement.Controllers
                     var role = _userService.GetRoleByUserId(user.UserId);
                     var claims = new List<Claim>
                     {
-                        new Claim(ClaimTypes.Name, user.Username),
+                        new Claim(ClaimTypes.Name, $"{user.Name} {user.Surname}"),
                         new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
                     };
                     if (role != null)
@@ -83,9 +87,18 @@ namespace TaskManagement.Controllers
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-                   
-                    
-                    return RedirectToAction("Index", "Account");
+
+                    if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
+                    {
+                        return Redirect(ReturnUrl);
+                    }
+                    else
+                    {
+                        // Redirect to default page
+                        //return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Account");
+                    }
+
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");

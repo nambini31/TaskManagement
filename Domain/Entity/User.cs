@@ -27,6 +27,7 @@ namespace Domain.Entity
         public string Password { get; set; }
 
         [StringLength(50)]
+        [EmailAddress]
         public string? Email { get; set; }
     }
 }

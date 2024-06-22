@@ -28,23 +28,32 @@
 }
 @* ************** Content ************** *@
 
-<div class="account-pages mt-5 mb-5">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6 col-xl-5">
-                <div class="text-center">
-                    <a href="index.html" class="logo">
-                        <img src="assets/images/logo-light.png" alt="" height="22" class="logo-light mx-auto">
-                        <img src="assets/images/logo-dark.png" alt="" height="22" class="logo-dark mx-auto">
-                    </a>
-                    <p class="text-muted mt-2 mb-4">Responsive Admin Dashboard</p>
-                </div>
-                <div class="card">
+<div class="container-xxl">
+    <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-inner py-4">
+            <!-- Login -->
+            <div class="card">
+                <div class="card-body">
+                    <!-- Logo -->
+                    <div class="app-brand justify-content-center mb-4 mt-2">
+                        <a href="/" class="app-brand-link gap-2">
+                            @*<span class="app-brand-logo demo">@await Html.PartialAsync("../_Partials/_Macros")</span>
+                            <span class="app-brand-text demo text-body fw-bold ms-1">@TempData.Peek("appName")</span>*@
+                        </a>
+                    </div>
+                    <!-- /Logo -->
+                    <h4 class="mb-1 pt-2">Welcome to @TempData.Peek("appName")! 👋</h4>
+                    <p class="mb-4">Please sign-in to your account</p>
+                    <h6 class="text-danger text-center">@TempData["message"]</h6>
+                    <form method="post" action="@Url.Action("Login", "Account")" id=" formAuthentication" class="mb-3">
+                        <input type="hidden" name="returnUrl" value="@returnUrl" />
 
-                    <div class="card-body p-4">
+                        <div asp-validation-summary="All" class="text-danger"></div>
 
-                        <div class="text-center mb-4">
-                            <h4 class="text-uppercase mt-0">Sign In</h4>
+                        <div class="mb-3">
+                            <label asp-for="Username" for="email" class="form-label">Username</label>
+                            <input asp-for="Username" class="form-control" placeholder="Enter username" autofocus>
+                            <span asp-validation-for="Username" style="color:red"></span>
                         </div>
 
                         <form action="#">
@@ -90,3 +99,9 @@
     </div>
     <!-- end container -->
 </div>
+
+
+
+@{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
