@@ -1,4 +1,5 @@
-﻿using Domain.Entity;
+﻿using Domain.DTO.ViewModels;
+using Domain.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,12 @@ namespace Domain.Interface
 {
     public interface IUserTaskRepository
     {
-        Task<IEnumerable<UserTask>> GetUserTasks();
-        Task<UserTask> GetUserTaskById(int UserTaskId);
-        Task AddUserTask(UserTask UserTask);
-        Task UpdateUserTask(UserTask UserTask);
-        Task DeleteUserTask(int UserTaskId);
+        Task<IEnumerable<UserTask>> GetUserTask();
+        Task<IEnumerable<UserTaskVM>> GetUserTasksVM(FiltreUserTask filter);
+        Task<UserTask> GetUserTaskById(int articleId);
+        Task AddUserTask(UserTask article);
+        Task UpdateUserTask(UserTask article);
+        Task DeleteUserTaskById(int articleId);
+
     }
 }

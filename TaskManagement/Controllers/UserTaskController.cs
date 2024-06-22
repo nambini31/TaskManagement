@@ -11,10 +11,10 @@ namespace TaskManagement.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        private readonly SUserTask _SUserTask;
+        private readonly SUserTaskRepository _SUserTask;
         private readonly UserServiceRepository _UserService;
 
-        public UserTaskController(ILogger<HomeController> logger, SUserTask _SUserTask , UserServiceRepository _UserService)
+        public UserTaskController(ILogger<HomeController> logger, SUserTaskRepository _SUserTask , UserServiceRepository _UserService)
         {
             _logger = logger;
 
@@ -24,9 +24,10 @@ namespace TaskManagement.Controllers
         }
         public  IActionResult Index()
         {
-
             return View();
-        } 
+        }
+
+        
         public  string getListUser()
         {
             IEnumerable<User> data = _UserService.GetUser();
@@ -39,11 +40,19 @@ namespace TaskManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UserTaskList()
+        public async Task<IActionResult> UserTaskList(FiltreUserTask filter)
         {
-            var data = await _SUserTask.GetUserTaskVM();
+            try
+            {
+                var data = await _SUserTask.GetUserTaskVM(filter);
 
-            return Json(data);
+                return Json(data);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            
         }
     }
 }
