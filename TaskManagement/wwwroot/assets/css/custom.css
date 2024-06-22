@@ -18,6 +18,36 @@
 }
 .card-header.d-flex.flex-wrap.pb-2 {
     display: flex !important;
-    justify-content: space-between; 
-        padding-left: 0;
+    justify-content: space-between;
+    padding-left: 0;
+    background: none;
+}
+
+table.dataTable {
+    clear: both;
+    margin-top: 6px !important;
+    margin-bottom: 6px !important;
+    max-width: none !important;
+    border-spacing: 0;
+    color: #606060 !important;
+}
+
+
+
+    .filter-container .form-control,
+    .filter-container .btn {
+        margin: 5px;
+    }
+
+@media (max-width: 768px) {
+    .filter-container .form-control,
+    .filter-container .btn {
+        width: 100%;
+        margin-left: 0;
+    }
+}
+
+button.cancelBtn.btn.btn-sm.btn-default {
+    background-color: #dbdbdb;
+    color: #4a4a4a;
 }

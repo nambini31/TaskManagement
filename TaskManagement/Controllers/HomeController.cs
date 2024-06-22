@@ -12,9 +12,9 @@ namespace TaskManagement.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        private readonly SUserTask _SUserTask;
+        private readonly SUserTaskRepository _SUserTask;
 
-        public HomeController(ILogger<HomeController> logger , SUserTask _SUserTask)
+        public HomeController(ILogger<HomeController> logger , SUserTaskRepository _SUserTask)
         {
             _logger = logger;
 
@@ -25,7 +25,6 @@ namespace TaskManagement.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var data = await _SUserTask.GetUserTaskVM();
 
             return View();
         }

@@ -45,8 +45,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
                 //    }
                 //};
             });
-builder.Services.AddScoped<IUserTask, UserTaskRepository>();
-builder.Services.AddScoped<SUserTask>();
+builder.Services.AddScoped<IUserTaskRepository, UserTaskRepository>();
+builder.Services.AddScoped<SUserTaskRepository>();
 
 var app = builder.Build();
 

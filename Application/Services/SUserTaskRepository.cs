@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 using Domain.DTO.ViewModels;
 using Domain.Entity;
 using Domain.Interface;
 
 namespace Application.Service
 {
-    public class SUserTask
+    public class SUserTaskRepository
     {
-        private readonly IUserTask IUserTask;
-        public SUserTask(IUserTask IUserTask) {
+        private readonly IUserTaskRepository IUserTask;
+        public SUserTaskRepository(IUserTaskRepository IUserTask) {
 
             this.IUserTask = IUserTask;
 
@@ -36,9 +37,9 @@ namespace Application.Service
         {
             return  await IUserTask.GetUserTask();
         } 
-        public async Task<IEnumerable<UserTaskVM>> GetUserTaskVM()
+        public async Task<IEnumerable<UserTaskVM>> GetUserTaskVM(FiltreUserTask filter)
         {
-            return  await IUserTask.GetUserTasksVM();
+            return await IUserTask.GetUserTasksVM(filter);
         }
 
         public async Task UpdateUserTask(UserTask userTask)
