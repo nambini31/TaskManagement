@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TaskManagement.Models.AccountVM
+namespace Domain.DTO.ViewModels.UserVM
 {
     public class LoginViewModel
     {

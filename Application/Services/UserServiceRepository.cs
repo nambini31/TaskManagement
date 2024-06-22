@@ -1,4 +1,5 @@
-﻿using Domain.Entity;
+﻿using Domain.DTO;
+using Domain.Entity;
 using Domain.Interface;
 using Org.BouncyCastle.Crypto.Generators;
 using System;
@@ -84,7 +85,7 @@ namespace Application.Services
             return null;
         }
 
-        public IEnumerable<User> GetUser()
+        public IEnumerable<UserListWithRole> GetUser()
         {
             return _userRepository.GetAll();
         }

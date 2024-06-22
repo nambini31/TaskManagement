@@ -1,5 +1,6 @@
 ﻿using Application.Service;
 using Application.Services;
+using Domain.DTO;
 using Domain.DTO.ViewModels;
 using Domain.Entity;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +30,7 @@ namespace TaskManagement.Controllers
         } 
         public  string getListUser()
         {
-            IEnumerable<User> data = _UserService.GetUser();
+            IEnumerable<UserListWithRole> data = _UserService.GetUser();
             var option = "";
             foreach (var item in data)
             {

@@ -6,18 +6,18 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using TaskManagement.Models.AccountVM;
 using Microsoft.AspNetCore.Authorization;
+using Domain.DTO.ViewModels.UserVM;
 
 namespace TaskManagement.Controllers
 {
-    
+
     //[Authorize(Roles = "Admin")]
-    public class AccountController : Controller
+    public class UserController : Controller
     {
        private readonly UserServiceRepository _userService;
 
-        public AccountController(UserServiceRepository userService)
+        public UserController(UserServiceRepository userService)
         {
             _userService = userService;
         }
@@ -25,13 +25,13 @@ namespace TaskManagement.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
-            return View("User");
+            return View();
         }
 
-        //-- get all User for data table
+        //-- get all User for datatable
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult GetAll()
+        public IActionResult GetAllUser()
         {
             var users = _userService.GetUser();
             return Json(users);
@@ -49,10 +49,13 @@ namespace TaskManagement.Controllers
             if (ModelState.IsValid)  
             {
                 _userService.RegisterUser(model.Name, model.Surname, model.Username, model.Password, model.Email, model.Role);
-                return RedirectToAction("Index", "Account");
+                //return RedirectToAction("Index", "User");
+                return Json(new { success = true });
             }
 
-            return View("~/Views/Account/User.cshtml", model);
+            return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors) });
+
+            //return View("Index", model);
         }
 
 
@@ -61,7 +64,7 @@ namespace TaskManagement.Controllers
         {
             ViewData["ReturnUrl"] = ReturnUrl;
             TempData["appName"] = "GesPro";
-            return View("~/Views/Auth/login.cshtml");
+            return View();
         }
 
         [HttpPost]
@@ -96,7 +99,7 @@ namespace TaskManagement.Controllers
                     {
                         // Redirect to default page
                         //return RedirectToAction("Index", "Home");
-                        return RedirectToAction("Index", "Account");
+                        return RedirectToAction("Index", "User");
                     }
 
                 }
@@ -104,13 +107,13 @@ namespace TaskManagement.Controllers
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             }
 
-            return View("~/Views/Auth/login.cshtml", model);
+            return View("Login", model);
         }
 
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Login", "User");
         }
 
     }

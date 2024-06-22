@@ -32,8 +32,8 @@ builder.Services.AddScoped<UserServiceRepository>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
             {
-                options.LoginPath = "/Account/Login";
-                options.AccessDeniedPath = "/Account/AccessDenied";
+                options.LoginPath = "/User/Login";
+                options.AccessDeniedPath = "/User/AccessDenied";
 
                 //gere la redirection pour souvenir les pages precedent
                 //options.Events = new CookieAuthenticationEvents
@@ -67,6 +67,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=Login}/{id?}");
+    pattern: "{controller=User}/{action=Login}/{id?}");
 
 app.Run();

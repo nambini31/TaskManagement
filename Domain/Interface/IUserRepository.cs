@@ -1,4 +1,5 @@
-﻿using Domain.Entity;
+﻿using Domain.DTO;
+using Domain.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Domain.Interface
 {
     public interface IUserRepository
     {
-        IEnumerable<User> GetAll(Expression<Func<User, bool>>? filter = null, string? includeProperties = null);
+        IEnumerable<UserListWithRole> GetAll(Expression<Func<User, bool>>? filter = null, string? includeProperties = null);
         User Get(Expression<Func<User, bool>>? filter, string? includeProperties = null);
         void Add(User entity);
         void Update(User entity);

@@ -1,15 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TaskManagement.Models.AccountVM
+namespace Domain.DTO.ViewModels.UserVM
 {
     public class RegisterViewModel
     {
         [Required]
         public string Name { get; set; }
 
+        [Required]
+        [StringLength(255)]
         public string? Surname { get; set; }
 
-        [Required]
         [StringLength(255)]
         public string Username { get; set; }
 

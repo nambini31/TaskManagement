@@ -53,3 +53,12 @@
     <!-- Sidebar -left -->
 
 </div>
+
+@* @if (User.IsInRole("Admin"))
+{
+    <li><a asp-area="" asp-controller="Admin" asp-action="Index">Admin Panel</a></li>
+}
+@if (User.IsInRole("User"))
+{
+    <li><a asp-area="" asp-controller="User" asp-action="Index">User Panel</a></li>
+} *@
