@@ -20,6 +20,11 @@
             $('#editLeaveModal .modal-body').html(data);
             $('#editLeaveModal').modal('show');
         });
+
+
+        
+
+
     });
 
     // Show delete modal with data
@@ -49,30 +54,36 @@
     });
 
     // Edit leave form submission
-    $('#editLeaveForm').submit(function (event) {
-        event.preventDefault();
-        $.ajax({
-            url: '/Leaves/Edit',
-            type: 'POST',
-            data: $(this).serialize(),
-            success: function () {
-                $('#editLeaveModal').modal('hide');
-                location.reload();
-            },
-            error: function (xhr, status, error) {
-                alert('Error: ' + error);
-            }
-        });
-    });
+    
 
     // Delete leave confirmation
-    $('#confirmDeleteButton').click(function () {
-        var id = $(this).data('id');
+});
+
+function editSubmit() {
+   
+    $.ajax({
+        url: '/Leaves/Edit',
+        type: 'POST',
+        data: {
+
+            leaveId: $("#LeaveId").val(),
+            reason: $("#Reasons").val()
+        },
+        success: function () {
+            $('#editLeaveModal').modal('hide');
+            location.reload();
+        },
+        error: function (xhr, status, error) {
+            alert('Error: ' + error);
+        }
+    });
+}
+    function deleteLeaves(id) {
+
         $.post('/Leaves/DeleteConfirmed', { id: id }, function () {
             $('#deleteLeaveModal').modal('hide');
             location.reload();
         }).fail(function (xhr, status, error) {
             alert('Error: ' + error);
         });
-    });
-});
+    };
