@@ -10,6 +10,6 @@ namespace Domain.DTO.ViewModels
     {
         public DateOnly startDate { get; set; }
         public DateOnly endDate { get; set; }
-        public int? userId { get; set; }
+        public string? userId { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Web.Mvc;
+
 
 
 namespace Domain.DTO.ViewModels
@@ -12,7 +12,7 @@ namespace Domain.DTO.ViewModels
 
         public class UserTaskVM
         {
-             public int UserTaskId { get; set; }
+            public int UserTaskId { get; set; }
 
             public int taskId { get; set; }
 
@@ -30,10 +30,11 @@ namespace Domain.DTO.ViewModels
 
             public string? userName { get; set; }
 
-            [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = true)]
             public DateTime datetime { get; set; }
 
             public double hours { get; set; }
+
+        
 
         }
     }

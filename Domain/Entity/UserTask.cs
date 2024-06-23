@@ -41,7 +41,11 @@ namespace Domain.Entity
 		public DateTime date { get; set; }
 
 		[Required , Range(0 , 99999999999999999 , ErrorMessage = "Hour must greater than 0")]
-		public double hours { get; set; } 
-        
+		public double hours { get; set; }
+
+        // Nouvelle propriété pour stocker l'utilisateur qui effectue la suppression
+        [NotMapped]
+        public int UserMaj { get; set; }
+
     }
 }

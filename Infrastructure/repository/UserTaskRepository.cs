@@ -31,7 +31,9 @@ namespace Infrastructure.Repository
 
         public async Task DeleteUserTaskById(int UsertaskId)
         {
-            var Usertask = await _db.UserTask.FirstOrDefaultAsync(u => u.UserTaskId == UsertaskId);
+            await _db.Database.ExecuteSqlAsync($"SET @userDeleteUserTask = {1}");
+
+            UserTask? Usertask = await _db.UserTask.FirstOrDefaultAsync(u => u.UserTaskId == UsertaskId);
 
             _db.UserTask.Remove(Usertask);
              await _db.SaveChangesAsync();
@@ -56,9 +58,11 @@ namespace Infrastructure.Repository
         public async Task<IEnumerable<UserTaskVM>> GetUserTasksVM(FiltreUserTask filter)
         {
 
+            string user = (filter.userId == null || filter.userId == "All" ) ?  "" : $"and user.userId = {filter.userId} ";
+
             try
             {
-                string sql = @"select 
+                string sql = $@"select 
                             usertask.UserTaskId, 
                             usertask.hours, 
                             usertask.date, 
@@ -74,7 +78,7 @@ namespace Infrastructure.Repository
                             from 
                             usertask join tasks on tasks.taskId = usertask.taskId 
                             join leaves on leaves.leaveId = usertask.leaveId join user on user.userId = usertask.userId 
-                            WHERE usertask.date BETWEEN @start AND @end
+                            WHERE ( usertask.date BETWEEN @start AND @end ) {user}
                                 ";
 
                 IEnumerable<UserTaskVM> data = await _db.UserTask.FromSqlRaw(sql,

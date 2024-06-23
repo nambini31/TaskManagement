@@ -143,6 +143,26 @@
         "daterangepicker.min.js",
         "daterangepicker.min.css"
       ]
+    },
+    {
+      "library": "select2-bootstrap-5-theme@1.3.0",
+      "destination": "wwwroot/assets/libs/select2-bootstrap-5-theme/",
+      "files": [
+        "select2-bootstrap-5-theme.min.css"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "nice-select2@2.2.0",
+      "destination": "wwwroot/assets/libs/nice-select2/",
+      "files": [
+        "dist/css/nice-select2.css",
+        "dist/js/nice-select2.js"
+      ]
+    },
+    {
+      "library": "jquery-nice-select@1.1.0",
+      "destination": "wwwroot/assets/jquery-nice-select/"
     }
   ]
 }

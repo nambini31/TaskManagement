@@ -1,17 +1,10 @@
 
-$('#daterange').daterangepicker({
-    opens: 'left',
-    locale: {
-        format: 'YYYY-MM-DD'
-    }
-}, function (start, end, label) {
 
-    $('#startDate').val(start.format('YYYY-MM-DD'));
-    $('#endDate').val(end.format('YYYY-MM-DD'));
-
-});
+/***************************generer la date aujourdhui et moins une semaine *******/
+ 
 $(document).ready(function () {
-    
+
+
     var bsRangePickerWeekNum = $('#daterange');
 
     function formatDate(date) {
@@ -43,12 +36,85 @@ $(document).ready(function () {
 
 
     AfficheUserTask();
-   
 
 
 
-  
+
 });
+
+
+/*************************** */
+
+
+/************configuration input date from to */
+$('#daterange').daterangepicker({
+    opens: 'left',
+    locale: {
+        format: 'YYYY-MM-DD'
+    }
+}, function (start, end, label) {
+
+    $('#startDate').val(start.format('YYYY-MM-DD'));
+    $('#endDate').val(end.format('YYYY-MM-DD'));
+
+    
+
+});
+/************************************ */
+
+// charger listes des utilisateur
+
+$.ajax({
+    url: '/User/GetAllUser',
+    type: 'POST',
+    dataType :"JSON",
+    success: function (data) {
+        data.forEach(function (item) {
+            
+            var option = $('<option>', {
+                value: item.userId,
+                text: item.username
+            });
+
+            $("#userId").append(option);
+        });
+        VirtualSelect.init({
+            ele: '#userId'
+        });
+    },
+   
+});
+
+/******************************* */
+
+
+/****************suppression usertask ***********/
+$("#deleteTimeline").on("click", function (e) {
+
+    $.ajax({
+        url: '/UserTask/DeleteUserTask', // Change this URL to your actual endpoint
+        type: 'POST',
+        dataType: "JSON",
+        data: {
+            userTaskId: $('#userTaskIdDelete').val()
+        },
+        success: function (data) {
+            toastr["success"]("Successfully deleted")
+            $("#modalDelete").modal("hide");
+            AfficheUserTask();
+
+        },
+        error: function (error) {
+            toastr["error"]("Delete failed")
+            $("#modalDelete").modal("hide");
+
+        },
+
+    });
+
+});
+
+/***************************** */
 
 /***************************** filter usertask : submit filter*/
 
@@ -57,11 +123,11 @@ $("#filtreUserTask").on("submit", function (e) {
 
     AfficheUserTask();
 
-    return false; // Empêcher la soumission du formulaire
+    return false; 
 });
+/************************ */
 
-
-//********************************* liste usertask
+//********************************* liste usertask***************
 function AfficheUserTask() {
 
     $('#table_usertask').DataTable({
@@ -72,12 +138,20 @@ function AfficheUserTask() {
                 startDate: $('#startDate').val(),
                 endDate: $('#endDate').val(),
                 userId: $('#userId').val()
-            }, // Utiliser le FormData passé en paramètre
+            }, 
             dataType: "JSON",
-            dataSrc: ''
+            dataSrc: function (json) {
+                
+                if (json && json.length > 0) {
+                    $('#excelButton').removeAttr('disabled');
+                } else {
+                    $('#excelButton').attr('disabled', 'disabled');
+                }
+                return json;
+            }
         },
         columns: [
-            // columns according to JSON
+           
             
             { data: 'userTaskId', title: '#' },
             { data: 'projectName', title: 'Project' },
@@ -88,7 +162,7 @@ function AfficheUserTask() {
                 data: 'datetime',
                 title: 'Date',
                 render: function (data, type, row) {
-                    // Format the date using moment.js
+                    
                     return moment(data).format('YYYY-MM-DD HH:mm:ss');
                 }
             },
@@ -97,8 +171,19 @@ function AfficheUserTask() {
                 title: 'Action',
                 render: function (data, type, row) {
                     return `
-                            <a class="btn btn-sm btn-primary" style="color:white" data-id="${row.UserTaskId}"><i class="fe-edit"></i></a>
-                            <a class="btn btn-sm btn-danger" style="color:white" data-id="${row.UserTaskId}"><i class="fas fa-trash"></i></a>
+                            <a class="btn btn-sm btn-primary" style="color:white"
+
+                            id="usertask_${row.userTaskId}"
+                            data-projectId="${row.projectId}"
+                            data-taskId="${row.taskId}"
+                            data-leaveId="${row.leaveId}"
+                            data-hours="${row.hours}"
+
+                            onclick="ModalEdit(${row.userTaskId})"><i class="fe-edit"></i></a>
+
+                            <a class="btn btn-sm btn-danger" style="color:white"
+                            data-toggle="modal" onclick="ModalDelete(${row.userTaskId})">
+                            <i class="fas fa-trash"></i></a>
                         `;
                 },
                 orderable: false,
@@ -113,10 +198,12 @@ function AfficheUserTask() {
         "paging": true,
         "info": false,  
         "filter": true,
+        pageLength: 7,
         "initComplete": function (settings, json) {
             $('div.dataTables_wrapper div.dataTables_filter input')
                 .attr('placeholder', 'Recherche')
                 .attr('class', 'form-control');
+
         },
         language: {
             "search": "",
@@ -155,3 +242,66 @@ function AfficheUserTask() {
     });
 
 }
+/**
+ * *********************************
+ */
+
+/*******affiche model delete */
+function ModalDelete(id) {
+
+    $('#userTaskIdDelete').val(id)
+    $('#textDelete').html(`Do you really want to delete this task ( ${id} ) ?`)
+    $("#modalDelete").modal("show");
+
+}
+
+/*******affiche model edit */
+function ModalEdit(id) {
+
+       
+       $.ajax({
+           url: '/UserTask/ModalUserTaskEdit',
+           type: 'POST',
+           data: {
+               userTaskId: id
+           },
+        success: function (data) {
+            $('#editUserTaskContainer').html(data);
+            $("#modalEdit").modal("show");
+
+        },
+            error: function (xhr, status, error) {
+                alert('Failed to load edit form');
+            }
+       });
+    
+
+
+}
+
+
+
+// charger listes des projets
+
+$.ajax({
+    url: '/User/GetAllUser',
+    type: 'POST',
+    dataType: "JSON",
+    success: function (data) {
+        data.forEach(function (item) {
+
+            var option = $('<option>', {
+                value: item.userId,
+                text: item.username
+            });
+
+            $("#userId").append(option);
+        });
+        VirtualSelect.init({
+            ele: '#userId'
+        });
+    },
+
+});
+
+/******************************* */

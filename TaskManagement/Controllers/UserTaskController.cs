@@ -28,17 +28,6 @@ namespace TaskManagement.Controllers
             return View();
         }
 
-        
-        public  string getListUser()
-        {
-            IEnumerable<UserListWithRole> data = _UserService.GetUser();
-            var option = "";
-            foreach (var item in data)
-            {
-                 option += "<option value= '"+ item.UserId+"' > "+ item.Name +" </option>";
-            }
-            return option;
-        }
 
         [HttpPost]
         public async Task<IActionResult> UserTaskList(FiltreUserTask filter)
@@ -47,10 +36,46 @@ namespace TaskManagement.Controllers
             {
                 var data = await _SUserTask.GetUserTaskVM(filter);
 
-                return Json(data);
+                return Ok(data);
             }
             catch (Exception ex)
             {
+                throw ex;
+            }
+            
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> DeleteUserTask(int userTaskId)
+        {
+            try
+            {
+                await _SUserTask.DeleteUserTaskById(userTaskId);
+
+                var responseData = new { message = "Success" };
+
+                return Ok(responseData);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> ModalUserTaskEdit(int userTaskId)
+        {
+            try
+            {
+                UserTask userTask = await _SUserTask.GetUserTaskById(userTaskId);
+                return PartialView("_modalEdit" ,userTask);
+
+                SelectList()
+            }
+            catch (Exception ex)
+            {
+
                 throw ex;
             }
             
