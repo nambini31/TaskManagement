@@ -3412,8 +3412,9 @@ h3.timeline-title {
   background-color: rgba(108, 117, 125, 0.8) !important; }
 
 .toast-success {
-  border: 2px solid #10c469 !important;
-  background-color: rgba(16, 196, 105, 0.8) !important; }
+    border: 2px solid #10c469 !important;
+    background-color: #18cf73 !important;
+}
 
 .toast-info {
   border: 2px solid #35b8e0 !important;
@@ -3448,8 +3449,9 @@ h3.timeline-title {
   background-color: rgba(113, 182, 249, 0.8) !important; }
 
 .toast-error {
-  background-color: rgba(255, 91, 91, 0.8);
-  border: 2px solid #ff5b5b; }
+    background-color: red !important;
+    border: 2px solid #ff5b5b !important;
+}
 
 .irs--flat .irs-bar, .irs--flat .irs-to, .irs--flat .irs-from, .irs--flat .irs-single {
   background: #71b6f9 !important; }

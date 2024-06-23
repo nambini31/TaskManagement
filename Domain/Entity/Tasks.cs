@@ -12,9 +12,10 @@ namespace Domain.Entity
     {
         [Key]public int taskId { get; set; } 
         public string? name { get; set; }
-        public int projectId { get; set; }
 
         [ForeignKey("projectId")]
+        public int projectId { get; set; }
+
         public Project? project{ get; set; }
 
     }

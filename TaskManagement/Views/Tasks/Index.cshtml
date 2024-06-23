@@ -67,7 +67,7 @@
                             <tr>
                                 <td>@task.taskId</td>
                                 <td>@task.name</td>
-                                <td>@task.project.name</td>
+                                <td>@task.projectName</td>
                                 <td>
                                     <button class="action-button editTaskButton" data-id="@task.taskId">
                                         <i class="ti ti-pencil"></i>
@@ -96,7 +96,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                @Html.Partial("Create", new Domain.DTO.TaskDto())
+                @Html.Partial("Create", new Domain.DTO.TasksDto())
             </div>
         </div>
     </div>
@@ -113,7 +113,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                @Html.Partial("Edit", new Domain.DTO.TaskDto())
+                @Html.Partial("Edit", new Domain.DTO.TasksDto())
             </div>
         </div>
     </div>
@@ -130,7 +130,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                @Html.Partial("Delete", new Domain.DTO.TaskDto())
+                @Html.Partial("Delete", new Domain.DTO.TasksDto())
             </div>
         </div>
     </div>

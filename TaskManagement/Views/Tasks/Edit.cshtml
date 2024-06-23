@@ -11,7 +11,7 @@
         <select class="form-control" id="ProjectId" name="ProjectId" required>
             @foreach (var project in ViewBag.Projects)
             {
-                <option value="@project.projectId" @(project.projectId == Model.projectId ? "selected" : "")>@project.name</option>
+                <option value="@project.projectId" >@Model.projectName</option>
             }
         </select>
     </div>

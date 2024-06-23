@@ -29,7 +29,7 @@ namespace TaskManagement.Controllers
         }
 
         //-- get all User for datatable
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult GetAllUser()
         {

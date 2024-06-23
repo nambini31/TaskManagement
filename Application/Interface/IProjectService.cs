@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Domain.DTO;
 using System.Threading.Tasks;
 
 namespace Application.Interface
 {
-    class IProjectService
+    public interface IProjectService
     {
         IEnumerable<ProjectDto> GetAllProjects();
         ProjectDto GetProjectById(int id);
@@ -15,3 +16,4 @@ namespace Application.Interface
         void DeleteProject(int id);
     }
 }
+
