@@ -283,25 +283,25 @@ function ModalEdit(id) {
 
 // charger listes des projets
 
-$.ajax({
-    url: '/User/GetAllUser',
-    type: 'POST',
-    dataType: "JSON",
-    success: function (data) {
-        data.forEach(function (item) {
+//$.ajax({
+//    url: '/User/GetAllUser',
+//    type: 'POST',
+//    dataType: "JSON",
+//    success: function (data) {
+//        data.forEach(function (item) {
 
-            var option = $('<option>', {
-                value: item.userId,
-                text: item.username
-            });
+//            var option = $('<option>', {
+//                value: item.userId,
+//                text: item.username
+//            });
 
-            $("#userId").append(option);
-        });
-        VirtualSelect.init({
-            ele: '#userId'
-        });
-    },
+//            $("#userId").append(option);
+//        });
+//        VirtualSelect.init({
+//            ele: '#userId'
+//        });
+//    },
 
-});
+//});
 
 /******************************* */

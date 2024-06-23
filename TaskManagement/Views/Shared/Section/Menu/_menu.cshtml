@@ -20,22 +20,23 @@
                         <span> Timeline </span>
                     </a>
                 </li><li>
-                    <a href="#">
+                    <a asp-action="Index" asp-controller="Project">
                         <i class="mdi mdi-view-dashboard"></i>
                         <span> Project </span>
                     </a>
                 </li><li>
-                    <a href="#">
+                    <a asp-action="Index" asp-controller="Task">
                         <i class="mdi mdi-view-dashboard"></i>
                         <span> Task </span>
                     </a>
                 </li><li>
-                    <a href="#">
+                    <a asp-action="Index" asp-controller="Leaves">
                         <i class="mdi mdi-view-dashboard"></i>
                         <span> Leave </span>
                     </a>
-                </li><li>
-                    <a href="#">
+                </li>
+                <li>
+                    <a asp-action="Index" asp-controller="User">
                         <i class="mdi mdi-view-dashboard"></i>
                         <span> User </span>
                     </a>
@@ -54,6 +55,7 @@
 
 </div>
 
+
 @* @if (User.IsInRole("Admin"))
 {
     <li><a asp-area="" asp-controller="Admin" asp-action="Index">Admin Panel</a></li>
@@ -62,46 +64,4 @@
 {
     <li><a asp-area="" asp-controller="User" asp-action="Index">User Panel</a></li>
 } *@
-    <ul class="menu-inner py-1">
-        
-
-        
-        <li class="menu-item">
-            <a href="app-email.html" class="menu-link">
-                <i class="menu-icon tf-icons ti ti-home"></i>
-                <div data-i18n="Home">Home</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a asp-controller="UserTask" asp-action="Index" class="menu-link">
-                <i class="menu-icon tf-icons ti ti-timeline"></i>
-                <div data-i18n="Timeline">Timeline</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a asp-controller="Project" asp-action="Index" class="menu-link">
-                <i class="menu-icon tf-icons ti ti-calendar"></i>
-                <div data-i18n="Project">Project</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a asp-controller="Task" asp-action="Index" class="menu-link">
-                <i class="menu-icon tf-icons ti ti-list"></i>
-                <div data-i18n="Task">Task</div>
-            </a>
-        </li> 
-        <li class="menu-item">
-            <a asp-controller="Leaves" asp-action="IndexLeave" class="menu-link">
-                <i class="menu-icon tf-icons ti ti-power"></i>
-                <div data-i18n="Leave">Leave</div>
-            </a>
-        </li> 
-        <li class="menu-item">
-            <a href="app-kanban.html" class="menu-link">
-                <i class="menu-icon tf-icons ti ti-user"></i>
-                <div data-i18n="User">User</div>
-            </a>
-        </li>
-        
-    </ul>
-</aside>
+   

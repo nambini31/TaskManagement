@@ -1,8 +1,8 @@
-﻿@model IEnumerable<Domain.DTO.ProjectDto>
+﻿@model IEnumerable<Domain.DTO.TasksDto>
 
 @{
     Layout = "Layout/_LayoutWithMenu";
-    ViewData["Title"] = "Projects";
+    ViewData["Title"] = "Tasks";
 }
 
 @section VendorStyles {
@@ -29,7 +29,7 @@
 }
 
 @section PageScripts {
-    <script src="~/assets/js/project.js"></script>
+    <script src="~/assets/js/tasks.js"></script>
 }
 
 <style>
@@ -42,39 +42,37 @@
         background-color: transparent; /* Fond transparent */
         cursor: pointer; /* Curseur de souris */
     }
-
 </style>
-
 
 <div class="row">
     <div class="col-12">
         <div class="card-box">
-            <h4 class="mt-0 header-title">Projects</h4>
-            <button class=" d-none d-sm-inline-block border-custom" id="createProjectButton">
-                <i class="ti ti-plus ti-xs me-0 me-sm-2"></i> Create Project
+            <h4 class="mt-0 header-title">Tasks</h4>
+            <button class="d-none d-sm-inline-block border-custom" id="createTaskButton">
+                <i class="ti ti-plus ti-xs me-1"></i> Create Task
             </button>
             <div class="responsive-table-plugin">
-                <table id="table_project" class="table table-bordered dt-responsive nowrap w-100">
+                <table id="table_task" class="table table-bordered dt-responsive nowrap w-100">
                     <thead>
                         <tr>
-                            <th>ProjectId</th>
-                            <th>Name</th>
-                            <th>Description</th>
+                            <th>Task ID</th>
+                            <th>Title</th>
+                            <th>Project</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var project in Model)
+                        @foreach (var task in Model)
                         {
                             <tr>
-                                <td>@project.projectId</td>
-                                <td>@project.name</td>
-                                <td>@project.description</td>
+                                <td>@task.taskId</td>
+                                <td>@task.name</td>
+                                <td>@task.projectName</td>
                                 <td>
-                                    <button class="btn btn-warning btn-sm editProjectButton" data-id="@project.projectId">
+                                    <button class="action-button editTaskButton" data-id="@task.taskId">
                                         <i class="ti ti-pencil"></i>
                                     </button>
-                                    <button class="btn btn-danger btn-sm deleteProjectButton" data-id="@project.projectId">
+                                    <button class="action-button deleteTaskButton" data-id="@task.taskId">
                                         <i class="ti ti-trash"></i>
                                     </button>
                                 </td>
@@ -88,53 +86,52 @@
 </div>
 
 <!-- Create Modal -->
-<div class="modal fade" id="createProjectModal" tabindex="-1" role="dialog" aria-labelledby="createProjectModalLabel" aria-hidden="true">
+<div class="modal fade" id="createTaskModal" tabindex="-1" role="dialog" aria-labelledby="createTaskModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="createProjectModalLabel">Create Project</h5>
+                <h5 class="modal-title" id="createTaskModalLabel">Create Task</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                @Html.Partial("Create", new Domain.DTO.ProjectDto())
+                @Html.Partial("Create", new Domain.DTO.TasksDto())
             </div>
         </div>
     </div>
 </div>
 
 <!-- Edit Modal -->
-<div class="modal fade" id="editProjectModal" tabindex="-1" role="dialog" aria-labelledby="editProjectModalLabel" aria-hidden="true">
+<div class="modal fade" id="editTaskModal" tabindex="-1" role="dialog" aria-labelledby="editTaskModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editProjectModalLabel">Edit Project</h5>
+                <h5 class="modal-title" id="editTaskModalLabel">Edit Task</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                @Html.Partial("Edit",  new Domain.DTO.ProjectDto())
+                @Html.Partial("Edit", new Domain.DTO.TasksDto())
             </div>
         </div>
     </div>
 </div>
 
 <!-- Delete Modal -->
-<div class="modal fade" id="deleteProjectModal" tabindex="-1" role="dialog" aria-labelledby="deleteProjectModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteTaskModal" tabindex="-1" role="dialog" aria-labelledby="deleteTaskModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteProjectModalLabel">Delete Project</h5>
+                <h5 class="modal-title" id="deleteTaskModalLabel">Delete Task</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                @Html.Partial("Delete", new Domain.DTO.ProjectDto())
+                @Html.Partial("Delete", new Domain.DTO.TasksDto())
             </div>
         </div>
     </div>
 </div>
-

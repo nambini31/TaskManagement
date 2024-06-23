@@ -7,14 +7,12 @@ using System.Threading.Tasks;
 
 namespace Domain.Interface
 {
-    public interface IProjectRepository
+    public interface ITasksRepository
     {
-        IEnumerable<Project> GetAll();
-        Project GetById(int id);
-        void Create(Project project);
-        void Update(Project project);
+        IEnumerable<Tasks> GetAll();
+        Tasks GetById(int id);
+        void Create(Tasks tasks);
+        void Update(Tasks tasks);
         void Delete(int id);
     }
 }
-
-  

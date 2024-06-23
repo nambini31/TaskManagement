@@ -1,0 +1,9 @@
+﻿@model Domain.DTO.LeaveDto
+
+<form id="createLeaveForm">
+    <div class="form-group">
+        <label for="Reason">Reason</label>
+        <input type="text" class="form-control" id="Reason" name="Reason" value="@Model.reason" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Add</button>
+</form>

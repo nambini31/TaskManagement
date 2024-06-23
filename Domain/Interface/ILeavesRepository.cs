@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Domain.Interface
 {
-    public interface ILeaveRepository
+    public interface ILeavesRepository
     {
-        Task<List<Leave>> GetAllAsync();
-        Task<Leave> GetByIdAsync(int id);
-        Task AddAsync(Leave leave);
-        Task UpdateAsync(Leave leave);
+        Task<IEnumerable<Leaves>> GetAllAsync();
+        Task<Leaves> GetByIdAsync(int id);
+        Task AddAsync(Leaves leaves);
+        Task UpdateAsync(Leaves leaves);
         Task DeleteAsync(int id);
     }
 }
