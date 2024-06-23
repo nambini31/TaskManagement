@@ -13,7 +13,7 @@ namespace Domain.Interface
         Task<IEnumerable<Project>> GetProjects();
         Task<Project> GetProjectId(int ProjectId);
         Task AddProject(Project Project);
-        Task UpdateProject(Leaves Leave);
+        Task UpdateProject(Leave Leave);
         Task DeleteProject(int ProjectId);
     }
 }

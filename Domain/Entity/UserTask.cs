@@ -26,7 +26,7 @@ namespace Domain.Entity
         public int leaveId { get; set; }
 
         [ValidateNever]
-        public Leaves? Leaves { get; set; }
+        public Leave? Leaves { get; set; }
 
         [ValidateNever]
         [ForeignKey("User")]
