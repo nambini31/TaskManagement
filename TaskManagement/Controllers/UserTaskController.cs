@@ -71,7 +71,6 @@ namespace TaskManagement.Controllers
                 UserTask userTask = await _SUserTask.GetUserTaskById(userTaskId);
                 return PartialView("_modalEdit" ,userTask);
 
-                SelectList()
             }
             catch (Exception ex)
             {
