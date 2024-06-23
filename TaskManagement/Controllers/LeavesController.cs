@@ -1,58 +1,80 @@
-﻿using Domain.Entity;
-using Application.Services;
+﻿using Domain.DTO;
+using Domain.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using TaskManagement.Models.ViewModel;
 
-namespace TaskManagement.Web.Controllers
+namespace TaskManagement.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class LeavesController : ControllerBase
+    public class LeavesController : Controller
     {
-        private readonly LeaveService _leaveService;
+        private readonly ILeavesService _leavesService;
 
-        public LeavesController(LeaveService leaveService)
+        public LeavesController(ILeavesService leavesService)
         {
-            _leaveService = leaveService;
+            _leavesService = leavesService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetLeaves()
+        public async Task<IActionResult> Index()
         {
-            var leaves = await _leaveService.GetAllLeavesAsync();
-            return Ok(leaves);
+            var leaves = await _leavesService.GetAllLeavesAsync();
+            return View(leaves);
+        }
+
+        public IActionResult Create()
+        {
+            return PartialView(new LeaveDto());
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddLeave([FromBody] Leave leave)
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(LeaveDto leaveDto)
         {
-            if (leave == null || string.IsNullOrWhiteSpace(leave.reason))
+            if (ModelState.IsValid)
             {
-                return BadRequest("Invalid input");
+                await _leavesService.CreateLeaveAsync(leaveDto);
+                return RedirectToAction(nameof(Index));
             }
-
-            await _leaveService.AddLeaveAsync(leave);
-            return Ok(new { success = true });
+            return PartialView(leaveDto);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateLeave([FromBody] Leave leave)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (leave == null || string.IsNullOrWhiteSpace(leave.reason))
+            var leave = await _leavesService.GetLeaveByIdAsync(id);
+            if (leave == null)
             {
-                return BadRequest("Invalid input");
+                return NotFound();
             }
-
-            await _leaveService.UpdateLeaveAsync(leave);
-            return Ok(new { success = true });
+            return PartialView(leave);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLeave(int id)
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(LeaveDto leaveDto)
         {
-            await _leaveService.DeleteLeaveAsync(id);
-            return Ok(new { success = true });
+            if (ModelState.IsValid)
+            {
+                await _leavesService.UpdateLeaveAsync(leaveDto);
+                return RedirectToAction(nameof(Index));
+            }
+            return PartialView(leaveDto);
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var leave = await _leavesService.GetLeaveByIdAsync(id);
+            if (leave == null)
+            {
+                return NotFound();
+            }
+            return PartialView(leave);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            await _leavesService.DeleteLeaveAsync(id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

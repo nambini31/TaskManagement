@@ -1,0 +1,11 @@
+﻿@model Domain.DTO.LeaveDto
+
+<form id="editLeaveForm">
+    <div class="form-group">
+        <label for="Reason">Reason</label>
+        <input type="text" class="form-control" id="Reason" name="Reason" value="@Model.reason" required />
+    </div>
+    <input type="hidden" id="LeaveId" name="LeaveId" value="@Model.leaveId" />
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+

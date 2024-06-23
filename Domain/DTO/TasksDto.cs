@@ -5,16 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entity
+namespace Domain.DTO
 {
-    public class Project
+    public class TasksDto
     {
-        [Key]public int projectId {  get; set; }
-
+       [Key] public int taskId { get; set; }
         public string? name { get; set; }
 
-        public string? description { get; set; }
+        public int projectId { get; set; }
+        
+        public string? projectName { get; set; }
 
-        public ICollection<Tasks> Tasks { get; set; }
+   
     }
+
 }

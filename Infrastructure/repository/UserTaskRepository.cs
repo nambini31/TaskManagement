@@ -81,7 +81,7 @@ namespace Infrastructure.Repository
                 hours = a.hours,
                 leaveId = a.leaveId,
                 projectId = a.Tasks.projectId,
-                projectName = a.Tasks.Project.name,
+                projectName = a.Tasks.project.name,
                 taskId = a.taskId,
                 taskName = a.Tasks.name,
                 userId = a.userId,

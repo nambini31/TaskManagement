@@ -23,7 +23,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 
 // register articleRepository and service
-
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
@@ -45,8 +44,18 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
                 //    }
                 //};
             });
+
 builder.Services.AddScoped<IUserTask, UserTaskRepository>();
 builder.Services.AddScoped<SUserTask>();
+//builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+//builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<ILeavesRepository, LeavesRepository>();
+builder.Services.AddScoped<ILeavesService, LeavesService>();
+
+
+// Configuration d'AutoMapper
+//builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
 
 var app = builder.Build();
 

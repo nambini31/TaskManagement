@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entity
+namespace Domain.DTO
 {
-    public class Leaves
+    public class LeaveDto
     {
-        [Key]public int leaveId { get; set; }   
+        [Key]public int leaveId {  get; set; }
 
         public string? reason { get; set; }
     }
