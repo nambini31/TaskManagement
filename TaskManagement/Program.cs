@@ -31,8 +31,8 @@ builder.Services.AddScoped<UserServiceRepository>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
             {
-                options.LoginPath = "/Account/Login";
-                options.AccessDeniedPath = "/Account/AccessDenied";
+                options.LoginPath = "/User/Login";
+                options.AccessDeniedPath = "/User/AccessDenied";
 
                 //gere la redirection pour souvenir les pages precedent
                 //options.Events = new CookieAuthenticationEvents
@@ -44,18 +44,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
                 //    }
                 //};
             });
-
-builder.Services.AddScoped<IUserTask, UserTaskRepository>();
-builder.Services.AddScoped<SUserTask>();
-//builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
-//builder.Services.AddScoped<IProjectService, ProjectService>();
-builder.Services.AddScoped<ILeavesRepository, LeavesRepository>();
-builder.Services.AddScoped<ILeavesService, LeavesService>();
-
-
-// Configuration d'AutoMapper
-//builder.Services.AddAutoMapper(typeof(Program).Assembly);
-
+builder.Services.AddScoped<IUserTaskRepository, UserTaskRepository>();
+builder.Services.AddScoped<SUserTaskRepository>();
 
 var app = builder.Build();
 
@@ -76,6 +66,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=Login}/{id?}");
+    pattern: "{controller=User}/{action=Login}/{id?}");
 
 app.Run();

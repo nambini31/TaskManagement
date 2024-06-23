@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace Domain.Entity
 {
@@ -27,6 +28,9 @@ namespace Domain.Entity
         public string Password { get; set; }
 
         [StringLength(50)]
+        [EmailAddress]
         public string? Email { get; set; }
+
+        public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
     }
 }

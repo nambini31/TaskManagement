@@ -30,7 +30,7 @@ namespace Domain.DTO.ViewModels
 
             public string? userName { get; set; }
 
-
+            [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = true)]
             public DateTime datetime { get; set; }
 
             public double hours { get; set; }

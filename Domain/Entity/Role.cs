@@ -18,5 +18,7 @@ namespace Domain.Entity
         [Required] //specifié que le champs est obligatoire
         [StringLength(5)] // specifie la longue du caractrère
         public string? Name { get; set; }
+
+        public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
     }
 }

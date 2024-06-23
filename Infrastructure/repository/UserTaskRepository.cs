@@ -9,10 +9,11 @@ using Domain.Interface;
 using Infrastructure.Data;
 using Domain.DTO.ViewModels;
 using System.Threading.Tasks.Dataflow;
+using MySqlConnector;
 
 namespace Infrastructure.Repository
 {
-    public class UserTaskRepository : IUserTask
+    public class UserTaskRepository : IUserTaskRepository
     {
         private readonly ApplicationDbContext _db;
       
@@ -52,11 +53,12 @@ namespace Infrastructure.Repository
 
             return data;
         }
-        public async Task<IEnumerable<UserTaskVM>> GetUserTasksVM()
+        public async Task<IEnumerable<UserTaskVM>> GetUserTasksVM(FiltreUserTask filter)
         {
 
-
-            string sql = @"select 
+            try
+            {
+                string sql = @"select 
                             usertask.UserTaskId, 
                             usertask.hours, 
                             usertask.date, 
@@ -71,25 +73,36 @@ namespace Infrastructure.Repository
                             user.userName 
                             from 
                             usertask join tasks on tasks.taskId = usertask.taskId 
-                            join leaves on leaves.leaveId = usertask.leaveId join user on user.userId = usertask.userId"  ;
+                            join leaves on leaves.leaveId = usertask.leaveId join user on user.userId = usertask.userId 
+                            WHERE usertask.date BETWEEN @start AND @end
+                                ";
 
-            IEnumerable<UserTaskVM> data = await _db.UserTask.FromSqlRaw(sql).Select(a => 
-            new UserTaskVM
-{
-                UserTaskId = a.UserTaskId,
-                datetime = a.date,
-                hours = a.hours,
-                leaveId = a.leaveId,
-                projectId = a.Tasks.projectId,
-                projectName = a.Tasks.project.name,
-                taskId = a.taskId,
-                taskName = a.Tasks.name,
-                userId = a.userId,
-                userName = a.User.Username
+                IEnumerable<UserTaskVM> data = await _db.UserTask.FromSqlRaw(sql,
+                    new MySqlParameter(sql="@start", filter.startDate.ToString("yyyy-MM-dd")),
+                    new MySqlParameter(sql="@end", filter.endDate.ToString("yyyy-MM-dd"))).Select(a =>
+                new UserTaskVM
+                {
+                    UserTaskId = a.UserTaskId,
+                    datetime = a.date,
+                    hours = a.hours,
+                    leaveId = a.leaveId,
+                    projectId = a.Tasks.projectId,
+                    projectName = a.Tasks.Project.name,
+                    taskId = a.taskId,
+                    taskName = a.Tasks.name,
+                    userId = a.userId,
+                    userName = a.User.Username
+                }
+                ).ToListAsync();
+
+                return data;
             }
-            ).ToListAsync();
+            catch (Exception ex)
+            {
 
-            return data;
+                throw ex;
+            }
+            
         }
 
         public  async Task UpdateUserTask(UserTask Usertask)

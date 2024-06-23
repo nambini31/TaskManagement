@@ -1,4 +1,5 @@
-﻿using Domain.Entity;
+﻿using Domain.DTO;
+using Domain.Entity;
 using Domain.Interface;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -44,7 +45,7 @@ namespace Infrastructure.repository
             return query.FirstOrDefault();
         }
 
-        public IEnumerable<User> GetAll(Expression<Func<User, bool>>? filter = null, string? includeProperties = null)
+        public IEnumerable<UserListWithRole> GetAll(Expression<Func<User, bool>>? filter = null, string? includeProperties = null)
         {
             IQueryable<User> query = _context.Set<User>();
             if (filter != null)
@@ -60,7 +61,21 @@ namespace Infrastructure.repository
                 }
             }
 
-            return query.ToList();
+            var result = query
+                .Include(u => u.UserRoles)
+                .ThenInclude(ur => ur.Role)
+                .Select(u => new UserListWithRole
+                {
+                    UserId = u.UserId,
+                    Name = u.Name,
+                    Surname = u.Surname,
+                    Username = u.Username,
+                    Email = u.Email,
+                    RoleName = string.Join(", ", u.UserRoles.Select(ur => ur.Role.Name))
+                })
+                .ToList();
+
+            return result;
         }
 
         public void Remove(User entity)
