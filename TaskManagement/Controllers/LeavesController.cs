@@ -48,7 +48,6 @@ namespace TaskManagement.Controllers
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(LeaveDto leaveDto)
         {
             if (ModelState.IsValid)
@@ -69,8 +68,7 @@ namespace TaskManagement.Controllers
             return PartialView(leave);
         }
 
-        [HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
+        [HttpPost]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _leavesService.DeleteLeaveAsync(id);
