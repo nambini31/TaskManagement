@@ -21,6 +21,9 @@ namespace Domain.Entity
         [ValidateNever]
         public Tasks? Tasks { get; set; }
 
+        [ValidateNever]
+        public bool isLeave { get; set; }
+
 
         [ForeignKey("Leaves")]
         public int leaveId { get; set; }

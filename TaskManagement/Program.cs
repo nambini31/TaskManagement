@@ -1,5 +1,5 @@
 
-using Application.Service;
+using Application.Interface;
 using Application.Services;
 using Domain.Interface;
 using Infrastructure.Data;
@@ -47,10 +47,14 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddScoped<IUserTaskRepository, UserTaskRepository>();
 builder.Services.AddScoped<SUserTaskRepository>();
 
-//builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
-//builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
+
 builder.Services.AddScoped<ILeavesRepository, LeavesRepository>();
 builder.Services.AddScoped<ILeavesService, LeavesService>();
+
+builder.Services.AddScoped<ITasksRepository, TasksRepository>();
+builder.Services.AddScoped<ITasksService, TasksService>();
 
 
 // Configuration d'AutoMapper

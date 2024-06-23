@@ -50,10 +50,31 @@ namespace Infrastructure.Repository
         public async Task<IEnumerable<UserTask>> GetUserTask()
         {
             //vrai IEnumerable<UserTask> data = await _db.Usertask.Include(u => u.category).ToListAsync();
-            IEnumerable<UserTask> data = await _db.UserTask.ToListAsync();
+            //IEnumerable<UserTask> data = await _db.UserTask.ToListAsync();
 
+            try
+            {
+                string sql = $@"select *, 
+                            
+                            CASE 
+                                WHEN leaves.leaveId IS NOT NULL THEN true 
+                                ELSE false 
+                            END AS isLeave, 
+                            from
+                            usertask
+                                ";
 
-            return data;
+                IEnumerable<UserTask> data = await _db.UserTask.FromSqlRaw(sql).ToListAsync();
+
+                return data;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+         
         }
         public async Task<IEnumerable<UserTaskVM>> GetUserTasksVM(FiltreUserTask filter)
         {
@@ -70,7 +91,11 @@ namespace Infrastructure.Repository
                             CASE 
                                 WHEN leaves.leaveId IS NOT NULL THEN leaves.reason 
                                 ELSE tasks.name 
-                            END AS taskName, 
+                            END AS taskName,
+                            CASE 
+                                WHEN leaves.leaveId IS NOT NULL THEN true 
+                                ELSE false 
+                            END AS isLeave, 
                             leaves.leaveId, 
                             leaves.reason AS leaveName, 
                             user.userId,
@@ -95,7 +120,9 @@ namespace Infrastructure.Repository
                     taskId = a.taskId,
                     taskName = a.Tasks.name,
                     userId = a.userId,
-                    userName = a.User.Username
+                    userName = a.User.Username,
+                    isLeave = a.isLeave
+                    
                 }
                 ).ToListAsync();
 

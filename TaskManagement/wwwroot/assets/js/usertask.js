@@ -69,6 +69,7 @@ $.ajax({
     type: 'POST',
     dataType :"JSON",
     success: function (data) {
+
         data.forEach(function (item) {
             
             var option = $('<option>', {

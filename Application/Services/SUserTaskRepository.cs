@@ -7,7 +7,7 @@ using Domain.DTO.ViewModels;
 using Domain.Entity;
 using Domain.Interface;
 
-namespace Application.Service
+namespace Application.Services
 {
     public class SUserTaskRepository
     {

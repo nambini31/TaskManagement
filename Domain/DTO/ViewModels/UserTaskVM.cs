@@ -20,6 +20,8 @@ namespace Domain.DTO.ViewModels
 
             public int leaveId { get; set; }
 
+            public bool isLeave { get; set; }
+
             string? leaveName { get; set; }
 
             public int projectId { get; set; }

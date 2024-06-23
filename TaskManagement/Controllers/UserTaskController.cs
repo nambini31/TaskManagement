@@ -1,5 +1,4 @@
-﻿using Application.Service;
-using Application.Services;
+﻿using Application.Services;
 using Domain.DTO;
 using Domain.DTO.ViewModels;
 using Domain.Entity;
