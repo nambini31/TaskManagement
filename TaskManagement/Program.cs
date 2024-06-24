@@ -31,7 +31,7 @@ builder.Services.AddScoped<UserServiceRepository>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
             {
-                options.LoginPath = "/User/Login";
+                options.LoginPath = "/User/MustLogin";
                 options.AccessDeniedPath = "/User/AccesDenied";
 
                 //gere la redirection pour souvenir les pages precedent
@@ -81,5 +81,12 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=User}/{action=Login}/{id?}");
+
+// Initialisez la base de données
+using (var scope = app.Services.CreateScope())
+{
+    var dbInitializer = scope.ServiceProvider.GetRequiredService<UserServiceRepository>();
+    dbInitializer.InitialiseUser();
+}
 
 app.Run();

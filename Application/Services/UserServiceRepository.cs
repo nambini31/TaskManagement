@@ -29,6 +29,47 @@ namespace Application.Services
             public AfficheException(string message) : base(message) { }
         }
 
+        //-- Initialiser une uesr par default --
+        public void InitialiseUser()
+        {
+            // Vérifie s'il y a déjà un utilisateur avec le username "lesgars"
+            var existingUser = _userRepository.Get(u => u.Username == "lesgars");
+            if (existingUser == null)
+            {
+                // Insère un compte admin par défaut
+                var adminRole = _roleRepository.Get(r => r.Name == "Admin");
+                if (adminRole == null)
+                {
+                    adminRole = new Role { Name = "Admin" };
+                    _roleRepository.Add(adminRole);
+                    _roleRepository.Save();
+                }
+
+                var adminUser = new User
+                {
+                    Name = "Developper",
+                    Surname = "Mada",
+                    Username = "lesgars",
+                    Password = BCrypt.Net.BCrypt.HashPassword("lesgars@@@user"), // Hash du mot de passe par défaut
+                    Email = ""
+                };
+
+                _userRepository.Add(adminUser);
+                _userRepository.Save();
+
+                // Associe l'utilisateur admin avec le rôle admin
+                var adminUserRole = new UserRole
+                {
+                    UserId = adminUser.UserId,
+                    RoleId = adminRole.RoleId
+                };
+
+                _userRoleRepository.Add(adminUserRole);
+                _userRoleRepository.Save();
+            }
+        }
+        //---------------------------------------------------
+
         public void RegisterUser(string name, string surname, string username, string password, string email, string roleName)
         {
             //verifie si username exist
