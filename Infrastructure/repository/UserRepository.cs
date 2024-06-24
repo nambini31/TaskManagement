@@ -24,9 +24,47 @@ namespace Infrastructure.repository
         public void Add(User entity)
         {
             _context.Add(entity);
+            _context.SaveChanges();
         }
 
-        public User Get(Expression<Func<User, bool>>? filter, string? includeProperties = null)
+        public UserListWithRole Get(Expression<Func<User, bool>>? filter, string? includeProperties = null)
+        {
+            IQueryable<User> query = _context.Set<User>();
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var includeProp in includeProperties
+                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp);
+                }
+            }
+
+            //recuperation des Role where l'USER et l'injecte dans User
+            var result = query
+                .Include(u => u.UserRoles)
+                .ThenInclude(ur => ur.Role)
+                .Select(u => new UserListWithRole
+                {
+                    UserId = u.UserId,
+                    Name = u.Name,
+                    Surname = u.Surname,
+                    Username = u.Username,
+                    Email = u.Email,
+                    Password = u.Password,
+                    RoleName = string.Join(", ", u.UserRoles.Select(ur => ur.Role.Name))
+                })
+                .FirstOrDefault();
+
+            return result;
+
+            //return query.FirstOrDefault();
+        }
+
+        public User GetUserWithoutRole(Expression<Func<User, bool>>? filter, string? includeProperties = null)
         {
             IQueryable<User> query = _context.Set<User>();
             if (filter != null)
@@ -45,6 +83,7 @@ namespace Infrastructure.repository
             return query.FirstOrDefault();
         }
 
+
         public IEnumerable<UserListWithRole> GetAll(Expression<Func<User, bool>>? filter = null, string? includeProperties = null)
         {
             IQueryable<User> query = _context.Set<User>();
@@ -61,6 +100,7 @@ namespace Infrastructure.repository
                 }
             }
 
+            //recuperation des Role where l'USER
             var result = query
                 .Include(u => u.UserRoles)
                 .ThenInclude(ur => ur.Role)
@@ -81,16 +121,19 @@ namespace Infrastructure.repository
         public void Remove(User entity)
         {
             _context.Remove(entity);
+            _context.SaveChanges();
         }
 
-        public void Save()
+        public void Save() 
         {
             _context.SaveChanges();
         }
 
         public void Update(User entity)
         {
+            _context.Update(entity);
             _context.SaveChanges();
+
         }
     }
 }

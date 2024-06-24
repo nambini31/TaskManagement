@@ -1,8 +1,8 @@
 
 
-$(document).ready(function () {
-  
-    $('#table_user').DataTable({
+$(document).ready(function () {    
+
+    var table = $('#table_user').DataTable({
         destroy: true,
         ordering: true,
         order: [[0, "desc"]],
@@ -19,6 +19,7 @@ $(document).ready(function () {
         },
 
         columns: [
+            { data: 'userId', title: 'ID' },
             { data: 'name', title: 'Name' },
             { data: 'surname', title: 'Surname' },
             { data: 'username', title: 'Username' }, 
@@ -29,8 +30,8 @@ $(document).ready(function () {
                 searchable: false,
                 sortable: false,
                 render: function (data, type, row) {
-                    return '<button class="btn btn-sm btn-warning btn-edit mr-2" data-id="' + row.userId + '"><i class="fas fa-user-edit"></i></button>' +
-                        '<button class="btn btn-sm btn-danger btn-delete" data-id="' + row.userId + '"><i class="fas fa-trash-alt"></i></button>';
+                    return `<a class="btn btn-sm btn-primary btn-edit" style="color:white" data-id="${row.userId}"><i class="fe-edit"></i></a>
+                        <a class="btn btn-sm btn-danger btn-delete" style="color:white" data-id="${row.userId}"><i class="fas fa-trash"></i></a>`;
                 }
             }
         ],
@@ -49,18 +50,20 @@ $(document).ready(function () {
         ,
         buttons: [
             {
-                className: "btn btn-sm btn-primary btn-min-width ml-20",
+                className: "btn btn-sm btn-primary btn-min-width mr-2",
                 text: '<i class="ft-refresh"> Actualiser</i>',
                 action: function () {
-                    $('#table_user').DataTable().ajax.reload();
+                    table.ajax.reload();
                 },
             },
             {
                 text: '<i class="ti ti-plus ti-xs me-0 me-sm-2"></i><span class="d-none d-sm-inline-block">New User</span>',
-                className: 'class="btn btn-info waves-effect waves-light"',
+                className: "btn btn-info waves-effect waves-light ml-2",
                 attr: {
                     'data-toggle' : 'modal',
-                    'data-target' : '#modalAdduser'
+                    'data-target': '#modalAddUser',
+                    'id': 'btnAddUser',
+                    //'style':'margin-left:3px'
                 }
             }
 
@@ -78,7 +81,201 @@ $(document).ready(function () {
             '<"row mx-2"' +
             '<"col-sm-12 col-md-6"i>' +
             '<"col-sm-12 col-md-6"p>' +
-            '>'
-
+            '>',
+        columnDefs: [
+            {
+                targets: -1, // Dernière colonne (Actions)
+                width: "120px", // Largeur fixe pour les boutons
+                className: 'text-center', // Centrage du contenu
+                orderable: false, // Désactivation du tri sur cette colonne
+            }
+        ]
     });
+
+    const userInput = document.getElementById('Email');
+    const inputError = document.getElementById('inputError');
+
+    const userInputUsername = document.getElementById('Username'); 
+    const inputErrorUsername = document.getElementById('inputErrorUsername');
+
+    //-- gestion de la soumission du formulaire Creat / Update
+    $('#userForm').on('submit', function (event) {
+        event.preventDefault();
+        var formData = $(this).serialize();
+        var actionUrl = $(this).attr('action');        
+
+        $('.text-danger').html('');
+        $('.error-message-username').html('');
+
+        //validation Username
+        var inputValueUsername = userInputUsername.value.trim();
+        ValidationUsername(inputValueUsername);
+        
+        //verif email validation
+        var inputValue = userInput.value.trim();
+        if (inputValue != '') {
+            ValidationEmail(userInput);
+        } else {
+            inputError.textContent = '';
+        }
+
+        $.ajax({
+            url: actionUrl,
+            type: 'POST',
+            data: formData,
+            success: function (response) {                
+
+                if (response.success) {
+                    $('#userForm')[0].reset();
+                    $('#modalAddUser').modal('hide');
+                    $('#UserId').prop('disabled', false);
+                    toastr["success"](response.message)
+                    table.ajax.reload();
+                } else {
+                    if (response.erreurValidation) {
+                        // Effacer les erreurs précédentes spécifiques
+                        $('#userForm span.text-danger').each(function () {
+                            $(this).html('');
+                        });
+
+                        // Afficher les erreurs de validation
+                        var errors = response.erreurValidation;
+                        for (var key in errors) {
+                            if (errors.hasOwnProperty(key)) {
+                                var errorMessages = errors[key];
+                                var errorElement = $('span[data-valmsg-for="' + key + '"]');
+                                for (var i = 0; i < errorMessages.length; i++) {
+                                    var errorMessage = $('<span class="text-danger"></span>').text(errorMessages[i]);
+                                    errorElement.append(errorMessage);
+                                }
+                            }
+                        }
+                        //verif username validation
+                        var inputValueUsername = userInputUsername.value.trim();
+                        ValidationUsername(inputValueUsername);
+                    }
+                    if (response.message) {
+                        toastr["error"](response.message)
+                    }
+                }
+            },
+            error: function (xhr, status, error) {
+                toastr["success"]("Sorry !! Server Error")
+            }
+        });
+    });
+    //---------------------------------------------
+
+    //--- Ouvir le modal pour l'ajout d'utilisateur
+    $('#btnAddUser').on('click', function () {
+        $('#userForm').attr('action', '/User/Register');
+        $('#userForm')[0].reset();
+        $('.text-danger').html('');
+        $('#inputError').html('');
+        $('.error-message-username').html('');
+        $('#UserId').prop('disabled', true);
+        $('#userModalLabel').text('Create User');
+    });
+    //----------------------------------------------
+
+    //--- Ouvir le model pour l'edit d'un utilisateur
+    $('#table_user').on('click', '.btn-edit', function () {
+        var userId = $(this).data('id');
+        $.post('/User/GetUserById', { id: userId }, function (user) {
+            $('#userForm').attr('action', '/User/Update');
+            $('#userForm')[0].reset();
+            $('.text-danger').html('');
+            $('.error-message-username').html('');
+            $('#inputError').html('');
+            $('#userModalLabel').text('Edit user');
+            $('#UserId').prop('disabled', false);
+            $('#userForm').find('input[name="UserId"]').val(user.userId);
+            $('#userForm').find('input[name="Name"]').val(user.name);
+            $('#userForm').find('input[name="Surname"]').val(user.surname);
+            $('#userForm').find('input[name="Username"]').val(user.username);
+            $('#userForm').find('input[name="Email"]').val(user.email);
+            $('#userForm').find('select[name="Role"]').val(user.roleName);
+            $('#modalAddUser').modal('show');
+            
+        });
+    });
+    //------------------------------------------------------
+
+    //-- ouvrir modal Confirm delete 
+    $('#table_user').on('click', '.btn-delete', function () {
+        var userId = $(this).data('id');
+        $('#UserIdToDelete').val(userId);
+        $('#modalConfirmDelete').modal('show');
+    });
+    //-------------------------------------
+
+    //-- Soumission de la du formulaire de suppression
+    $('#userFormDelete').on('submit', function (event) {
+        event.preventDefault();
+        var formData = $(this).serialize();
+        var actionUrl = $(this).attr('action');
+
+        $.ajax({
+            url: actionUrl,
+            type: 'POST',
+            data: formData,
+            success: function (response) {
+                $('#modalConfirmDelete').modal('hide');
+                if (response.success) {
+                    toastr["success"](response.message);
+                    table.ajax.reload();
+                } else {
+                    toastr["error"](response.message)
+                }
+            },
+            error: function (xhr, status, error) {
+                $('#modalConfirmDelete').modal('hide');
+                toastr["error"]("Can't Delete this User, Server error");
+            }
+        });
+    });
+    //--------------------------------------------------
+
+    //-- Visibilité password --
+    //const togglePassword = document.getElementById('togglePassword');
+    //const passwordInput = document.querySelector('.credit-card-mask');
+
+    //togglePassword.addEventListener('click', function () {
+    //    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    //    passwordInput.setAttribute('type', type);
+    //    this.querySelector('i').classList.toggle('fa-eye');
+    //    this.querySelector('i').classList.toggle('fa-eye-slash');
+    //});
+    //-------------------------------------
+
+    //-- validation e-mail ---
+    function ValidationEmail(inputValue) {
+        const userInput = document.getElementById('Email');
+        var inputValue = userInput.value.trim();
+        // Expression régulière pour valider l'input (sans espaces, commence par une lettre, au moins 5 caractères)
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+\w+$/;
+        //valide
+        if (regex.test(inputValue)) {
+            inputError.textContent = '';
+        } else {
+            inputError.textContent = 'Adress Email Invalid';
+            retutn
+        }
+    }
+    //-----------------------------------
+
+    //-- Validation Username --
+    function ValidationUsername(inputValue) {
+        
+        const regex = /^[a-zA-Z][a-zA-Z0-9]{4,}$/;
+        //valide
+        if (regex.test(inputValue)) {
+            inputErrorUsername.textContent = '';
+        } else {
+            inputErrorUsername.textContent = 'Username that contains at least 5 characters, starts with a letter, and contains no spaces or special characters';
+            return
+        }
+    }
+    //-----------------------------
+
 });

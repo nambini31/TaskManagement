@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Domain.DTO.ViewModels.UserVM;
+using static Application.Services.UserServiceRepository;
 
 namespace TaskManagement.Controllers
 {
@@ -25,17 +26,29 @@ namespace TaskManagement.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
+            @ViewData["titrePage"] = "User Management";
             return View();
         }
 
         //-- get all User for datatable
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult GetUserById(int id)
+        {
+            var user = _userService.GetUserById(id);
+            return Json(user);
+        }
+        //----------------------------------
+
+        //-- get all User for datatable with role
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult GetAllUser()
         {
             var users = _userService.GetUser();
             return Json(users);
         }
+        //----------------------------------
 
         [HttpGet]
         public IActionResult Register()
@@ -48,14 +61,31 @@ namespace TaskManagement.Controllers
         {
             if (ModelState.IsValid)  
             {
-                _userService.RegisterUser(model.Name, model.Surname, model.Username, model.Password, model.Email, model.Role);
-                //return RedirectToAction("Index", "User");
-                return Json(new { success = true });
+                try
+                {
+                    // Récupère l'ID de l'utilisateur connecté
+                    //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
+
+                    _userService.RegisterUser(model.Name, model.Surname, model.Username, model.Password, model.Email, model.Role);
+                    return Json(new { success = true, message = "Successfuly" });
+                }
+                catch (AfficheException ex)
+                {
+                    return Json(new { success = false, message = ex.Message });
+                } catch (Exception ex) 
+                {
+                    return Json(new { success = false, message = ex.Message });
+                }
             }
 
-            return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors) });
-
-            //return View("Index", model);
+            //return les erreur de validation
+            var erreurValidation = ModelState
+                .Where(ms => ms.Value.Errors.Count > 0)
+                .ToDictionary(
+                    kvp => kvp.Key,
+                    kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                );
+            return Json(new { success = false, erreurValidation });
         }
 
 
@@ -115,6 +145,72 @@ namespace TaskManagement.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "User");
         }
+
+        //-- Update User ----
+        public IActionResult Update(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _userService.UpdateUser(model.UserId, model.Name, model.Surname, model.Username, model.Password, model.Email, model.Role);
+                    //return RedirectToAction("Index", "User");
+                    return Json(new { success = true, message = "Successfuly" });
+
+                }
+                catch (AfficheException ex)
+                {
+                    return Json(new { success = false, message = ex.Message });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, message = ex.Message });
+                }
+            }
+
+            //gerer les erreurs de navigaion
+            var erreurValidation = ModelState
+                .Where(ms => ms.Value.Errors.Count > 0)
+                .ToDictionary(
+                    kvp => kvp.Key,
+                    kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                );
+
+            return Json(new { success = false, erreurValidation });
+
+        }
+        //--------------------------------------------------
+
+
+        //-- Delete User ------
+        // Action POST pour supprimer un utilisateur
+        [HttpPost]
+        public async Task<IActionResult> Delete(int userId)
+        {
+            if (userId <= 0)
+            {
+                return BadRequest(new { success = false, errorMessage = "Invalid user ID." });
+            }
+            //try
+            //{
+                var userToDelete = _userService.GetUserWithoutRole(userId);
+                _userService.DeleteUserService(userToDelete);
+                return Json(new { success = true, message = "Successfuly !" });
+            //}
+            //catch(Exception ex)
+            //{
+            //    return Json(new { success = false, message = $"Can\'t Delete ! {ex.Message}" });
+            //}
+        }
+        //---------------------------------------
+
+        //-- Acces denied --
+        public IActionResult AccesDenied()
+        {
+            TempData["messageLogin"] = "You are not authorized to access this page";
+            return RedirectToAction("Login");      
+        }
+        //--------------------------------------------
 
     }
 }

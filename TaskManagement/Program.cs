@@ -32,7 +32,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
             .AddCookie(options =>
             {
                 options.LoginPath = "/User/Login";
-                options.AccessDeniedPath = "/User/AccessDenied";
+                options.AccessDeniedPath = "/User/AccesDenied";
 
                 //gere la redirection pour souvenir les pages precedent
                 //options.Events = new CookieAuthenticationEvents

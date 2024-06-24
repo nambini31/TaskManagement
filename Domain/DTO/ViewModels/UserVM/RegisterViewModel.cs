@@ -4,6 +4,8 @@ namespace Domain.DTO.ViewModels.UserVM
 {
     public class RegisterViewModel
     {
+        public int UserId { get; set; }
+
         [Required]
         public string Name { get; set; }
 
@@ -16,6 +18,7 @@ namespace Domain.DTO.ViewModels.UserVM
 
         [Required]
         [DataType(DataType.Password)]
+        [RegularExpression(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^\w]).{8,}$")]
         public string Password { get; set; }
 
         [Required]
@@ -24,7 +27,7 @@ namespace Domain.DTO.ViewModels.UserVM
         public string ConfirmPassword { get; set; }
 
         [StringLength(50)]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "L'email n'est pas valide.")]
         public string? Email { get; set; }
 
         [Required]
