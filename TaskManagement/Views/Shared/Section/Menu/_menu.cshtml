@@ -35,14 +35,15 @@
                         <span> Leave </span>
                     </a>
                 </li>
-                <li>
-                    <a asp-action="Index" asp-controller="User">
-                        <i class="mdi mdi-view-dashboard"></i>
-                        <span> User </span>
-                    </a>
-                </li>
-
-                
+                @if (User.IsInRole("Admin"))
+                {
+                    <li>
+                        <a asp-action="Index" asp-controller="User">
+                            <i class="fas fa-user-cog"></i>
+                            <span> User </span>
+                        </a>
+                    </li>
+                }                
             </ul>
 
         </div>
@@ -54,14 +55,4 @@
     <!-- Sidebar -left -->
 
 </div>
-
-
-@* @if (User.IsInRole("Admin"))
-{
-    <li><a asp-area="" asp-controller="Admin" asp-action="Index">Admin Panel</a></li>
-}
-@if (User.IsInRole("User"))
-{
-    <li><a asp-area="" asp-controller="User" asp-action="Index">User Panel</a></li>
-} *@
    

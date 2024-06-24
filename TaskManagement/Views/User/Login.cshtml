@@ -32,7 +32,7 @@
             <div class="col-md-8 col-lg-6 col-xl-5">
                 <div class="text-center">
                     <h1>GesPro</h1>
-                    <p class="text-muted mt-2 mb-4">Bienvenue dans GesPro</p>
+                    <p class="text-muted mt-2 mb-4">Welecome to GesPro</p>
                 </div>
                 <div class="card">
 
@@ -45,7 +45,7 @@
                         <form method="post" action="@Url.Action("Login", "User")">
 
                             <input type="hidden" name="returnUrl" value="@returnUrl" />
-
+                            <span class="text-danger">@TempData["messageLogin"]</span>
                             <div asp-validation-summary="All" class="text-danger"></div>
                             <div class="form-group mb-3">
                                 <label asp-for="Username">Username</label>

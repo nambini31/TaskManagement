@@ -63,6 +63,9 @@ namespace TaskManagement.Controllers
             {
                 try
                 {
+                    // Récupère l'ID de l'utilisateur connecté
+                    //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
+
                     _userService.RegisterUser(model.Name, model.Surname, model.Username, model.Password, model.Email, model.Role);
                     return Json(new { success = true, message = "Successfuly" });
                 }
@@ -200,5 +203,14 @@ namespace TaskManagement.Controllers
             //}
         }
         //---------------------------------------
+
+        //-- Acces denied --
+        public IActionResult AccesDenied()
+        {
+            TempData["messageLogin"] = "You are not authorized to access this page";
+            return RedirectToAction("Login");      
+        }
+        //--------------------------------------------
+
     }
 }

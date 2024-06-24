@@ -2,13 +2,19 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                2016 - 2020 &copy; Adminto theme by <a href="">Coderthemes</a>
+                2024 &copy; <a href="">GesPro</a>
             </div>
             <div class="col-md-6">
                 <div class="text-md-right footer-links d-none d-sm-block">
-                    <a href="javascript:void(0);">About Us</a>
-                    <a href="javascript:void(0);">Help</a>
-                    <a href="javascript:void(0);">Contact Us</a>
+                    <a href="#">Home </a>
+                    <a asp-action="Index" asp-controller="UserTask"> Timeline </a>
+                    <a asp-action="Index" asp-controller="Project">Project</a>                        
+                    <a asp-action="Index" asp-controller="Task">Task</a>
+                    <a asp-action="Index" asp-controller="Leaves">Leave</a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Index" asp-controller="User">User</a>
+                    }
                 </div>
             </div>
         </div>

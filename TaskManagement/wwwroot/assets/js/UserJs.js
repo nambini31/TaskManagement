@@ -1,7 +1,7 @@
 
 
-$(document).ready(function () {
-  
+$(document).ready(function () {    
+
     var table = $('#table_user').DataTable({
         destroy: true,
         ordering: true,
@@ -50,7 +50,7 @@ $(document).ready(function () {
         ,
         buttons: [
             {
-                className: "btn btn-sm btn-primary btn-min-width ml-20",
+                className: "btn btn-sm btn-primary btn-min-width mr-2",
                 text: '<i class="ft-refresh"> Actualiser</i>',
                 action: function () {
                     table.ajax.reload();
@@ -58,11 +58,12 @@ $(document).ready(function () {
             },
             {
                 text: '<i class="ti ti-plus ti-xs me-0 me-sm-2"></i><span class="d-none d-sm-inline-block">New User</span>',
-                className: 'class="btn btn-info waves-effect waves-light"',
+                className: "btn btn-info waves-effect waves-light ml-2",
                 attr: {
                     'data-toggle' : 'modal',
                     'data-target': '#modalAddUser',
-                    'id': 'btnAddUser'
+                    'id': 'btnAddUser',
+                    //'style':'margin-left:3px'
                 }
             }
 
@@ -102,6 +103,13 @@ $(document).ready(function () {
         event.preventDefault();
         var formData = $(this).serialize();
         var actionUrl = $(this).attr('action');        
+
+        $('.text-danger').html('');
+        $('.error-message-username').html('');
+
+        //validation Username
+        var inputValueUsername = userInputUsername.value.trim();
+        ValidationUsername(inputValueUsername);
         
         //verif email validation
         var inputValue = userInput.value.trim();
@@ -121,7 +129,7 @@ $(document).ready(function () {
                     $('#userForm')[0].reset();
                     $('#modalAddUser').modal('hide');
                     $('#UserId').prop('disabled', false);
-                    alert(response.message);
+                    toastr["success"](response.message)
                     table.ajax.reload();
                 } else {
                     if (response.erreurValidation) {
@@ -147,12 +155,12 @@ $(document).ready(function () {
                         ValidationUsername(inputValueUsername);
                     }
                     if (response.message) {
-                        alert(response.message);
+                        toastr["error"](response.message)
                     }
                 }
             },
             error: function (xhr, status, error) {
-                alert("Sorry !! Server Error")
+                toastr["success"]("Sorry !! Server Error")
             }
         });
     });
@@ -162,7 +170,8 @@ $(document).ready(function () {
     $('#btnAddUser').on('click', function () {
         $('#userForm').attr('action', '/User/Register');
         $('#userForm')[0].reset();
-        $('.text-danger').html(''); 
+        $('.text-danger').html('');
+        $('#inputError').html('');
         $('.error-message-username').html('');
         $('#UserId').prop('disabled', true);
         $('#userModalLabel').text('Create User');
@@ -177,6 +186,7 @@ $(document).ready(function () {
             $('#userForm')[0].reset();
             $('.text-danger').html('');
             $('.error-message-username').html('');
+            $('#inputError').html('');
             $('#userModalLabel').text('Edit user');
             $('#UserId').prop('disabled', false);
             $('#userForm').find('input[name="UserId"]').val(user.userId);
@@ -211,32 +221,31 @@ $(document).ready(function () {
             data: formData,
             success: function (response) {
                 $('#modalConfirmDelete').modal('hide');
-
                 if (response.success) {
-                    alert(response.message);
+                    toastr["success"](response.message);
                     table.ajax.reload();
                 } else {
-                    alert(response.message);
+                    toastr["error"](response.message)
                 }
             },
             error: function (xhr, status, error) {
                 $('#modalConfirmDelete').modal('hide');
-                alert('Erreur lors de la suppression de l\'utilisateur.');
+                toastr["error"]("Can't Delete this User, Server error");
             }
         });
     });
     //--------------------------------------------------
 
     //-- Visibilité password --
-    const togglePassword = document.getElementById('togglePassword');
-    const passwordInput = document.querySelector('.credit-card-mask');
+    //const togglePassword = document.getElementById('togglePassword');
+    //const passwordInput = document.querySelector('.credit-card-mask');
 
-    togglePassword.addEventListener('click', function () {
-        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput.setAttribute('type', type);
-        this.querySelector('i').classList.toggle('fa-eye');
-        this.querySelector('i').classList.toggle('fa-eye-slash');
-    });
+    //togglePassword.addEventListener('click', function () {
+    //    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    //    passwordInput.setAttribute('type', type);
+    //    this.querySelector('i').classList.toggle('fa-eye');
+    //    this.querySelector('i').classList.toggle('fa-eye-slash');
+    //});
     //-------------------------------------
 
     //-- validation e-mail ---
@@ -264,7 +273,7 @@ $(document).ready(function () {
             inputErrorUsername.textContent = '';
         } else {
             inputErrorUsername.textContent = 'Username that contains at least 5 characters, starts with a letter, and contains no spaces or special characters';
-            retutn
+            return
         }
     }
     //-----------------------------
