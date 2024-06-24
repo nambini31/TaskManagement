@@ -1,6 +1,7 @@
 ﻿using Domain.DTO;
 using Domain.Entity;
 using Domain.Interface;
+using Infrastructure.repository;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -68,5 +69,7 @@ namespace Application.Services
         {
             await _leavesRepository.DeleteAsync(id);
         }
+
+       
     }
 }

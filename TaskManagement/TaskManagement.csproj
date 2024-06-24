@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\assets\uploads\" />
     <Folder Include="wwwroot\js\" />
   </ItemGroup>
 

@@ -140,5 +140,12 @@ namespace TaskManagement.Controllers
             await _tasksService.DeleteTaskAsync(id);
             return Json(new { success = true, message = "Task deleted successfully" });
         }
+
+        [HttpPost]
+        public IActionResult GetTaskByIdProject(int projectId)
+        {
+            var tasks = _tasksService.GetTaskByIdProject(projectId);
+            return Json( tasks );
+        }
     }
 }

@@ -11,6 +11,8 @@
     <link href="~/assets/libs/daterangepicker/daterangepicker.min.css" rel="stylesheet" />
     <link href="~/assets/dist/virtual-select.min.css" rel="stylesheet" />
     <link href="~/assets/libs/custombox/custombox.min.css" rel="stylesheet" />
+    <link href="~/assets/choices.js/choices.min.css" rel="stylesheet" />
+
 }
 
 
@@ -24,6 +26,7 @@
     <script src="~/assets/libs/daterangepicker/daterangepicker.min.js"></script>
     <script src="~/assets/libs/custombox/custombox.min.js"></script>
     <script src="~/assets/dist/virtual-select.min.js"></script>
+    <script src="~/assets/choices.js/choices.min.js"></script>
 }
 
 @section PageScripts {
@@ -49,7 +52,7 @@
                                 <input type="hidden"  id="endDate" value="" />
                             </div>
                             <div class="col-12 col-md-3">
-                                <select placeholder="Select user" data-search="true" data-silent-initial-value-set="true" class="form-select w-100" id="userId">
+                                <select placeholder="Select user" data-search="true" data-silent-initial-value-set="true" class="form-control w-100" id="userId">
                                    <option value="All">All</option>
                                 </select>
                             </div>
@@ -58,7 +61,7 @@
                                     <button  type="submit" class="btn btn-secondary form-control mr-2">
                                         <i class="fas fa-filter"></i> Filter
                                     </button>
-                                    <button type="submit" id="excelButton" class="btn btn-success form-control  w-100">
+                                    <button type="button" id="excelButton" class="btn btn-success form-control  w-100">
                                         <i class="fas fa-download"></i> Excel
                                     </button>
                                 </div>

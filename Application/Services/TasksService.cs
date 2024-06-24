@@ -63,5 +63,11 @@ namespace Application.Services
         {
             await _taskRepository.DeleteAsync(id);
         }
+
+        public IEnumerable<Tasks> GetTaskByIdProject(int id)
+        {
+
+           return _taskRepository.GetTaskByIdProject(id);
+        }
     }
 }

@@ -163,6 +163,14 @@
     {
       "library": "jquery-nice-select@1.1.0",
       "destination": "wwwroot/assets/jquery-nice-select/"
+    },
+    {
+      "library": "choices.js@10.2.0",
+      "destination": "wwwroot/assets/choices.js/",
+      "files": [
+        "choices.min.js",
+        "choices.min.css"
+      ]
     }
   ]
 }
