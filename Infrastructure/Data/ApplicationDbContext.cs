@@ -46,7 +46,7 @@ namespace Infrastructure.Data
         {
             foreach (var entry in ChangeTracker.Entries<UserTask>())
             {
-                if (entry.State == EntityState.Added || entry.State == EntityState.Modified)
+                if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.State == EntityState.Deleted)
                 {
                     entry.Property(e => e.isLeave).IsModified = false;
                 }

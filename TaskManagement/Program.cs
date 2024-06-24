@@ -7,6 +7,7 @@ using Infrastructure.repository;
 using Infrastructure.Repository;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     }
 );
 
+ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
 // register articleRepository and service
 builder.Services.AddScoped<IUserRepository, UserRepository>();

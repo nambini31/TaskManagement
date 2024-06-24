@@ -12,6 +12,7 @@ namespace TaskManagement.Controllers
         private readonly ILogger<HomeController> _logger;
 
         private readonly SUserTaskRepository _SUserTask;
+       
         private readonly UserServiceRepository _UserService;
 
         public UserTaskController(ILogger<HomeController> logger, SUserTaskRepository _SUserTask , UserServiceRepository _UserService)
@@ -86,6 +87,26 @@ namespace TaskManagement.Controllers
             {
                 userTask.userId = 1;
                 await _SUserTask.UpdateUserTask(userTask);
+
+                var responseData = new { message = "Success" };
+
+                return Ok(responseData);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            
+        }
+        [HttpPost]
+        public async Task<IActionResult> GenerateExcelUserTask(FiltreUserTask filter)
+        {
+            try
+            {
+
+                await _SUserTask.GenerateUserTask(filter);
 
                 var responseData = new { message = "Success" };
 

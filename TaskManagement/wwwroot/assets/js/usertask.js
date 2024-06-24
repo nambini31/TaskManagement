@@ -2,8 +2,8 @@
 
 /***************************generer la date aujourdhui et moins une semaine *******/
  
+    $('#excelButton').attr('disabled', 'disabled');
 $(document).ready(function () {
-
 
     var bsRangePickerWeekNum = $('#daterange');
 
@@ -123,6 +123,38 @@ $("#deleteTimeline").on("click", function (e) {
 
 /***************************** */
 
+
+
+// generale Excel
+$("#excelButton").on("click", function (event) {
+
+    $.ajax({
+
+        url: '/UserTask/GenerateExcelUserTask',
+        type: "POST",
+        dataType: "JSON",
+        data: {
+            startDate: $('#startDate').val(),
+            endDate: $('#endDate').val(),
+            userId: $('#userId').val()
+        },
+        success: function (data) {
+            toastr["success"]("Successfully update")
+            $("#modalEdit").modal("hide");
+            AfficheUserTask();
+
+        },
+        error: function (error) {
+            toastr["error"]("Update failed")
+            $("#modalEdit").modal("hide");
+
+        },
+    });
+
+    return false;
+});
+
+
 /***************************** filter usertask : submit filter*/
 
 $("#filtreUserTask").on("submit", function (e) {
@@ -225,7 +257,7 @@ function AfficheUserTask() {
         buttons: [
 
             {
-                text: '<i class="ti ti-plus ti-xs me-0 me-sm-2"></i><span class="d-none d-sm-inline-block">Add Category</span>',
+                text: '<i class="ti ti-plus ti-xs me-0 me-sm-2"></i><span class="d-none d-sm-inline-block">Add</span>',
                 className: 'add-new btn btn-primary ms-2',
                 attr: {
                     'data-bs-toggle': 'offcanvas',
@@ -410,6 +442,7 @@ function getProject(id , idTask) {
 
     });
 }
+
 
 /** charger leaves depuis id */
 function getLeaves(id) {

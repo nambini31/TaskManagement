@@ -41,7 +41,6 @@ namespace TaskManagement.Controllers
         //----------------------------------
 
         //-- get all User for datatable with role
-        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult GetAllUser()
         {

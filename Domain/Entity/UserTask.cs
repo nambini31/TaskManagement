@@ -22,7 +22,6 @@ namespace Domain.Entity
         public Tasks? Tasks { get; set; }
 
         [ValidateNever]
-
         public bool isLeave { get; set; }
 
 
