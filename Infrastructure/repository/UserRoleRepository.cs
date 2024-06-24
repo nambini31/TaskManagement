@@ -81,6 +81,7 @@ namespace Infrastructure.repository
 
         public void Update(UserRole entity)
         {
+            _context.Update(entity);
             _context.SaveChanges();
         }
     }

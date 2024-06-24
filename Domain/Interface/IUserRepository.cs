@@ -12,7 +12,9 @@ namespace Domain.Interface
     public interface IUserRepository
     {
         IEnumerable<UserListWithRole> GetAll(Expression<Func<User, bool>>? filter = null, string? includeProperties = null);
-        User Get(Expression<Func<User, bool>>? filter, string? includeProperties = null);
+        UserListWithRole Get(Expression<Func<User, bool>>? filter, string? includeProperties = null);
+        User GetUserWithoutRole(Expression<Func<User, bool>>? filter, string? includeProperties = null);
+        
         void Add(User entity);
         void Update(User entity);
         void Remove(User entity);
