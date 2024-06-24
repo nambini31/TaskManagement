@@ -74,5 +74,13 @@ namespace TaskManagement.Controllers
             await _leavesService.DeleteLeaveAsync(id);
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllLeaves()
+        {
+            IEnumerable<LeaveDto> projects = await _leavesService.GetAllLeavesAsync();
+            return Json(new { data = projects });
+        }
+
     }
 }

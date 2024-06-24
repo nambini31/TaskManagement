@@ -16,17 +16,18 @@ namespace Domain.Entity
 		public int UserTaskId { get; set; }
 
 		[ForeignKey("Tasks")]
-		public int taskId { get; set; }
+		public int? taskId { get; set; }
 
         [ValidateNever]
         public Tasks? Tasks { get; set; }
 
         [ValidateNever]
+
         public bool isLeave { get; set; }
 
 
         [ForeignKey("Leaves")]
-        public int leaveId { get; set; }
+        public int? leaveId { get; set; }
 
         [ValidateNever]
         public Leaves? Leaves { get; set; }

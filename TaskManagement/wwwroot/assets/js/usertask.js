@@ -39,6 +39,10 @@ $(document).ready(function () {
 
 
 
+   
+
+
+
 
 });
 
@@ -79,9 +83,11 @@ $.ajax({
 
             $("#userId").append(option);
         });
-        VirtualSelect.init({
-            ele: '#userId'
-        });
+        //VirtualSelect.init({
+        //    ele: '#userId'
+        //});
+
+
     },
    
 });
@@ -126,6 +132,9 @@ $("#filtreUserTask").on("submit", function (e) {
 
     return false; 
 });
+
+
+
 /************************ */
 
 //********************************* liste usertask***************
@@ -176,10 +185,8 @@ function AfficheUserTask() {
 
                             id="usertask_${row.userTaskId}"
                             data-projectId="${row.projectId}"
-                            data-taskId="${row.taskId}"
                             data-leaveId="${row.leaveId}"
-                            data-hours="${row.hours}"
-
+                            data-taskId="${row.taskId}"
                             onclick="ModalEdit(${row.userTaskId})"><i class="fe-edit"></i></a>
 
                             <a class="btn btn-sm btn-danger" style="color:white"
@@ -239,6 +246,11 @@ function AfficheUserTask() {
             '<"col-sm-12 col-md-6"i>' +
             '<"col-sm-12 col-md-6"p>' +
             '>',
+        rowCallback: function (row, data) {
+            if (data.leaveId > 0) {
+                $(row).addClass('leave-row'); // Ajoutez une classe CSS pour marquer la ligne en rouge
+            }
+        }
 
     });
 
@@ -260,6 +272,7 @@ function ModalDelete(id) {
 function ModalEdit(id) {
 
        
+       
        $.ajax({
            url: '/UserTask/ModalUserTaskEdit',
            type: 'POST',
@@ -269,6 +282,86 @@ function ModalEdit(id) {
         success: function (data) {
             $('#editUserTaskContainer').html(data);
             $("#modalEdit").modal("show");
+
+            var leave = $(`#usertask_${id}`).data("leaveid")
+            var projectId = $(`#usertask_${id}`).data("projectid");
+            var taskId = $(`#usertask_${id}`).data("taskid");
+
+            $('#checkleave').change(function () {
+
+                if ($(this).is(':checked')) {
+
+                    $("#selectTaskId").empty();
+                    getLeaves(projectId);
+
+
+                    $(`#labelleaveproject`).text("Leave");
+                    $(`#selectTaskId`).attr("disabled", "disabled");
+
+                } else {
+                    $(`#selectTaskId`).removeAttr("disabled");
+
+                    $(`#labelleaveproject`).text("Project");
+
+                    getProject(projectId);
+
+                    getTasks(projectId, taskId)
+                }
+            });
+
+            if (leave > 0 && leave != null) {
+
+                
+                getLeaves(projectId);
+
+
+                $(`#labelleaveproject`).text("Leave");
+                $(`#selectTaskId`).attr("disabled", "disabled");
+
+            } else {
+                $(`#labelleaveproject`).text("Project");
+
+                getProject(projectId, taskId);
+
+                getTasks(projectId, taskId) 
+
+            }
+
+           
+
+            /* save edit *****/
+            $("#formUserTask").on("submit", function (e) {
+                e.preventDefault();
+
+                let data = new FormData(this);
+                data.delete('isLeave');
+
+                $.ajax({
+
+                    url: '/UserTask/UpdateUserTask',
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    dataType: "JSON",
+                    data: data,
+                    success: function (data) {
+                        toastr["success"]("Successfully update")
+                        $("#modalEdit").modal("hide");
+                        AfficheUserTask();
+
+                    },
+                    error: function (error) {
+                        toastr["error"]("Update failed")
+                        $("#modalEdit").modal("hide");
+
+                    },
+                });
+
+                return false;
+            });
+
+
 
         },
             error: function (xhr, status, error) {
@@ -282,27 +375,114 @@ function ModalEdit(id) {
 
 
 
-// charger listes des projets
+// charger listes des projets et leaves
 
-//$.ajax({
-//    url: '/User/GetAllUser',
-//    type: 'POST',
-//    dataType: "JSON",
-//    success: function (data) {
-//        data.forEach(function (item) {
+function getProject(id , idTask) {
 
-//            var option = $('<option>', {
-//                value: item.userId,
-//                text: item.username
-//            });
+    $.ajax({
+        url: '/Project/GetAllProjects',
+        type: 'GET',
+        dataType: "JSON",
+        success: function (res) {
 
-//            $("#userId").append(option);
-//        });
-//        VirtualSelect.init({
-//            ele: '#userId'
-//        });
-//    },
+            $("#selectProjectId").empty();
+            res.data.forEach(function (item) {
 
-//});
+                var option = $('<option>', {
+                    value: item.projectId,
+                    text: item.name
+                });
+
+                $("#selectProjectId").append(option);
+            });
+
+            $('#selectProjectId').attr('name', "projectId");
+
+            $('#selectProjectId').attr('required', "required");
+            $('#selectTaskId').attr('required', "required");
+
+            $('#selectProjectId').on('change', function () {
+                getTasks($(this).val(), idTask)
+            });
+
+            $("#selectProjectId").val(id); 
+        },
+
+    });
+}
+
+/** charger leaves depuis id */
+function getLeaves(id) {
+
+    //$(`#selectTaskId`).attr("disabled", "disabled");
+
+    $.ajax({
+        url: '/Leaves/GetAllLeaves',
+        type: 'GET',
+        dataType: "JSON",
+        success: function (res) {
+
+            
+
+            $("#selectProjectId").empty();
+            res.data.forEach(function (item) {
+
+                var option = $('<option>', {
+                    value: item.leaveId,
+                    text: item.reason
+                });
+
+                $("#selectProjectId").append(option);
+            });
+
+            $('#selectProjectId').attr('name', "leaveId");
+            $('#selectProjectId').removeAttr("required");
+            $('#selectTaskId').removeAttr("required");
+
+            $('#selectProjectId').off('change');
+
+            $("#selectProjectId").val(id);
+
+          
+        },
+
+    });
+}
+
+
+/******************************* */
+
+/** charger tasks depuis id */
+function getTasks(projectId , taskId) {
+
+    $.ajax({
+        url: '/Tasks/GetTaskByIdProject',
+        type: 'POST',
+        dataType: "JSON",
+        data: {
+
+            projectId: projectId
+        },
+        success: function (res) {
+            $("#selectTaskId").empty();
+            res.forEach(function (item) {
+
+                var option = $('<option>', {
+                    value: item.taskId,
+                    text: item.name
+                });
+
+                $("#selectTaskId").append(option);
+            });
+
+            //VirtualSelect.init({
+            //    ele: '#selectTaskId'
+            //});
+
+            $("#selectTaskId").val(taskId);
+        },
+
+    });
+}
 
 /******************************* */

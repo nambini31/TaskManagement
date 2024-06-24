@@ -78,5 +78,26 @@ namespace TaskManagement.Controllers
             }
             
         }
+        
+        [HttpPost]
+        public async Task<IActionResult> UpdateUserTask(UserTask userTask)
+        {
+            try
+            {
+                userTask.userId = 1;
+                await _SUserTask.UpdateUserTask(userTask);
+
+                var responseData = new { message = "Success" };
+
+                return Ok(responseData);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            
+        }
     }
 }

@@ -12,41 +12,45 @@
             <div class="modal-body">
                 
                 <form id="formUserTask" method="post">
+                    <div class="row justify-content-center mb-5">
+                        
+                        <div class="col-12 col-md-3">
+                            <label class="form-label">Date</label><br />
+                            <input type="datetime-local"  required asp-for="date" class="form-control"  />
+                        </div>
+                        
+                        
+                    </div>
+                    
                     <div class="row justify-content-center">
+                        <input type="hidden" asp-for="UserTaskId" />
                         <div class="col-12 col-md-1">
-                            <label>Leave</label>
-                            <input type="checkbox" asp-for="isLeave" class="form-control input-sm" />
-                        </div>
-                        <div class="col-12 col-md-3">
-                            <select placeholder="Select project" data-search="true" data-silent-initial-value-set="true" class="form-select w-100" id="selectTaskId">
-                            </select>
-                        </div>
-                        <div class="col-12 col-md-3">
-                            <select placeholder="Select task" data-search="true" data-silent-initial-value-set="true" class="form-select w-100" id="selectTaskId">
-                            </select>
-                        </div>
-                        <div class="col-12 col-md-1">
-                            <label>Hours</label>
-                            <input asp-for="hours" type="text" class="form-control" />
+                            <label class="form-label">Leave</label><br />
+                            <input type="checkbox" asp-for="isLeave" data-plugin="switchery" id="checkleave" data-color="#3DDCF7" />
                         </div>
                         <div class="col-12 col-md-4">
-                            <div class="d-flex">
-                                <button type="submit" class="btn btn-secondary form-control mr-2">
-                                    <i class="fas fa-filter"></i> Filter
-                                </button>
-                                <button type="submit" id="excelButton" class="btn btn-success form-control  w-100">
-                                    <i class="fas fa-download"></i> Excel
-                                </button>
-                            </div>
+                            <label id="labelleaveproject">Project</label>
+                            <select placeholder="Select project" name="projectId" data-search="true" data-silent-initial-value-set="true" class="form-control w-100" id="selectProjectId">
+                            </select>
                         </div>
+                        <div class="col-12 col-md-6">
+                            <label>Tasks</label>
+                            <select placeholder="Select task" name="taskId" data-search="true" data-silent-initial-value-set="true" class="form-control w-100" id="selectTaskId">
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-1">
+                            <label class="form-label">Hours</label>
+                            <input asp-for="hours" type="text" class="form-control" />
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer mt-4">
+                        <button type="submit" id="deleteTimeline" class="btn btn-primary">Edit</button>
                     </div>
                 </form>
 
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                <button type="button" id="deleteTimeline" class="btn btn-primary">Oui</button>
-            </div>
+            
         </div>
     </div>
 </div>

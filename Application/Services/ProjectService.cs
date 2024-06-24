@@ -27,6 +27,7 @@ namespace Application.Services
                 projectId = p.projectId,
                 name = p.name,
                 description = p.description
+                
             });
         }
 
@@ -37,9 +38,12 @@ namespace Application.Services
             {
                 projectId = project.projectId,
                 name = project.name,
-                description = project.description
+                description = project.description,
+                Tasks = project.Tasks
+                
             };
         }
+
 
         public void CreateProject(ProjectDto project)
         {

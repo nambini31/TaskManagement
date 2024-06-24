@@ -42,29 +42,20 @@ namespace Infrastructure.Repository
 
         public  async Task<UserTask> GetUserTaskById(int UsertaskId)
         {
-            UserTask? art = await _db.UserTask.FirstOrDefaultAsync(a => a.UserTaskId == UsertaskId );
-
-            return art;
-        }
-
-        public async Task<IEnumerable<UserTask>> GetUserTask()
-        {
-            //vrai IEnumerable<UserTask> data = await _db.Usertask.Include(u => u.category).ToListAsync();
-            //IEnumerable<UserTask> data = await _db.UserTask.ToListAsync();
 
             try
             {
-                string sql = $@"select *, 
+                string sql = @"select *, 
                             
                             CASE 
-                                WHEN leaves.leaveId IS NOT NULL THEN true 
+                                WHEN leaveId IS NOT NULL AND leaveId != 0 THEN true 
                                 ELSE false 
-                            END AS isLeave, 
+                            END AS isLeave
                             from
-                            usertask
+                            usertask WHERE userTaskId = {0}
                                 ";
 
-                IEnumerable<UserTask> data = await _db.UserTask.FromSqlRaw(sql).ToListAsync();
+                UserTask data = await _db.UserTask.FromSqlRaw(sql , UsertaskId).FirstAsync();
 
                 return data;
             }
@@ -74,6 +65,15 @@ namespace Infrastructure.Repository
                 throw ex;
             }
 
+            
+        }
+
+        public async Task<IEnumerable<UserTask>> GetUserTask()
+        {
+            //vrai IEnumerable<UserTask> data = await _db.Usertask.Include(u => u.category).ToListAsync();
+            IEnumerable<UserTask> data = await _db.UserTask.ToListAsync();
+
+            return data;
          
         }
         public async Task<IEnumerable<UserTaskVM>> GetUserTasksVM(FiltreUserTask filter)
@@ -89,20 +89,17 @@ namespace Infrastructure.Repository
                             usertask.date, 
                             tasks.taskId, 
                             CASE 
-                                WHEN leaves.leaveId IS NOT NULL THEN leaves.reason 
-                                ELSE tasks.name 
-                            END AS taskName,
-                            CASE 
-                                WHEN leaves.leaveId IS NOT NULL THEN true 
+                                WHEN usertask.leaveId IS NOT NULL  AND usertask.leaveId != 0 THEN true 
                                 ELSE false 
-                            END AS isLeave, 
+                            END AS isLeave,
+
                             leaves.leaveId, 
                             leaves.reason AS leaveName, 
                             user.userId,
                             user.userName 
                             from 
-                            usertask join tasks on tasks.taskId = usertask.taskId 
-                            join leaves on leaves.leaveId = usertask.leaveId join user on user.userId = usertask.userId 
+                            usertask LEFT JOIN tasks on tasks.taskId = usertask.taskId
+                            LEFT JOIN leaves on leaves.leaveId = usertask.leaveId LEFT JOIN user on user.userId = usertask.userId 
                             WHERE ( usertask.date BETWEEN @start AND @end ) {user}
                                 ";
 
@@ -115,13 +112,13 @@ namespace Infrastructure.Repository
                     datetime = a.date,
                     hours = a.hours,
                     leaveId = a.leaveId,
-                    projectId = a.Tasks.projectId,
-                    projectName = a.Tasks.project.name,
+                    projectId = a.Tasks != null ? a.Tasks.projectId : a.leaveId,
+                    projectName = a.Tasks != null ? a.Tasks.project.name : null,
                     taskId = a.taskId,
-                    taskName = a.Tasks.name,
+                    taskName = a.isLeave ? a.Leaves.reason : a.Tasks.name,
                     userId = a.userId,
                     userName = a.User.Username,
-                    isLeave = a.isLeave
+                  
                     
                 }
                 ).ToListAsync();

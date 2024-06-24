@@ -27,6 +27,11 @@ namespace Infrastructure.repository
         public Tasks GetById(int id)
         {
             return _context.Tasks.Find(id);
+        } 
+        public IEnumerable<Tasks> GetTaskByIdProject(int id)
+        {
+            var data = _context.Tasks.Where(a => a.projectId == id ).ToList();
+            return data ;
         }
 
         public void Create(Tasks tasks)
