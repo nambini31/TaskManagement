@@ -30,8 +30,7 @@ namespace TaskManagement.Controllers
             return View();
         }
 
-<<<<<<< HEAD
-        //-- get User by ID ----
+        //-- get all User for datatable
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult GetUserById(int id)
@@ -43,10 +42,6 @@ namespace TaskManagement.Controllers
 
         //-- get all User for datatable with role
         [Authorize(Roles = "Admin")]
-=======
-        //-- get all User for datatable
-        //[Authorize(Roles = "Admin")]
->>>>>>> origin/nicoBranch
         [HttpPost]
         public IActionResult GetAllUser()
         {
