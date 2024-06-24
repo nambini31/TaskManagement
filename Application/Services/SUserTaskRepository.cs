@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Mvc;
 using Domain.DTO.ViewModels;
 using Domain.Entity;
 using Domain.Interface;
 
-namespace Application.Service
+namespace Application.Services
 {
     public class SUserTaskRepository
     {

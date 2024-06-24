@@ -1,0 +1,135 @@
+﻿@model IEnumerable<Domain.DTO.LeaveDto>
+
+@{
+    Layout = "Layout/_LayoutWithMenu";
+    ViewData["Title"] = "Leaves";
+}
+
+@section VendorStyles {
+        <link href="~/assets/libs/datatables/dataTables.bootstrap4.css" rel="stylesheet" type="text/css" />
+        <link href="~/assets/libs/datatables/responsive.bootstrap4.css" rel="stylesheet" type="text/css" />
+        <link href="~/assets/libs/datatables/buttons.bootstrap4.css" rel="stylesheet" type="text/css" />
+        <link href="~/assets/libs/datatables/select.bootstrap4.css" rel="stylesheet" type="text/css" />
+}
+
+@section VendorScripts {
+        <script src="~/assets/libs/datatables/jquery.dataTables.min.js"></script>
+        <script src="~/assets/libs/datatables/dataTables.bootstrap4.js"></script>
+        <script src="~/assets/libs/datatables/dataTables.responsive.min.js"></script>
+        <script src="~/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
+        <script src="~/assets/libs/datatables/dataTables.buttons.min.js"></script>
+        <script src="~/assets/libs/datatables/buttons.bootstrap4.min.js"></script>
+        <script src="~/assets/libs/datatables/buttons.html5.min.js"></script>
+        <script src="~/assets/libs/datatables/buttons.flash.min.js"></script>
+        <script src="~/assets/libs/datatables/buttons.print.min.js"></script>
+        <script src="~/assets/libs/datatables/dataTables.keyTable.min.js"></script>
+        <script src="~/assets/libs/datatables/dataTables.select.min.js"></script>
+        <script src="~/assets/libs/pdfmake/pdfmake.min.js"></script>
+        <script src="~/assets/libs/pdfmake/vfs_fonts.js"></script>
+}
+
+@section PageScripts {
+        <script src="~/assets/js/leaves.js"></script>
+}
+
+<style>
+    .border-custom {
+        border: 1px solid #6c757d; /* Couleur de bordure grise (Bootstrap) */
+    }
+    /* Classe pour ajuster les boutons d'actions */
+    .action-button {
+        border: none; /* Supprimer la bordure */
+        background-color: transparent; /* Fond transparent */
+        cursor: pointer; /* Curseur de souris */
+    }
+</style>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card-box">
+            <h4 class="mt-0 header-title">Leaves</h4>
+            <button class="d-none d-sm-inline-block border-custom" id="createLeaveButton">
+                <i class="ti ti-plus ti-xs me-1"></i> Create Leave
+            </button>
+            <div class="responsive-table-plugin">
+                <table id="table_leave" class="table table-bordered dt-responsive nowrap w-100">
+                    <thead>
+                        <tr>
+                            <th>Leave ID</th>
+                            <th>Reason</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var leave in Model)
+                        {
+                                <tr>
+                                    <td>@leave.leaveId</td>
+                                    <td>@leave.reason</td>
+                                    <td>
+                                        <button class="action-button editLeaveButton" data-id="@leave.leaveId">
+                                            <i class="ti ti-pencil"></i>
+                                        </button>
+                                        <button class="action-button deleteLeaveButton" data-id="@leave.leaveId">
+                                            <i class="ti ti-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Modal -->
+<div class="modal fade" id="createLeaveModal" tabindex="-1" role="dialog" aria-labelledby="createLeaveModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createLeaveModalLabel">Create Leave</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("Create", new Domain.DTO.LeaveDto())
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editLeaveModal" tabindex="-1" role="dialog" aria-labelledby="editLeaveModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editLeaveModalLabel">Edit Leave</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("Edit", new Domain.DTO.LeaveDto())
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteLeaveModal" tabindex="-1" role="dialog" aria-labelledby="deleteLeaveModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteLeaveModalLabel">Delete Leave</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("Delete", new Domain.DTO.LeaveDto())
+            </div>
+        </div>
+    </div>
+</div>

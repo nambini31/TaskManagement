@@ -9,11 +9,12 @@ namespace Domain.Entity
 {
     public class Project
     {
-        [Key]
-        public int projectId { get; set; }
+        [Key]public int projectId {  get; set; }
+
         public string? name { get; set; }
+
         public string? description { get; set; }
-        
-       
+
+        public ICollection<Tasks> Tasks { get; set; }
     }
 }

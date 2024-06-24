@@ -9,8 +9,8 @@ namespace Domain.Entity
 {
     public class Leaves
     {
-        [Key]
-        public int leaveId { get; set; }
+        [Key]public int leaveId { get; set; }   
+
         public string? reason { get; set; }
     }
 }

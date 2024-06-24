@@ -8,9 +8,9 @@
 @section VendorStyles {
     <link href="~/assets/libs/datatables/dataTables.bootstrap4.css" rel="stylesheet" type="text/css" />
     <link href="~/assets/libs/datatables/responsive.bootstrap4.css" rel="stylesheet" type="text/css" />
-    <link href="~/assets/libs/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
     <link href="~/assets/libs/daterangepicker/daterangepicker.min.css" rel="stylesheet" />
-
+    <link href="~/assets/dist/virtual-select.min.css" rel="stylesheet" />
+    <link href="~/assets/libs/custombox/custombox.min.css" rel="stylesheet" />
 }
 
 
@@ -19,10 +19,11 @@
     <script src="~/assets/libs/datatables/jquery.dataTables.min.js"></script>
     <script src="~/assets/libs/datatables/dataTables.bootstrap4.js"></script>
     <script src="~/assets/libs/datatables/dataTables.responsive.min.js"></script>
-    <script src="~/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
     <script src="~/assets/libs/datatables/dataTables.buttons.min.js"></script>
     <script src="~/assets/libs/moment/moment.js"></script>
     <script src="~/assets/libs/daterangepicker/daterangepicker.min.js"></script>
+    <script src="~/assets/libs/custombox/custombox.min.js"></script>
+    <script src="~/assets/dist/virtual-select.min.js"></script>
 }
 
 @section PageScripts {
@@ -30,12 +31,6 @@
     <script src="~/assets/js/usertask.js"></script>
 }
 
-
-@* <div class="container-fluid flex-grow-1 container-p-y">
-    <!-- Layout Demo -->
-
-
- *@
 
 <div class="row">
     <div class="col-12">
@@ -54,12 +49,8 @@
                                 <input type="hidden"  id="endDate" value="" />
                             </div>
                             <div class="col-12 col-md-3">
-                                <select class="form-control" id="userId">
-                                    <option value="1">text</option>
-                                    <option value="2">text</option>
-                                    <option value="3">text</option>
-                                    <option value="4">text</option>
-                                    <option value="5">text</option>
+                                <select placeholder="Select user" data-search="true" data-silent-initial-value-set="true" class="form-select w-100" id="userId">
+                                   <option value="All">All</option>
                                 </select>
                             </div>
                             <div class="col-12 col-md-4">
@@ -67,7 +58,7 @@
                                     <button  type="submit" class="btn btn-secondary form-control mr-2">
                                         <i class="fas fa-filter"></i> Filter
                                     </button>
-                                    <button  type="submit" class="btn btn-success form-control  w-100">
+                                    <button type="submit" id="excelButton" class="btn btn-success form-control  w-100">
                                         <i class="fas fa-download"></i> Excel
                                     </button>
                                 </div>
@@ -78,14 +69,12 @@
                 </div>
                 <table id="table_usertask" class="table table-bordered dt-responsive nowrap w-100">
                 
-
-
-                
                 </table>
                      
-                   
+                @await Html.PartialAsync("_modalDelete");
+                <div id="editUserTaskContainer"></div>
 
-              
+
             </div>
 
         
