@@ -31,6 +31,7 @@ namespace Domain.Entity
         [EmailAddress]
         public string? Email { get; set; }
 
+        [ValidateNever]
         public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
     }
 }

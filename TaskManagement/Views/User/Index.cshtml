@@ -30,19 +30,10 @@
     <script src="~/assets/libs/custombox/custombox.min.js"></script>
 }
 
+
 @section PageScripts {
     <script src="~/assets/js/UserJs.js"></script>
 }
-
-<div class="card">
-    <div class="row">
-        <div class="col-12 ml-6">
-            <h2>Gestion des Utilisateurs</h2>
-        </div>
-
-    </div>
-
-</div>
 
 
 <div class="card">
@@ -63,26 +54,25 @@
 </div>
 
 <!-- Modal Add User-->
-<div class="modal fade bs-example-modal-xl" id="modalAdduser" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade bs-example-modal-xl" id="modalAddUser" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog  modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Create User</h5>
+                <h5 class="modal-title" id="userModalLabel">Créer un Utilisateur</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form asp-action="Register" method="post">
+            <form id="userForm" method="post">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-12">
                             <div class="card-body">
-
+                                <input asp-for="UserId" id="UserId" class="form-control credit-card-mask" hidden />
                                 <div class="row">
-
                                     <div class="col-xl-4 col-md-6 col-sm-12 mb-4">
                                         <label class="form-label" for="name">Name</label>
-                                        <input asp-for="Name" name="name" id="name" class="form-control credit-card-mask" />
+                                        <input asp-for="Name" class="form-control credit-card-mask" />
                                         <span asp-validation-for="Name" class="text-danger"></span>
                                     </div>
 
@@ -93,21 +83,19 @@
                                     </div>
 
                                     <div class="col-xl-4 col-md-6 col-sm-12 mb-4">
-                                        <label class="form-label">Email</label>
-                                        <input asp-for="Email" class="form-control credit-card-mask" />
-                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                        <label class="form-label">Username</label>
+                                        <input asp-for="Username" class="form-control credit-card-mask" />
+                                        <span asp-validation-for="Username" class="text-danger"></span>
+                                        <span id="inputErrorUsername" class="error-message-username" style="color: red"></span>
+
                                     </div>
 
-                                    <div class="mb-3" hidden>
-                                        <label class="form-label" for="add-user-Username">Username</label>
-                                        <input asp-for="Username" value="tata" type="text" id="add-user-Username" class="form-control" placeholder="Enter Your Username..." name="username" />
-                                    </div>
+
 
                                     <div class="col-xl-4 col-md-6 col-sm-12 mb-4 form-password-toggle">
                                         <label class="form-label">Password</label>
                                         <div class="input-group input-group-merge">
                                             <input asp-for="Password" class="form-control credit-card-mask" aria-describedby="multicol-password2" />
-                                            <span class="input-group-text cursor-pointer" id="multicol-confirm-password2"><i class="ti ti-eye-off"></i></span>
                                         </div>
                                         <span asp-validation-for="Password" class="text-danger"></span>
                                     </div>
@@ -116,7 +104,6 @@
                                         <label class="form-label">Confirm Password</label>
                                         <div class="input-group input-group-merge">
                                             <input asp-for="ConfirmPassword" class="form-control" aria-describedby="confirm-password2" />
-                                            <span class="input-group-text cursor-pointer" id="confirm-password2"><i class="ti ti-eye-off"></i></span>
                                         </div>
                                         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                                     </div>
@@ -128,10 +115,12 @@
                                         <option>Admin</option>
                                         </select>
                                     </div>
-                                    <d@* iv class="pt-4">
-                                         <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
-                                         <button type="reset" class="btn btn-label-secondary">Cancel</button>
-                                         </div> *@
+                                   
+                                    <div class="col-xl-4 col-md-6 col-sm-12 mb-4">
+                                        <label class="form-label">Email</label>
+                                        <input asp-for="Email" class="form-control credit-card-mask" />
+                                        <span id="inputError" class="error-message" style="color: red"></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -147,3 +136,34 @@
         </div>
     </div>
 </div>
+
+
+@* Modal Delete *@
+<div class="modal fade" id="modalConfirmDelete" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Userr</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="userFormDelete" method="post" action="/User/Delete">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card-body">
+                                <input type="hidden" name="UserId" id="UserIdToDelete" class="form-control" />                                <p>Are you sure to Delete ?</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger" id="btn-delete">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@* //----------------------------- Fin Modal delete ---------- *@
