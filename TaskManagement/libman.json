@@ -171,6 +171,29 @@
         "choices.min.js",
         "choices.min.css"
       ]
+    },
+    {
+      "library": "mdb-ui-kit@7.3.2",
+      "destination": "wwwroot/assets/mdb-ui-kit/",
+      "files": [
+        "mdb.min.css",
+        "mdb.umd.min.js",
+        "mdb.es.min.js"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "mdb-ui-kit@7.3.2",
+      "destination": "wwwroot/assets/mdb-ui-kit/",
+      "files": [
+        "css/mdb.min.css",
+        "js/mdb.umd.min.js",
+        "js/mdb.es.min.js"
+      ]
+    },
+    {
+      "library": "bootstrap-multiselect@1.1.2",
+      "destination": "wwwroot/assets/bootstrap-multiselect/"
     }
   ]
 }

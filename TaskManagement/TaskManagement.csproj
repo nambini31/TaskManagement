@@ -34,4 +34,22 @@
     <Folder Include="wwwroot\js\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\assets\libs\multiselect-01\.DS_Store" />
+    <None Include="wwwroot\assets\libs\multiselect-01\css\.DS_Store" />
+    <None Include="wwwroot\assets\libs\multiselect-01\css\bootstrap\.DS_Store" />
+    <None Include="wwwroot\assets\libs\multiselect-01\css\bootstrap\mixins\.DS_Store" />
+    <None Include="wwwroot\assets\libs\multiselect-01\fonts\.DS_Store" />
+    <None Include="wwwroot\assets\libs\multiselect-01\images\.DS_Store" />
+    <None Include="wwwroot\assets\libs\multiselect-01\js\.DS_Store" />
+    <None Include="wwwroot\assets\libs\multiselect-01\scss\.DS_Store" />
+    <None Include="wwwroot\assets\libs\multiselect-01\scss\bootstrap\.DS_Store" />
+    <None Include="wwwroot\assets\libs\multiselect-15\multiselect-15\.DS_Store" />
+    <None Include="wwwroot\assets\libs\multiselect-15\multiselect-15\css\.DS_Store" />
+    <None Include="wwwroot\assets\libs\multiselect-15\multiselect-15\fonts\.DS_Store" />
+    <None Include="wwwroot\assets\libs\multiselect-15\multiselect-15\images\.DS_Store" />
+    <None Include="wwwroot\assets\libs\multiselect-15\multiselect-15\js\.DS_Store" />
+    <None Include="wwwroot\assets\libs\multiselect-15\multiselect-15\scss\.DS_Store" />
+  </ItemGroup>
+
 </Project>

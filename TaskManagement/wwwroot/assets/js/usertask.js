@@ -5,6 +5,12 @@
     $('#excelButton').attr('disabled', 'disabled');
 $(document).ready(function () {
 
+    $("#userId").selectpicker({
+        liveSearch: true,
+        actionsBox: true
+    });
+
+
     var bsRangePickerWeekNum = $('#daterange');
 
     function formatDate(date) {
@@ -38,7 +44,13 @@ $(document).ready(function () {
     AfficheUserTask();
 
 
+    $('#userId').on('changed.bs.select', function () {
 
+
+            AfficheUserTask();
+ 
+
+    });
    
 
 
@@ -83,10 +95,9 @@ $.ajax({
 
             $("#userId").append(option);
         });
-        //VirtualSelect.init({
-        //    ele: '#userId'
-        //});
 
+        $("#userId").selectpicker("refresh");
+        
 
     },
    

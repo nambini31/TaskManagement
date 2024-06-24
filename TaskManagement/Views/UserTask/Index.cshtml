@@ -9,10 +9,8 @@
     <link href="~/assets/libs/datatables/dataTables.bootstrap4.css" rel="stylesheet" type="text/css" />
     <link href="~/assets/libs/datatables/responsive.bootstrap4.css" rel="stylesheet" type="text/css" />
     <link href="~/assets/libs/daterangepicker/daterangepicker.min.css" rel="stylesheet" />
-    <link href="~/assets/dist/virtual-select.min.css" rel="stylesheet" />
-    <link href="~/assets/libs/custombox/custombox.min.css" rel="stylesheet" />
-    <link href="~/assets/choices.js/choices.min.css" rel="stylesheet" />
-
+    <link href="~/assets/bootstrap-multiselect/css/bootstrap-multiselect.min.css" rel="stylesheet" />
+    <link href="~/assets/libs/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
 }
 
 
@@ -24,9 +22,8 @@
     <script src="~/assets/libs/datatables/dataTables.buttons.min.js"></script>
     <script src="~/assets/libs/moment/moment.js"></script>
     <script src="~/assets/libs/daterangepicker/daterangepicker.min.js"></script>
-    <script src="~/assets/libs/custombox/custombox.min.js"></script>
-    <script src="~/assets/dist/virtual-select.min.js"></script>
-    <script src="~/assets/choices.js/choices.min.js"></script>
+    <script src="~/assets/bootstrap-multiselect/js/bootstrap-multiselect.min.js"></script>
+    <script src="~/assets/libs/bootstrap-select/bootstrap-select.min.js"></script>
 }
 
 @section PageScripts {
@@ -52,15 +49,13 @@
                                 <input type="hidden"  id="endDate" value="" />
                             </div>
                             <div class="col-12 col-md-3">
-                                <select placeholder="Select user" data-search="true" data-silent-initial-value-set="true" class="form-control w-100" id="userId">
-                                   <option value="All">All</option>
+                                <select placeholder="Select user" multiple data-actions-box="true" class="selectpicker w-100" id="userId">
+                                   
                                 </select>
                             </div>
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-2">
                                 <div class="d-flex">
-                                    <button  type="submit" class="btn btn-secondary form-control mr-2">
-                                        <i class="fas fa-filter"></i> Filter
-                                    </button>
+                                    
                                     <button type="button" id="excelButton" class="btn btn-success form-control  w-100">
                                         <i class="fas fa-download"></i> Excel
                                     </button>
