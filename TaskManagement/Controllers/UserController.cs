@@ -26,6 +26,7 @@ namespace TaskManagement.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
+            @ViewData["titrePage"] = "User Management";
             return View();
         }
 

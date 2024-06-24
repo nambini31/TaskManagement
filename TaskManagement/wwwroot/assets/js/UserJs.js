@@ -101,11 +101,7 @@ $(document).ready(function () {
     $('#userForm').on('submit', function (event) {
         event.preventDefault();
         var formData = $(this).serialize();
-        var actionUrl = $(this).attr('action');
-
-        //verif username validation
-        var inputValueUsername = userInputUsername.value.trim();
-        ValidationUsername(inputValueUsername);
+        var actionUrl = $(this).attr('action');        
         
         //verif email validation
         var inputValue = userInput.value.trim();
@@ -119,7 +115,8 @@ $(document).ready(function () {
             url: actionUrl,
             type: 'POST',
             data: formData,
-            success: function (response) {
+            success: function (response) {                
+
                 if (response.success) {
                     $('#userForm')[0].reset();
                     $('#modalAddUser').modal('hide');
@@ -145,6 +142,9 @@ $(document).ready(function () {
                                 }
                             }
                         }
+                        //verif username validation
+                        var inputValueUsername = userInputUsername.value.trim();
+                        ValidationUsername(inputValueUsername);
                     }
                     if (response.message) {
                         alert(response.message);
@@ -162,7 +162,8 @@ $(document).ready(function () {
     $('#btnAddUser').on('click', function () {
         $('#userForm').attr('action', '/User/Register');
         $('#userForm')[0].reset();
-        $('.text-danger').html('');
+        $('.text-danger').html(''); 
+        $('.error-message-username').html('');
         $('#UserId').prop('disabled', true);
         $('#userModalLabel').text('Create User');
     });
@@ -175,6 +176,7 @@ $(document).ready(function () {
             $('#userForm').attr('action', '/User/Update');
             $('#userForm')[0].reset();
             $('.text-danger').html('');
+            $('.error-message-username').html('');
             $('#userModalLabel').text('Edit user');
             $('#UserId').prop('disabled', false);
             $('#userForm').find('input[name="UserId"]').val(user.userId);

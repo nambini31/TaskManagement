@@ -2,28 +2,30 @@
     <ul class="list-unstyled topnav-menu float-right mb-0">
 
         <li class="dropdown notification-list">
-            <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+            <a class="nav-link nav-user mr-0 waves-effect" href="#" role="button">
                 <span class="pro-user-name ml-1">
                     @if (User.Identity.IsAuthenticated)
                     {
                         @User.Identity.Name
                     }
-                    <i class="mdi mdi-chevron-down"></i>
                 </span>
             </a>
-            <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
+        </li>
+        <li class="dropdown notification-list">
+            <!-- item-->
+            <a asp-controller="User" asp-action="Logout" class="nav-link">
+                <i class="fe-log-out"></i>
+                <span>Logout</span>
+            </a>
 
-                <div class="dropdown-divider"></div>
-
-                <!-- item-->
-                <a asp-controller="User" asp-action="Logout" class="dropdown-item notify-item">
-                    <i class="fe-log-out"></i>
-                    <span>Logout</span>
-                </a>
-
-            </div>
         </li>
 
+    </ul>
+
+    <ul class="list-unstyled topnav-menu topnav-menu-left mb-0">
+        <li>
+            <h3 class="page-title-main">@ViewData["titrePage"]</h3>
+        </li>
     </ul>
 
     <!-- LOGO -->
