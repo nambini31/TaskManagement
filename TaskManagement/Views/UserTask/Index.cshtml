@@ -51,14 +51,19 @@
                                    
                                 </select>
                             </div>
-                            <div class="col-12 col-md-2">
-                                <div class="d-flex">
-                                    
-                                    <button type="button" id="excelButton" class="btn btn-success form-control  w-100">
-                                        <i class="fas fa-download"></i> Excel
-                                    </button>
+
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <div class="col-12 col-md-2">
+                                    <div class="d-flex">
+
+                                        <button type="button" id="excelButton" class="btn btn-success form-control  w-100">
+                                            <i class="fas fa-download"></i> Excel
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
+                            }
+                            
                         </div>
                     </form>
 

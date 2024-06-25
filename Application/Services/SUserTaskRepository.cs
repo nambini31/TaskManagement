@@ -58,6 +58,7 @@ namespace Application.Services
             {
                 IEnumerable<UserTaskVM> users = await IUserTask.GetUserTasksForTwoDate(filter);
                 IEnumerable<UserTaskVM> data = await IUserTask.GetUserTasksByUsersVM(filter);
+                IEnumerable<UserTaskVM> tasks = await IUserTask.GetUserTasksGrouperVM(filter);
 
                 var uploadsFolderPath = Path.Combine(_env.WebRootPath, "assets", "uploads");
                 if (!Directory.Exists(uploadsFolderPath))
@@ -75,43 +76,36 @@ namespace Application.Services
                     // Adding headers
                     worksheet.Cells["A1"].Value = "Tasks for project";
 
-                    // Dictionary pour regrouper les heures par nom de tâche
-                    Dictionary<string, double> taskHours = new Dictionary<string, double>();
-
-                    // Ajouter les données dans le dictionnaire
-                    foreach (var task in data)
+                     // Commence à la ligne 2 après les en-têtes , lire l'entete
+                    int column = 2;
+                    foreach (var userName in users)
                     {
-                        if (!taskHours.ContainsKey(task.taskName))
-                        {
-                            taskHours[task.taskName] = 0; // Initialiser si la clé n'existe pas
-                        }
-
-                        taskHours[task.taskName] += task.hours; // Ajouter les heures à la tâche existante
-                    }
-
-                    // Ajouter les noms des utilisateurs comme en-têtes de colonne
-                    int column = 2; // Commencer à partir de la colonne B après la première colonne "Tasks for project"
-                    foreach (var userName in users.Select(u => u.userName))
-                    {
-                        worksheet.Cells[1, column].Value = userName;
+                        worksheet.Cells[1, column].Value = $"{userName.userName}";
                         column++;
                     }
 
                     // Ajouter les données dans la feuille Excel
                     int row = 2; // Commencer à partir de la ligne 2 après les en-têtes
-                    foreach (var taskName in taskHours.Keys)
+                    foreach (var taskName in tasks)
                     {
-                        worksheet.Cells[$"A{row}"].Value = taskName; // Nom de la tâche
+                        worksheet.Cells[$"A{row}"].Value = taskName.taskName; // Nom de la tâche
 
                         // Remplir les heures pour chaque utilisateur
                         column = 2; // Commencer à partir de la colonne B après la première colonne "Tasks for project"
-                        foreach (var userName in users.Select(u => u.userName))
+                        foreach (var datas in data)
                         {
-                            var userTask = data.FirstOrDefault(d => d.taskName == taskName && d.userName == userName);
-                            if (userTask != null)
+
+                           var entete = worksheet.Cells[1, column].Value;
+
+                            if (entete == datas.userName)
                             {
-                                worksheet.Cells[row, column].Value = userTask.hours;
+                                
                             }
+                            //var userTask = data.FirstOrDefault(d => d.taskName == taskName && d.userName == userName);
+                            //if (userTask != null)
+                            //{
+                            //    worksheet.Cells[row, column].Value = userTask.hours;
+                            //}
                             column++;
                         }
 

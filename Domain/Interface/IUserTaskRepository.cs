@@ -16,6 +16,7 @@ namespace Domain.Interface
         Task<IEnumerable<UserTaskVM>> GetUserTasksVM(FiltreUserTask filter);
         Task<IEnumerable<UserTaskVM>> GetUserTasksByUsersVM(FiltreUserTask filter);
         Task<IEnumerable<UserTaskVM>> GetUserTasksForTwoDate(FiltreUserTask filter);
+        Task<IEnumerable<UserTaskVM>> GetUserTasksGrouperVM(FiltreUserTask filter);
 
         Task<UserTask> GetUserTaskById(int articleId);
         Task AddUserTask(UserTask article);

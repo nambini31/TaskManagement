@@ -393,18 +393,10 @@ function ModalEdit(id) {
 
                 if ($(this).is(':checked')) {
 
-                    $("#selectTaskId").empty();
                     getLeaves(projectId);
 
-
-                    $(`#labelleaveproject`).text("Leave");
-                    $(`#selectTaskId`).attr("disabled", "disabled");
-
                 } else {
-                    $(`#selectTaskId`).removeAttr("disabled");
-
-                    $(`#labelleaveproject`).text("Project");
-
+                   
                     getProject(projectId);
 
                     getTasks(projectId, taskId)
@@ -413,18 +405,11 @@ function ModalEdit(id) {
 
             if (leave > 0 && leave != null) {
 
-                
                 getLeaves(projectId);
 
-
-                $(`#labelleaveproject`).text("Leave");
-                $(`#selectTaskId`).attr("disabled", "disabled");
-
             } else {
-                $(`#labelleaveproject`).text("Project");
-                $(`#selectTaskId`).removeAttr("disabled");
-                getProject(projectId, taskId);
 
+                getProject(projectId, taskId);
                 getTasks(projectId, taskId) 
 
             }
@@ -513,9 +498,11 @@ function getProject(id , idTask) {
             });
 
             $('#selectProjectId').attr('name', "projectId");
-
             $('#selectProjectId').attr('required', "required");
             $('#selectTaskId').attr('required', "required");
+            $('#selectTaskId').prop('disabled', false);
+            $(`#labelleaveproject`).text("Project");
+            $("#selectTaskId").selectpicker("refresh");
 
             $('#selectProjectId').on('change', function () {
                 getTasks($(this).val(), idTask)
@@ -557,6 +544,10 @@ function getLeaves(id) {
             $('#selectProjectId').attr('name', "leaveId");
             $('#selectProjectId').removeAttr("required");
             $('#selectTaskId').removeAttr("required");
+            $("#selectTaskId").empty();
+            $(`#labelleaveproject`).text("Leave");
+            $('#selectTaskId').prop('disabled', true);
+            $("#selectTaskId").selectpicker("refresh");
 
             $('#selectProjectId').on('change', function () {
                
