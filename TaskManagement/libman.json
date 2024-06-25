@@ -194,6 +194,13 @@
     {
       "library": "bootstrap-multiselect@1.1.2",
       "destination": "wwwroot/assets/bootstrap-multiselect/"
+    },
+    {
+      "library": "cleave.js@1.6.0",
+      "destination": "wwwroot/assets/libs/cleave.js/",
+      "files": [
+        "cleave.min.js"
+      ]
     }
   ]
 }

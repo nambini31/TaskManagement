@@ -81,7 +81,7 @@ namespace TaskManagement.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> UpdateUserTask(UserTask userTask)
+        public async Task<IActionResult> UpdateUserTask([FromBody] UserTask userTask)
         {
             try
             {
