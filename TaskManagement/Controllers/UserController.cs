@@ -193,16 +193,19 @@ namespace TaskManagement.Controllers
             {
                 return BadRequest(new { success = false, errorMessage = "Invalid user ID." });
             }
-            //try
-            //{
+            try
+            {
+                // Récupère l'ID de l'utilisateur connecté
+                var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
                 var userToDelete = _userService.GetUserWithoutRole(userId);
-                _userService.DeleteUserService(userToDelete);
+                _userService.DeleteUserService(userToDelete, currentUserId);
                 return Json(new { success = true, message = "Successfuly !" });
-            //}
-            //catch(Exception ex)
-            //{
-            //    return Json(new { success = false, message = $"Can\'t Delete ! {ex.Message}" });
-            //}
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"Can\'t Delete ! {ex.Message}" });
+            }
         }
         //---------------------------------------
 

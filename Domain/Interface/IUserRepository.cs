@@ -17,7 +17,7 @@ namespace Domain.Interface
         
         void Add(User entity);
         void Update(User entity, int currentUserId);
-        void Remove(User entity);
+        void Remove(User entity, int currentUserId);
         void Save();
 
         //Task<IEnumerable<User>> GetUsersAsync();
