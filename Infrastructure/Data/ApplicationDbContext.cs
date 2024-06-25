@@ -22,11 +22,11 @@ namespace Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<User>()
-            .HasIndex(u => u.Username)
-            .IsUnique()
-            .HasDatabaseName("username");
-            base.OnModelCreating(modelBuilder);
+            //modelBuilder.Entity<User>()
+            //.HasIndex(u => u.Username)
+            //.IsUnique()
+            //.HasDatabaseName("username");
+            //base.OnModelCreating(modelBuilder);
 
         /*  modelBuilder.Entity<Tasks>()
                .HasOne(t => t.project)
