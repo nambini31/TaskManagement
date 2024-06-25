@@ -129,11 +129,28 @@ namespace Infrastructure.repository
             _context.SaveChanges();
         }
 
-        public void Update(User entity)
+        public void Update(User entity, int currentUserId)
         {
-            _context.Update(entity);
-            _context.SaveChanges();
+            using(var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    //insere l'UserId connécté dans la table app_context
+                    _context.Database.ExecuteSqlRaw("INSERT INTO app_context (user_id) VALUES ({0})", currentUserId);
+                    _context.Update(entity);
+                    _context.SaveChanges();
 
+                    // Supprimer l'entrée de app_context après mise à jour
+                    _context.Database.ExecuteSqlRaw("DELETE FROM app_context WHERE user_id = {0} ORDER BY context_id DESC LIMIT 1", currentUserId);
+                    transaction.Commit();
+
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
         }
     }
 }

@@ -118,7 +118,7 @@ namespace Application.Services
         }
 
         //-- update user -----
-        public void UpdateUser(int UserId, string name, string surname, string username, string password, string email, string roleName)
+        public void UpdateUser(int UserId, string name, string surname, string username, string password, string email, string roleName, int currentUserId)
         {
             // Récupérer l'utilisateur existant
             var existingUser = _userRepository.Get(u => u.UserId == UserId);
@@ -155,7 +155,7 @@ namespace Application.Services
                     _userRoleRepository.Update(userRoleToUpdate);
                     
                     //excecute l'update
-                    _userRepository.Update(user);               
+                    _userRepository.Update(user, currentUserId);               
                 }
             }
         }

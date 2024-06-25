@@ -6,10 +6,11 @@ namespace Infrastructure.Data
 {
     public class ApplicationDbContext : DbContext
     {
+        public int? CurrentUserId { get; set; }
+
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
-
   
         public DbSet<User> User { get; set; }
         public DbSet<Role> Role { get; set; }
@@ -32,6 +33,14 @@ namespace Infrastructure.Data
         /*  modelBuilder.Entity<Tasks>()
                .HasOne(t => t.project)
                .WithMany(p => p.tasks) */
+        }
+
+        public override int SaveChanges()
+        {
+            var userId = CurrentUserId ?? 0;
+            // Ajoutez ici toute logique supplémentaire avant l'enregistrement, si nécessaire
+
+            return base.SaveChanges();
         }
 
 

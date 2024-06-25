@@ -152,7 +152,10 @@ namespace TaskManagement.Controllers
             {
                 try
                 {
-                    _userService.UpdateUser(model.UserId, model.Name, model.Surname, model.Username, model.Password, model.Email, model.Role);
+                    // Récupère l'ID de l'utilisateur connecté
+                    var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                    _userService.UpdateUser(model.UserId, model.Name, model.Surname, model.Username, model.Password, model.Email, model.Role, currentUserId);
                     //return RedirectToAction("Index", "User");
                     return Json(new { success = true, message = "Successfuly" });
 
