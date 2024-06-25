@@ -272,6 +272,61 @@ namespace Infrastructure.Repository
             }
             
         }
+        public async Task<IEnumerable<UserTaskVM>> GetUserTasksGrouperVM(FiltreUserTask filter)
+        {
+
+            string user = filter.userId == null ? "" : $"and user.userId  IN ({string.Join(',', filter.userId)}) ";
+
+            try
+            {
+                string sql = $@"SELECT 
+                SUM(usertask.hours) AS hours, 
+                usertask.date, 
+                tasks.taskId, 
+                CASE 
+                    WHEN usertask.leaveId IS NOT NULL  AND usertask.leaveId != 0 THEN true 
+                    ELSE false 
+                END AS isLeave,
+                CASE 
+                    WHEN usertask.leaveId IS NOT NULL AND usertask.leaveId != 0 THEN leaves.reason 
+                    ELSE tasks.name 
+                END AS taskName,
+                user.userName ,
+                leaves.leaveId,
+                user.userId 
+            FROM 
+                usertask 
+                LEFT JOIN tasks ON tasks.taskId = usertask.taskId
+                LEFT JOIN leaves ON leaves.leaveId = usertask.leaveId 
+                LEFT JOIN user ON user.userId = usertask.userId 
+            WHERE ( usertask.date BETWEEN @start AND @end ) {user}
+            GROUP BY 
+                taskName                             
+                                ";
+
+                IEnumerable<UserTaskVM> data = await _db.UserTask.FromSqlRaw(sql,
+                    new MySqlParameter(sql="@start", filter.startDate.ToString("yyyy-MM-dd")),
+                    new MySqlParameter(sql="@end", filter.endDate.ToString("yyyy-MM-dd"))).Select(a =>
+                new UserTaskVM
+                {
+
+                    datetime = a.date,
+                    hours = a.hours,
+                    taskName = a.isLeave ? a.Leaves.reason : (a.Tasks.project.name + a.Tasks.name),
+                    userName = a.User.Username,
+
+                }
+                ).ToListAsync();
+
+                return data;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            
+        }
 
         public  async Task UpdateUserTask(UserTask Usertask)
     {
