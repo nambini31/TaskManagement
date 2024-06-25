@@ -90,13 +90,9 @@ $(document).ready(function () {
                 orderable: false, // Désactivation du tri sur cette colonne
             }
         ]
-    });
+    });    
 
-    const userInput = document.getElementById('Email');
-    const inputError = document.getElementById('inputError');
-
-    const userInputUsername = document.getElementById('Username'); 
-    const inputErrorUsername = document.getElementById('inputErrorUsername');
+    
 
     //-- gestion de la soumission du formulaire Creat / Update
     $('#userForm').on('submit', function (event) {
@@ -106,32 +102,29 @@ $(document).ready(function () {
 
         $('.text-danger').html('');
         $('.error-message-username').html('');
-
-        //validation Username
-        var inputValueUsername = userInputUsername.value.trim();
-        ValidationUsername(inputValueUsername);
         
-        //verif email validation
-        var inputValue = userInput.value.trim();
-        if (inputValue != '') {
-            ValidationEmail(userInput);
-        } else {
-            inputError.textContent = '';
-        }
-
         $.ajax({
             url: actionUrl,
             type: 'POST',
             data: formData,
-            success: function (response) {                
-
+            beforeSend: function () {
+                // Appeler la fonction de validation du formulaire
+                if (!ValidationEmailUsername()) {
+                    // Si la validation échoue, empêcher l'envoi de la requête
+                    return false;
+                }
+                // Si la validation réussit, permettre l'envoi de la requête
+                return true;
+            },
+            success: function (response) {
                 if (response.success) {
                     $('#userForm')[0].reset();
                     $('#modalAddUser').modal('hide');
                     $('#UserId').prop('disabled', false);
-                    toastr["success"](response.message)
+                    toastr["success"](response.message);
                     table.ajax.reload();
-                } else {
+                }
+                else {
                     if (response.erreurValidation) {
                         // Effacer les erreurs précédentes spécifiques
                         $('#userForm span.text-danger').each(function () {
@@ -150,18 +143,16 @@ $(document).ready(function () {
                                 }
                             }
                         }
-                        //verif username validation
-                        var inputValueUsername = userInputUsername.value.trim();
-                        ValidationUsername(inputValueUsername);
                     }
                     if (response.message) {
-                        toastr["error"](response.message)
+                        toastr["error"](response.message);
                     }
                 }
             },
             error: function (xhr, status, error) {
-                toastr["success"]("Sorry !! Server Error")
+                toastr["success"]("Sorry !! Server Error");
             }
+            
         });
     });
     //---------------------------------------------
@@ -236,46 +227,50 @@ $(document).ready(function () {
     });
     //--------------------------------------------------
 
-    //-- Visibilité password --
-    //const togglePassword = document.getElementById('togglePassword');
-    //const passwordInput = document.querySelector('.credit-card-mask');
-
-    //togglePassword.addEventListener('click', function () {
-    //    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-    //    passwordInput.setAttribute('type', type);
-    //    this.querySelector('i').classList.toggle('fa-eye');
-    //    this.querySelector('i').classList.toggle('fa-eye-slash');
-    //});
-    //-------------------------------------
 
     //-- validation e-mail ---
     function ValidationEmail(inputValue) {
+        const inputError = document.getElementById('inputError');
         const userInput = document.getElementById('Email');
         var inputValue = userInput.value.trim();
+
         // Expression régulière pour valider l'input (sans espaces, commence par une lettre, au moins 5 caractères)
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+\w+$/;
         //valide
         if (regex.test(inputValue)) {
             inputError.textContent = '';
+            return true;
         } else {
-            inputError.textContent = 'Adress Email Invalid';
-            retutn
+            inputError.textContent = 'Email Address Invalid';
+            return false;
         }
     }
     //-----------------------------------
 
     //-- Validation Username --
     function ValidationUsername(inputValue) {
-        
+
+        const userInputUsername = document.getElementById('Username');
+        var inputValueUsername = userInputUsername.value.trim();
+        const inputErrorUsername = document.getElementById('inputErrorUsername');
+
         const regex = /^[a-zA-Z][a-zA-Z0-9]{4,}$/;
         //valide
-        if (regex.test(inputValue)) {
+        if (regex.test(inputValueUsername)) {
             inputErrorUsername.textContent = '';
+            return true;
         } else {
             inputErrorUsername.textContent = 'Username that contains at least 5 characters, starts with a letter, and contains no spaces or special characters';
-            return
+            return false;
         }
     }
-    //-----------------------------
+    //---------------------------------------------------
 
+    //-- fudionner les deux validation
+    function ValidationEmailUsername() {
+        var isEmailValide = ValidationEmail();
+        var isUsernameValide = ValidationUsername();
+
+        return isEmailValide && isUsernameValide;
+    }
 });
