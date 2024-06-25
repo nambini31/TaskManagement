@@ -4,6 +4,7 @@ using Domain.DTO.ViewModels;
 using Domain.Entity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace TaskManagement.Controllers
 {
@@ -32,8 +33,14 @@ namespace TaskManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> UserTaskList(FiltreUserTask filter)
         {
+
             try
             {
+                if (User.FindFirstValue(ClaimTypes.Role).ToString() != "Admin")
+                {
+                    var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                    filter.userId = new List<int> { currentUserId };
+                }
                 var data = await _SUserTask.GetUserTaskVM(filter);
 
                 return Ok(data);

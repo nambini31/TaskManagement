@@ -9,6 +9,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Domain.DTO.ViewModels.UserVM;
 using static Application.Services.UserServiceRepository;
+using Domain.DTO;
 
 namespace TaskManagement.Controllers
 {
@@ -44,7 +45,21 @@ namespace TaskManagement.Controllers
         [HttpPost]
         public IActionResult GetAllUser()
         {
-            var users = _userService.GetUser();
+            IEnumerable<UserListWithRole>  users ;
+
+            if (User.FindFirstValue(ClaimTypes.Role).ToString() != "Admin")
+            {
+                var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                users = new List<UserListWithRole> { _userService.GetUserById(currentUserId) };
+            }
+            else
+            {
+
+                 users = _userService.GetUser();
+            
+            }
+
             return Json(users);
         }
         //----------------------------------
