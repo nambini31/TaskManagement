@@ -201,7 +201,7 @@ namespace Infrastructure.Repository
                 {
                     datetime = a.date,
                     hours = a.hours,
-                    taskName = a.isLeave ? a.Leaves.reason : (a.Tasks.project.name + a.Tasks.name),
+                    taskName = a.isLeave ? a.Leaves.reason : (a.Tasks.project.name +" - "+ a.Tasks.name),
                     userName = a.User.Username,
 
                 }
@@ -257,7 +257,7 @@ namespace Infrastructure.Repository
 
                     datetime = a.date,
                     hours = a.hours,
-                    taskName = a.isLeave ? a.Leaves.reason : (a.Tasks.project.name + a.Tasks.name),
+                    taskName = a.isLeave ? a.Leaves.reason : (a.Tasks.project.name +" - "+ a.Tasks.name),
                     userName = a.User.Username,
 
                 }
@@ -312,7 +312,7 @@ namespace Infrastructure.Repository
 
                     datetime = a.date,
                     hours = a.hours,
-                    taskName = a.isLeave ? a.Leaves.reason : (a.Tasks.project.name + a.Tasks.name),
+                    taskName = a.isLeave ? a.Leaves.reason : (a.Tasks.project.name +" - "+ a.Tasks.name),
                     userName = a.User.Username,
 
                 }
