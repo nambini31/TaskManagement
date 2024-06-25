@@ -21,7 +21,7 @@ namespace Domain.Interface
         Task<UserTask> GetUserTaskById(int articleId);
         Task AddUserTask(UserTask article);
         Task UpdateUserTask(UserTask article);
-        Task DeleteUserTaskById(int articleId);
+        Task DeleteUserTaskById(int articleId, int userConnected);
 
     }
 }

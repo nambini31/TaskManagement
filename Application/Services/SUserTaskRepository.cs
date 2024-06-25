@@ -27,9 +27,9 @@ namespace Application.Services
              await IUserTask.AddUserTask(article);
         }
 
-        public async Task DeleteUserTaskById(int articleId)
+        public async Task DeleteUserTaskById(int articleId, int userConnected)
         {
-           await IUserTask.DeleteUserTaskById(articleId);
+           await IUserTask.DeleteUserTaskById(articleId, userConnected);
         }
 
         public  async Task<UserTask> GetUserTaskById(int articleId)
