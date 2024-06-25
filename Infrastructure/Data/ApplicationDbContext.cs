@@ -6,8 +6,6 @@ namespace Infrastructure.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public int? CurrentUserId { get; set; }
-
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }

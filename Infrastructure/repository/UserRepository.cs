@@ -118,10 +118,27 @@ namespace Infrastructure.repository
             return result;
         }
 
-        public void Remove(User entity)
+        public void Remove(User entity, int currentUserId)
         {
-            _context.Remove(entity);
-            _context.SaveChanges();
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    //denifinition du session pour utiliser dans trigger
+                    _context.Database.ExecuteSqlRaw("SET @current_user_id = {0}", currentUserId);
+
+                    _context.Remove(entity);
+                    _context.SaveChanges();
+
+                    transaction.Commit();
+
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
         }
 
         public void Save() 
@@ -135,13 +152,12 @@ namespace Infrastructure.repository
             {
                 try
                 {
-                    //insere l'UserId connécté dans la table app_context
-                    _context.Database.ExecuteSqlRaw("INSERT INTO app_context (user_id) VALUES ({0})", currentUserId);
+                    //denifinition du session pour utiliser dans trigger
+                    _context.Database.ExecuteSqlRaw("SET @current_user_id = {0}", currentUserId);
+
                     _context.Update(entity);
                     _context.SaveChanges();
 
-                    // Supprimer l'entrée de app_context après mise à jour
-                    _context.Database.ExecuteSqlRaw("DELETE FROM app_context WHERE user_id = {0} ORDER BY context_id DESC LIMIT 1", currentUserId);
                     transaction.Commit();
 
                 }
