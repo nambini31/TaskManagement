@@ -125,7 +125,7 @@ namespace Infrastructure.repository
                 try
                 {
                     //denifinition du session pour utiliser dans trigger
-                    _context.Database.ExecuteSqlRaw("SET @current_user_id = {0}", currentUserId);
+                    _context.Database.ExecuteSqlRaw("SET @userConnected = {0}", currentUserId);
 
                     _context.Remove(entity);
                     _context.SaveChanges();
@@ -153,7 +153,7 @@ namespace Infrastructure.repository
                 try
                 {
                     //denifinition du session pour utiliser dans trigger
-                    _context.Database.ExecuteSqlRaw("SET @current_user_id = {0}", currentUserId);
+                    _context.Database.ExecuteSqlRaw("SET @userConnected = {0}", currentUserId);
 
                     _context.Update(entity);
                     _context.SaveChanges();

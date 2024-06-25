@@ -35,9 +35,6 @@ namespace Infrastructure.Data
 
         public override int SaveChanges()
         {
-            var userId = CurrentUserId ?? 0;
-            // Ajoutez ici toute logique supplémentaire avant l'enregistrement, si nécessaire
-
             return base.SaveChanges();
         }
 
