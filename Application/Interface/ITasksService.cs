@@ -12,7 +12,5 @@ namespace Application.Interface
         Task CreateTaskAsync(TasksDto tasksDto);
         Task UpdateTaskAsync(TasksDto tasksDto);
         Task DeleteTaskAsync(int id);
-
-
     }
 }

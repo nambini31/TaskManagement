@@ -13,15 +13,15 @@
                     <input type="hidden" id="taskId" name="taskId" value="${data.taskId}" />
                     <div class="form-group">
                         <label for="Title">Title</label>
-                        <input type="text" class="form-control" id="Title" name="Title" value="${data.name}" required />
+                        <input type="text" class="form-control" id="TitleForm" name="Title" value="${data.name}" required />
                     </div>
                     <div class="form-group">
                         <label for="ProjectId">Project</label>
-                        <select class="form-control" id="ProjectId" name="ProjectId" required>
+                        <select class="form-control" id="ProjectIdForm" name="ProjectId" required>
                             ${data.projects.map(project => `<option value="${project.projectId}" ${project.projectId == data.projectId ? "selected" : ""}>${project.name}</option>`).join('')}
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </form>
             `;
             $('#editTaskModal .modal-body').html(editFormHtml);
@@ -34,7 +34,6 @@
         $.get('/Tasks/Get/' + taskId, function (data) {
             var deleteFormHtml = `
                 <p>Are you sure you want to delete this task?</p>
-                <p><strong>Title:</strong> ${data.name}<br /><strong>Project:</strong> ${data.projectName}</p>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 <button type="button" id="deleteTaskConfirmButton" class="btn btn-danger" data-id="${data.taskId}">Delete</button>
             `;
@@ -74,9 +73,9 @@
 
         var formData = {
             taskId: $('#taskId').val(),
-            name: $('#Title').val(),
-            projectId: $('#ProjectId').val(),
-            projectName: $('#ProjectId option:selected').text() // Si nécessaire
+            name: $('#TitleForm').val(),
+            projectId: $('#ProjectIdForm').val(),
+            projectName: $('#ProjectIdForm option:selected').text() // Si nécessaire
         };
 
         $.ajax({
