@@ -148,6 +148,8 @@ namespace Application.Services
                 var role = _roleRepository.Get(r => r.Name == roleName); //pour recuperer l'RoleId
                 var userRoleToUpdate = _userRoleRepository.Get(ur => ur.UserId == user.UserId); //pour recuperer IdUserRole
 
+
+                //On met a jour les UserRole
                 if (role != null && userRoleToUpdate != null)
                 {
                     userRoleToUpdate.UserId = user.UserId;
@@ -198,9 +200,9 @@ namespace Application.Services
         }
 
         //-- Delete User -----------
-        public void DeleteUserService(User model)
+        public void DeleteUserService(User model, int currentUserId)
         {
-            _userRepository.Remove(model);
+            _userRepository.Remove(model, currentUserId);
         }
         //-----------------------------------------
     }
