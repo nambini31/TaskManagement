@@ -516,6 +516,32 @@ function getTasks(projectId , taskId) {
         },
 
     });
+
+    $('#formUserTask').submit(function (e) {
+        e.preventDefault(); 
+
+       
+        var formData = $(this).serialize();
+
+       
+        $.ajax({
+            url: '/UserTask/Create',
+            type: 'POST',
+            data: formData,
+            success: function (response) {
+                
+                console.log(response);
+                
+                window.location.href = '/UserTask/Index'; 
+            },
+            error: function (error) {
+                
+                console.error('Erreur lors de la soumission du formulaire : ', error);
+               
+                toastr.error('Erreur lors de la création du UserTask. Veuillez réessayer.');
+            }
+        });
+    });
 }
 
 /******************************* */

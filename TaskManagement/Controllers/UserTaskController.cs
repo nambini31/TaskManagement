@@ -29,6 +29,7 @@ namespace TaskManagement.Controllers
         }
 
 
+
         [HttpPost]
         public async Task<IActionResult> UserTaskList(FiltreUserTask filter)
         {
@@ -44,24 +45,33 @@ namespace TaskManagement.Controllers
             }
             
         }
-        
-        [HttpPost]
-        public async Task<IActionResult> DeleteUserTask(int userTaskId)
+
+        public IActionResult Create()
         {
-            try
-            {
-                await _SUserTask.DeleteUserTaskById(userTaskId);
-
-                var responseData = new { message = "Success" };
-
-                return Ok(responseData);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            
+            return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(UserTask model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await _SUserTask.AddUserTask(model);
+                    return Json(new { success = true });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, error = ex.Message });
+                }
+            }
+            else
+            {
+                return Json(new { success = false, error = "Invalid model state" });
+            }
+        }
+
         
         [HttpPost]
         public async Task<IActionResult> ModalUserTaskEdit(int userTaskId)
@@ -100,6 +110,7 @@ namespace TaskManagement.Controllers
             }
             
         }
+
         [HttpPost]
         public async Task<IActionResult> GenerateExcelUserTask(FiltreUserTask filter)
         {

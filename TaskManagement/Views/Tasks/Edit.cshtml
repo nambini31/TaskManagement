@@ -1,1 +1,19 @@
-﻿
+﻿@model TasksVM
+
+<form id="editTaskForm">
+    <input type="hidden" id="taskId"/>
+    <div class="form-group">
+        <label for="Title">Title</label>
+        <input type="text" class="form-control" id="Title" name="Title" required />
+    </div>
+    <div class="form-group">
+        <label for="ProjectId">Project</label>
+        <select class="form-control" id="ProjectId" name="ProjectId" required>
+            @foreach (var project in Model.ProjectList)
+            {
+                <option value="@project.projectId">@project.name</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
