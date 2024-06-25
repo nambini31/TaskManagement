@@ -6,8 +6,10 @@ using Infrastructure.Data;
 using Infrastructure.repository;
 using Infrastructure.Repository;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +26,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
+
+var supportedCultures = new[]
+    {
+        new CultureInfo("en-US")  // Définir la culture en anglais (États-Unis)
+    };
+
+
 // register articleRepository and service
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
@@ -33,7 +42,7 @@ builder.Services.AddScoped<UserServiceRepository>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
             {
-                options.LoginPath = "/User/Login";
+                options.LoginPath = "/User/MustLogin";
                 options.AccessDeniedPath = "/User/AccesDenied";
 
                 //gere la redirection pour souvenir les pages precedent
@@ -71,6 +80,13 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
 }
 app.UseHttpsRedirection();
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("en-US"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
+});
+
 
 app.UseStaticFiles();
 
@@ -83,5 +99,12 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=User}/{action=Login}/{id?}");
+
+// Initialisez la base de données
+using (var scope = app.Services.CreateScope())
+{
+    var dbInitializer = scope.ServiceProvider.GetRequiredService<UserServiceRepository>();
+    dbInitializer.InitialiseUser();
+}
 
 app.Run();

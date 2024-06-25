@@ -75,46 +75,51 @@ namespace Application.Services
                     // Adding headers
                     worksheet.Cells["A1"].Value = "Tasks for project";
 
-                    int column = 2; // Start adding additional headers from column C
+                    // Dictionary pour regrouper les heures par nom de tâche
+                    Dictionary<string, double> taskHours = new Dictionary<string, double>();
 
-                    foreach (var item in users)
+                    // Ajouter les données dans le dictionnaire
+                    foreach (var task in data)
                     {
-                        worksheet.Cells[1, column].Value = $"{item.userName}";
+                        if (!taskHours.ContainsKey(task.taskName))
+                        {
+                            taskHours[task.taskName] = 0; // Initialiser si la clé n'existe pas
+                        }
+
+                        taskHours[task.taskName] += task.hours; // Ajouter les heures à la tâche existante
+                    }
+
+                    // Ajouter les noms des utilisateurs comme en-têtes de colonne
+                    int column = 2; // Commencer à partir de la colonne B après la première colonne "Tasks for project"
+                    foreach (var userName in users.Select(u => u.userName))
+                    {
+                        worksheet.Cells[1, column].Value = userName;
                         column++;
                     }
 
-                    // Adding data
-                    int row = 2; // Start from row 2 after headers
-                    foreach (var task in data)
+                    // Ajouter les données dans la feuille Excel
+                    int row = 2; // Commencer à partir de la ligne 2 après les en-têtes
+                    foreach (var taskName in taskHours.Keys)
                     {
-                        worksheet.Cells[$"A{row}"].Value = task.taskName; // Task name
+                        worksheet.Cells[$"A{row}"].Value = taskName; // Nom de la tâche
 
-                        // Initialize hours for each user to zero
-                        Dictionary<int, double> userHours = new Dictionary<int, double>();
-                        foreach (var user in users)
+                        // Remplir les heures pour chaque utilisateur
+                        column = 2; // Commencer à partir de la colonne B après la première colonne "Tasks for project"
+                        foreach (var userName in users.Select(u => u.userName))
                         {
-                            userHours[user.userId] = 0.0;
-                        }
-
-                        // Assign hours based on user and task
-                        foreach (var hour in data.Where(d => d.taskName == task.taskName))
-                        {
-                            userHours[hour.userId] += hour.hours;
-                        }
-
-                        // Fill in the hours for each user
-                        column = 2; // Start from column B
-                        foreach (var user in users)
-                        {
-                            worksheet.Cells[row, column].Value = userHours[user.userId];
+                            var userTask = data.FirstOrDefault(d => d.taskName == taskName && d.userName == userName);
+                            if (userTask != null)
+                            {
+                                worksheet.Cells[row, column].Value = userTask.hours;
+                            }
                             column++;
                         }
 
                         row++;
                     }
 
-                    // Formatting header
-                    using (var range = worksheet.Cells["A1:J1"])
+                    // Formater l'en-tête
+                    using (var range = worksheet.Cells[$"A1:{Convert.ToChar('A' + users.Count())}1"])
                     {
                         range.Style.Font.Bold = true;
                         range.Style.Fill.PatternType = ExcelFillStyle.Solid;
@@ -124,14 +129,20 @@ namespace Application.Services
                     // Save to the specified path
                     package.SaveAs(new FileInfo(filePath));
                 }
+
+                // Retourner le fichier Excel en tant que téléchargement
+               // byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                //return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
             }
             catch (Exception ex)
             {
-
-                throw ex;
+                // Gérer l'erreur (journalisation, traitement, etc.)
+                // Ne pas utiliser throw ex; pour ne pas perdre la stack trace
+                throw;
             }
 
-            
+
+
 
             //return Ok(new { message = "File saved successfully", filePath });
         }

@@ -13,6 +13,40 @@
     z-index: 100;
 }
 
+.btn-light:not(:disabled):not(.disabled).active, .btn-light:not(:disabled):not(.disabled):active, .show > .btn-light.dropdown-toggle {
+    color: #343a40;
+    background-color: #ffffff;
+    border-color: #d3d9df;
+}
+
+.bootstrap-select > .dropdown-toggle {
+    border: 1px solid #dbe1e6 !important;
+}
+
+.bootstrap-select .dropdown-toggle:focus, .bootstrap-select > select.mobile-device:focus + .dropdown-toggle {
+    outline: 0px !important;
+    outline-offset: 0px !important;
+}
+.bootstrap-select .dropdown-menu {
+    min-width: 100%;
+    /* -webkit-box-sizing: border-box; */
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    /*left: 5px !important;*/
+    padding-right: 0px;
+}
+
+.bootstrap-select > .dropdown-toggle.bs-placeholder, .bootstrap-select > .dropdown-toggle.bs-placeholder:active, .bootstrap-select > .dropdown-toggle.bs-placeholder:focus, .bootstrap-select > .dropdown-toggle.bs-placeholder:hover {
+    color: #999;
+
+    color: #6c757d;
+    background-color: #fff !important;
+    background-clip: padding-box !important;
+    border: 1px solid #ced4da !important;
+    border-radius: .2rem !important;
+}
+
+
 .vscomp-toggle-button {
     align-items: center;
     background-color: #fff;

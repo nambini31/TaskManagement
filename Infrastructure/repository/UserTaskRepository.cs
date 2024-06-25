@@ -10,6 +10,7 @@ using Infrastructure.Data;
 using Domain.DTO.ViewModels;
 using System.Threading.Tasks.Dataflow;
 using MySqlConnector;
+using System.Security.Claims;
 
 namespace Infrastructure.Repository
 {
@@ -98,8 +99,15 @@ namespace Infrastructure.Repository
         }
         public async Task<IEnumerable<UserTaskVM>> GetUserTasksVM(FiltreUserTask filter)
         {
+            
 
-            string user = (filter.userId == null || filter.userId == "All" ) ?  "" : $"and user.userId = {filter.userId} ";
+            string user =   filter.userId == null    ?  "" : $"and user.userId  IN ({string.Join(',', filter.userId)}) ";
+
+
+            if (true)
+            {
+                
+            }
 
             try
             {
@@ -155,7 +163,7 @@ namespace Infrastructure.Repository
         public async Task<IEnumerable<UserTaskVM>> GetUserTasksByUsersVM(FiltreUserTask filter)
         {
 
-            string user = (filter.userId == null || filter.userId == "All" ) ?  "" : $"and user.userId = {filter.userId} ";
+            string user = filter.userId == null ? "" : $"and user.userId  IN ({string.Join(',', filter.userId)}) ";
 
             try
             {
@@ -212,7 +220,7 @@ namespace Infrastructure.Repository
         public async Task<IEnumerable<UserTaskVM>> GetUserTasksForTwoDate(FiltreUserTask filter)
         {
 
-            string user = (filter.userId == null || filter.userId == "All" ) ?  "" : $"and user.userId = {filter.userId} ";
+            string user = filter.userId == null ? "" : $"and user.userId  IN ({string.Join(',', filter.userId)}) ";
 
             try
             {

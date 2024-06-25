@@ -30,17 +30,17 @@
                         </div>
                         <div class="col-12 col-md-4">
                             <label id="labelleaveproject">Project</label>
-                            <select placeholder="Select project" name="projectId" data-search="true" data-silent-initial-value-set="true" class="form-control w-100" id="selectProjectId">
+                            <select placeholder="Select project" name="projectId" class="form-control w-100 selectpicker" id="selectProjectId">
                             </select>
                         </div>
                         <div class="col-12 col-md-6">
                             <label>Tasks</label>
-                            <select placeholder="Select task" name="taskId" data-search="true" data-silent-initial-value-set="true" class="form-control w-100" id="selectTaskId">
+                            <select placeholder="Select task" name="taskId" class="form-control w-100 selectpicker" id="selectTaskId">
                             </select>
                         </div>
                         <div class="col-12 col-md-1">
                             <label class="form-label">Hours</label>
-                            <input asp-for="hours" type="text" class="form-control" />
+                            <input asp-for="hours" type="text" id="hoursEditUsrTask" required  class="form-control" />
                         </div>
                         
                     </div>

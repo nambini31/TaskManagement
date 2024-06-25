@@ -9,11 +9,12 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Domain.DTO.ViewModels.UserVM;
 using static Application.Services.UserServiceRepository;
+using Domain.DTO;
 
 namespace TaskManagement.Controllers
 {
 
-    //[Authorize(Roles = "Admin")]
+    //[Authorize]
     public class UserController : Controller
     {
        private readonly UserServiceRepository _userService;
@@ -44,7 +45,21 @@ namespace TaskManagement.Controllers
         [HttpPost]
         public IActionResult GetAllUser()
         {
-            var users = _userService.GetUser();
+            IEnumerable<UserListWithRole>  users ;
+
+            if (User.FindFirstValue(ClaimTypes.Role) != "Admin")
+            {
+                var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                users = new List<UserListWithRole> { _userService.GetUserById(currentUserId) };
+            }
+            else
+            {
+
+                 users = _userService.GetUser();
+            
+            }
+
             return Json(users);
         }
         //----------------------------------
@@ -63,8 +78,7 @@ namespace TaskManagement.Controllers
                 try
                 {
                     // Récupère l'ID de l'utilisateur connecté
-                    //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
-
+                    //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                     _userService.RegisterUser(model.Name, model.Surname, model.Username, model.Password, model.Email, model.Role);
                     return Json(new { success = true, message = "Successfuly" });
                 }
@@ -128,7 +142,7 @@ namespace TaskManagement.Controllers
                     {
                         // Redirect to default page
                         //return RedirectToAction("Index", "Home");
-                        return RedirectToAction("Index", "User");
+                        return RedirectToAction("Index", "UserTask");
                     }
 
                 }
@@ -152,7 +166,10 @@ namespace TaskManagement.Controllers
             {
                 try
                 {
-                    _userService.UpdateUser(model.UserId, model.Name, model.Surname, model.Username, model.Password, model.Email, model.Role);
+                    // Récupère l'ID de l'utilisateur connecté
+                    var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                    _userService.UpdateUser(model.UserId, model.Name, model.Surname, model.Username, model.Password, model.Email, model.Role, currentUserId);
                     //return RedirectToAction("Index", "User");
                     return Json(new { success = true, message = "Successfuly" });
 
@@ -190,16 +207,19 @@ namespace TaskManagement.Controllers
             {
                 return BadRequest(new { success = false, errorMessage = "Invalid user ID." });
             }
-            //try
-            //{
+            try
+            {
+                // Récupère l'ID de l'utilisateur connecté
+                var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
                 var userToDelete = _userService.GetUserWithoutRole(userId);
-                _userService.DeleteUserService(userToDelete);
+                _userService.DeleteUserService(userToDelete, currentUserId);
                 return Json(new { success = true, message = "Successfuly !" });
-            //}
-            //catch(Exception ex)
-            //{
-            //    return Json(new { success = false, message = $"Can\'t Delete ! {ex.Message}" });
-            //}
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"Can\'t Delete ! {ex.Message}" });
+            }
         }
         //---------------------------------------
 
@@ -208,6 +228,14 @@ namespace TaskManagement.Controllers
         {
             TempData["messageLogin"] = "You are not authorized to access this page";
             return RedirectToAction("Login");      
+        }
+        //--------------------------------------------
+
+        //-- Must log in --
+        public IActionResult MustLogin()
+        {
+            TempData["messageLogin"] = "You must log in";
+            return RedirectToAction("Login");
         }
         //--------------------------------------------
 

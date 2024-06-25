@@ -5,6 +5,14 @@
     $('#excelButton').attr('disabled', 'disabled');
 $(document).ready(function () {
 
+    $("#userId").selectpicker({
+        liveSearch: true,
+        actionsBox: true
+    });
+
+    
+
+
     var bsRangePickerWeekNum = $('#daterange');
 
     function formatDate(date) {
@@ -16,29 +24,51 @@ $(document).ready(function () {
 
     // Date exacte une semaine avant aujourd'hui
     const today = new Date();
-    const exactWeekBefore = new Date();
-    exactWeekBefore.setDate(today.getDate() - 7);
+    const dayOfWeek = today.getDay(); // Récupérer le jour de la semaine (0 pour dimanche, 6 pour samedi)
+
+    let exactWeekBeforeStart = new Date();
+    let exactWeekBeforeEnd = new Date();
+
+    if (dayOfWeek >= 4 && dayOfWeek <= 6) {
+        // Si aujourd'hui est jeudi, vendredi ou samedi
+        // Date fin est le mercredi de cette semaine + 1 jour
+        exactWeekBeforeEnd.setDate(today.getDate() - (dayOfWeek - 2) + 1);
+        // Date début est le jeudi de la semaine précédente
+        exactWeekBeforeStart.setDate(today.getDate() - (dayOfWeek + 3));
+    } else {
+        // Pour les autres jours (lundi, mardi, mercredi)
+        // Date fin est le mercredi de la semaine précédente + 1 jour
+        exactWeekBeforeEnd.setDate(today.getDate() - (dayOfWeek + 5) + 1);
+        // Date début est le jeudi de la 2ème semaine précédente
+        exactWeekBeforeStart.setDate(today.getDate() - (dayOfWeek + 10));
+    }
 
     // Insérer les dates dans l'input
-    const formattedExactWeekBefore = formatDate(exactWeekBefore);
-    const formattedToday = formatDate(today);
-    const combinedDates = `${formattedExactWeekBefore} - ${formattedToday}`;
+    const formattedExactWeekBeforeStart = formatDate(exactWeekBeforeStart);
+    const formattedExactWeekBeforeEnd = formatDate(exactWeekBeforeEnd);
+    const combinedDates = `${formattedExactWeekBeforeStart} - ${formattedExactWeekBeforeEnd}`;
 
     bsRangePickerWeekNum.val(combinedDates);
-    // Mettre à jour le Date Range Picker avec les nouvelles dates
-    const startDate = exactWeekBefore;
-    const endDate = today;
 
-    $('#startDate').val(formattedExactWeekBefore);
-    $('#endDate').val(formattedToday);
-    $('#daterange').data('daterangepicker').setStartDate(startDate);
-    $('#daterange').data('daterangepicker').setEndDate(endDate);
+    // Mettre à jour le Date Range Picker avec les nouvelles dates
+    $('#startDate').val(formattedExactWeekBeforeStart);
+    $('#endDate').val(formattedExactWeekBeforeEnd);
+    $('#daterange').data('daterangepicker').setStartDate(exactWeekBeforeStart);
+    $('#daterange').data('daterangepicker').setEndDate(exactWeekBeforeEnd);
+
+
 
 
     AfficheUserTask();
 
 
+    $('#userId').on('changed.bs.select', function () {
 
+
+            AfficheUserTask();
+ 
+
+    });
    
 
 
@@ -83,10 +113,9 @@ $.ajax({
 
             $("#userId").append(option);
         });
-        //VirtualSelect.init({
-        //    ele: '#userId'
-        //});
 
+        $("#userId").selectpicker("refresh");
+        
 
     },
    
@@ -94,6 +123,32 @@ $.ajax({
 
 /******************************* */
 
+function formatPrixImput() {
+
+    var inputPrix = $("#hoursEditUsrTask");
+
+    var valeurDepuisBase = inputPrix.val(); 
+
+    if (valeurDepuisBase.includes(',')) {
+        valeurDepuisBase = valeurDepuisBase.replace(',', '.'); 
+    }
+
+    
+    $(this).val(valeurDepuisBase);
+    inputPrix.each(function () {
+        clave = new Cleave(this, {
+            numeral: true,
+            numeralDecimalMark: '.',
+            numeralDecimalScale: 2,
+            numeralPositiveOnly: true, 
+            numeralThousandsGroupStyle: 'thousand', 
+            delimiter: '', 
+            numeralPositiveOnly: true,
+            numeralIntegerScale: 4, 
+        });
+    });
+
+}
 
 /****************suppression usertask ***********/
 $("#deleteTimeline").on("click", function (e) {
@@ -315,9 +370,24 @@ function ModalEdit(id) {
             $('#editUserTaskContainer').html(data);
             $("#modalEdit").modal("show");
 
+
+            $("#selectTaskId").selectpicker({
+                liveSearch: true,
+                actionsBox: true
+            });
+
+            $("#selectProjectId").selectpicker({
+                liveSearch: true,
+                actionsBox: true
+            });
+
             var leave = $(`#usertask_${id}`).data("leaveid")
             var projectId = $(`#usertask_${id}`).data("projectid");
             var taskId = $(`#usertask_${id}`).data("taskid");
+
+           
+            formatPrixImput();
+          
 
             $('#checkleave').change(function () {
 
@@ -352,7 +422,7 @@ function ModalEdit(id) {
 
             } else {
                 $(`#labelleaveproject`).text("Project");
-
+                $(`#selectTaskId`).removeAttr("disabled");
                 getProject(projectId, taskId);
 
                 getTasks(projectId, taskId) 
@@ -368,6 +438,16 @@ function ModalEdit(id) {
                 let data = new FormData(this);
                 data.delete('isLeave');
 
+
+                // Convert FormData to JSON object
+                const jsonObject = {};
+                data.forEach((value, key) => {
+                    jsonObject[key] = value;
+                });
+
+                // Convert JSON object to JSON string
+                const jsonString = JSON.stringify(jsonObject);
+
                 $.ajax({
 
                     url: '/UserTask/UpdateUserTask',
@@ -376,7 +456,10 @@ function ModalEdit(id) {
                     contentType: false,
                     cache: false,
                     dataType: "JSON",
-                    data: data,
+                    headers: {
+                        'Content-Type': 'application/json'  // Assurez-vous que le Content-Type est correct
+                    },
+                    data: jsonString,
                     success: function (data) {
                         toastr["success"]("Successfully update")
                         $("#modalEdit").modal("hide");
@@ -384,6 +467,7 @@ function ModalEdit(id) {
 
                     },
                     error: function (error) {
+                        console.log(error);
                         toastr["error"]("Update failed")
                         $("#modalEdit").modal("hide");
 
@@ -438,6 +522,8 @@ function getProject(id , idTask) {
             });
 
             $("#selectProjectId").val(id); 
+
+            $("#selectProjectId").selectpicker("refresh");
         },
 
     });
@@ -472,9 +558,14 @@ function getLeaves(id) {
             $('#selectProjectId').removeAttr("required");
             $('#selectTaskId').removeAttr("required");
 
-            $('#selectProjectId').off('change');
+            $('#selectProjectId').on('change', function () {
+               
+            });
 
             $("#selectProjectId").val(id);
+
+            $("#selectProjectId").selectpicker("refresh");
+            //$('#selectProjectId').off('change');
 
           
         },
@@ -513,6 +604,9 @@ function getTasks(projectId , taskId) {
             //});
 
             $("#selectTaskId").val(taskId);
+
+            $("#selectTaskId").selectpicker("refresh");
+
         },
 
     });

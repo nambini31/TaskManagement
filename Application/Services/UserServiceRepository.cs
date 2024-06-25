@@ -29,6 +29,47 @@ namespace Application.Services
             public AfficheException(string message) : base(message) { }
         }
 
+        //-- Initialiser une uesr par default --
+        public void InitialiseUser()
+        {
+            // Vérifie s'il y a déjà un utilisateur avec le username "lesgars"
+            var existingUser = _userRepository.Get(u => u.Username == "lesgars");
+            if (existingUser == null)
+            {
+                // Insère un compte admin par défaut
+                var adminRole = _roleRepository.Get(r => r.Name == "Admin");
+                if (adminRole == null)
+                {
+                    adminRole = new Role { Name = "Admin" };
+                    _roleRepository.Add(adminRole);
+                    _roleRepository.Save();
+                }
+
+                var adminUser = new User
+                {
+                    Name = "Developper",
+                    Surname = "Mada",
+                    Username = "lesgars",
+                    Password = BCrypt.Net.BCrypt.HashPassword("lesgars@@@user"), // Hash du mot de passe par défaut
+                    Email = ""
+                };
+
+                _userRepository.Add(adminUser);
+                _userRepository.Save();
+
+                // Associe l'utilisateur admin avec le rôle admin
+                var adminUserRole = new UserRole
+                {
+                    UserId = adminUser.UserId,
+                    RoleId = adminRole.RoleId
+                };
+
+                _userRoleRepository.Add(adminUserRole);
+                _userRoleRepository.Save();
+            }
+        }
+        //---------------------------------------------------
+
         public void RegisterUser(string name, string surname, string username, string password, string email, string roleName)
         {
             //verifie si username exist
@@ -77,7 +118,7 @@ namespace Application.Services
         }
 
         //-- update user -----
-        public void UpdateUser(int UserId, string name, string surname, string username, string password, string email, string roleName)
+        public void UpdateUser(int UserId, string name, string surname, string username, string password, string email, string roleName, int currentUserId)
         {
             // Récupérer l'utilisateur existant
             var existingUser = _userRepository.Get(u => u.UserId == UserId);
@@ -107,6 +148,8 @@ namespace Application.Services
                 var role = _roleRepository.Get(r => r.Name == roleName); //pour recuperer l'RoleId
                 var userRoleToUpdate = _userRoleRepository.Get(ur => ur.UserId == user.UserId); //pour recuperer IdUserRole
 
+
+                //On met a jour les UserRole
                 if (role != null && userRoleToUpdate != null)
                 {
                     userRoleToUpdate.UserId = user.UserId;
@@ -114,7 +157,7 @@ namespace Application.Services
                     _userRoleRepository.Update(userRoleToUpdate);
                     
                     //excecute l'update
-                    _userRepository.Update(user);               
+                    _userRepository.Update(user, currentUserId);               
                 }
             }
         }
@@ -157,9 +200,9 @@ namespace Application.Services
         }
 
         //-- Delete User -----------
-        public void DeleteUserService(User model)
+        public void DeleteUserService(User model, int currentUserId)
         {
-            _userRepository.Remove(model);
+            _userRepository.Remove(model, currentUserId);
         }
         //-----------------------------------------
     }

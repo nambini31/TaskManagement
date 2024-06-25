@@ -6,10 +6,11 @@ namespace Infrastructure.Data
 {
     public class ApplicationDbContext : DbContext
     {
+        public int? CurrentUserId { get; set; }
+
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
-
   
         public DbSet<User> User { get; set; }
         public DbSet<Role> Role { get; set; }
@@ -32,6 +33,7 @@ namespace Infrastructure.Data
         }
         public override int SaveChanges()
         {
+            var userId = CurrentUserId ?? 0;
             ExcludeProperty();
             return base.SaveChanges();
         }
@@ -52,6 +54,8 @@ namespace Infrastructure.Data
                 }
             }
         }
+
+      
 
 
     }

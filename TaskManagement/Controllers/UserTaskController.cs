@@ -2,11 +2,15 @@
 using Domain.DTO;
 using Domain.DTO.ViewModels;
 using Domain.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace TaskManagement.Controllers
 {
+    
+    
     public class UserTaskController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -33,8 +37,14 @@ namespace TaskManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> UserTaskList(FiltreUserTask filter)
         {
+
             try
             {
+                if (User.FindFirstValue(ClaimTypes.Role).ToString() != "Admin")
+                {
+                    var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                    filter.userId = new List<int> { currentUserId };
+                }
                 var data = await _SUserTask.GetUserTaskVM(filter);
 
                 return Ok(data);
@@ -91,7 +101,7 @@ namespace TaskManagement.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> UpdateUserTask(UserTask userTask)
+        public async Task<IActionResult> UpdateUserTask([FromBody] UserTask userTask)
         {
             try
             {
