@@ -53,10 +53,10 @@
         });
     });
 
-    // Edit leave form submission
+  
     
 
-    // Delete leave confirmation
+    
 });
 
 function editSubmit() {

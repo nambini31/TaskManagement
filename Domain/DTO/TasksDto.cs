@@ -15,7 +15,6 @@ namespace Domain.DTO
         public int projectId { get; set; }
         
         public string? projectName { get; set; }
-
    
     }
 
