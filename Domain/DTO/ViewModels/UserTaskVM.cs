@@ -14,17 +14,15 @@ namespace Domain.DTO.ViewModels
         {
             public int UserTaskId { get; set; }
 
-            public int taskId { get; set; }
+            public int? taskId { get; set; }
 
             public string? taskName { get; set; }
 
-            public int leaveId { get; set; }
-
-            public bool isLeave { get; set; }
+            public int? leaveId { get; set; }
 
             string? leaveName { get; set; }
 
-            public int projectId { get; set; }
+            public int? projectId { get; set; }
 
             public string? projectName { get; set; }
 

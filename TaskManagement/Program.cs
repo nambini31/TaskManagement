@@ -6,7 +6,10 @@ using Infrastructure.Data;
 using Infrastructure.repository;
 using Infrastructure.Repository;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +23,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseMySql(ConnectionString, ServerVersion.AutoDetect(ConnectionString));
     }
 );
+
+ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+
+var supportedCultures = new[]
+    {
+        new CultureInfo("en-US")  // Définir la culture en anglais (États-Unis)
+    };
 
 
 // register articleRepository and service
@@ -69,6 +80,13 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
 }
 app.UseHttpsRedirection();
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("en-US"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
+});
+
 
 app.UseStaticFiles();
 

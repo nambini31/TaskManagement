@@ -15,6 +15,6 @@ namespace Domain.Entity
 
         public string? description { get; set; }
 
-        public ICollection<Tasks> Tasks { get; set; }
+        public ICollection<Tasks>? Tasks { get; set; }
     }
 }

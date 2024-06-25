@@ -6,6 +6,8 @@ namespace Infrastructure.Data
 {
     public class ApplicationDbContext : DbContext
     {
+        public int? CurrentUserId { get; set; }
+
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
@@ -22,21 +24,38 @@ namespace Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            //modelBuilder.Entity<User>()
-            //.HasIndex(u => u.Username)
-            //.IsUnique()
-            //.HasDatabaseName("username");
-            //base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<User>()
+            .HasIndex(u => u.Username)
+            .IsUnique()
+            .HasDatabaseName("username");
+            base.OnModelCreating(modelBuilder);
 
-        /*  modelBuilder.Entity<Tasks>()
-               .HasOne(t => t.project)
-               .WithMany(p => p.tasks) */
         }
-
         public override int SaveChanges()
         {
+            var userId = CurrentUserId ?? 0;
+            ExcludeProperty();
             return base.SaveChanges();
         }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            ExcludeProperty();
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        private void ExcludeProperty()
+        {
+            foreach (var entry in ChangeTracker.Entries<UserTask>())
+            {
+                if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.State == EntityState.Deleted)
+                {
+                    entry.Property(e => e.isLeave).IsModified = false;
+                }
+            }
+        }
+
+      
 
 
     }

@@ -168,5 +168,10 @@ namespace Infrastructure.repository
                 }
             }
         }
+
+        public void Remove(User entity, int currentUserId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
