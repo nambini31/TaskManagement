@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace TaskManagement.Controllers
 {
-    [Authorize]
+   // [Authorize]
     public class UserTaskController : Controller
     {
         private readonly ILogger<HomeController> _logger;

@@ -7,30 +7,15 @@
 }
 
 @section VendorStyles {
-    <link href="~/assets/libs/datatables/dataTables.bootstrap4.css" rel="stylesheet" type="text/css" />
-    <link href="~/assets/libs/datatables/responsive.bootstrap4.css" rel="stylesheet" type="text/css" />
-    <link href="~/assets/libs/datatables/buttons.bootstrap4.css" rel="stylesheet" type="text/css" />
-    <link href="~/assets/libs/datatables/select.bootstrap4.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/libs/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
 }
 
 @section VendorScripts {
-    <script src="~/assets/libs/datatables/jquery.dataTables.min.js"></script>
-    <script src="~/assets/libs/datatables/dataTables.bootstrap4.js"></script>
-    <script src="~/assets/libs/datatables/dataTables.responsive.min.js"></script>
-    <script src="~/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
-    <script src="~/assets/libs/datatables/dataTables.buttons.min.js"></script>
-    <script src="~/assets/libs/datatables/buttons.bootstrap4.min.js"></script>
-    <script src="~/assets/libs/datatables/buttons.html5.min.js"></script>
-    <script src="~/assets/libs/datatables/buttons.flash.min.js"></script>
-    <script src="~/assets/libs/datatables/buttons.print.min.js"></script>
-    <script src="~/assets/libs/datatables/dataTables.keyTable.min.js"></script>
-    <script src="~/assets/libs/datatables/dataTables.select.min.js"></script>
-    <script src="~/assets/libs/pdfmake/pdfmake.min.js"></script>
-    <script src="~/assets/libs/pdfmake/vfs_fonts.js"></script>
+     <script src="~/assets/libs/bootstrap-select/bootstrap-select.min.js"></script>   
 }
 
 @section PageScripts {
-    <script src="~/assets/js/usertask.js"></script>
+    <script src="~/assets/js/timeline.js"></script>
 }
 
 <div class="container">
@@ -67,9 +52,10 @@
                         <label class="form-label">Hours</label>
                         <input asp-for="hours" type="text" class="form-control" />
                     </div>
+
                 </div>
                 <div class="modal-footer mt-4">
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </div>
             </form>
         </div>
