@@ -98,7 +98,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=UserTask}/{action=Index}/{id?}");
+    pattern: "{controller=User}/{action=Index}/{id?}");
 
 // Initialisez la base de données
 using (var scope = app.Services.CreateScope())

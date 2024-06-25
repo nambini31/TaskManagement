@@ -47,7 +47,7 @@ namespace TaskManagement.Controllers
         {
             IEnumerable<UserListWithRole>  users ;
 
-            if (User.FindFirstValue(ClaimTypes.Role).ToString() != "Admin")
+            if (User.FindFirstValue(ClaimTypes.Role) != "Admin")
             {
                 var currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
