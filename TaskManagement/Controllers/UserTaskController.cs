@@ -2,12 +2,15 @@
 using Domain.DTO;
 using Domain.DTO.ViewModels;
 using Domain.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
 
 namespace TaskManagement.Controllers
 {
+    
+    
     public class UserTaskController : Controller
     {
         private readonly ILogger<HomeController> _logger;

@@ -142,7 +142,7 @@ namespace TaskManagement.Controllers
                     {
                         // Redirect to default page
                         //return RedirectToAction("Index", "Home");
-                        return RedirectToAction("Index", "User");
+                        return RedirectToAction("Index", "UserTask");
                     }
 
                 }
