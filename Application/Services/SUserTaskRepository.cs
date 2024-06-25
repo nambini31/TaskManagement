@@ -73,10 +73,10 @@ namespace Application.Services
                 {
                     var worksheet = package.Workbook.Worksheets.Add("User Task");
 
-                    // Adding headers
+                    
                     worksheet.Cells["A1"].Value = "Tasks for project";
 
-                     // Commence à la ligne 2 après les en-têtes , lire l'entete
+                    
                     int column = 2;
                     foreach (var userName in users)
                     {
@@ -84,35 +84,41 @@ namespace Application.Services
                         column++;
                     }
 
-                    // Ajouter les données dans la feuille Excel
-                    int row = 2; // Commencer à partir de la ligne 2 après les en-têtes
+                    
+                    int row = 2; 
                     foreach (var taskName in tasks)
                     {
-                        worksheet.Cells[$"A{row}"].Value = taskName.taskName; // Nom de la tâche
+                        worksheet.Cells[$"A{row}"].Value = taskName.taskName; 
 
-                        // Remplir les heures pour chaque utilisateur
-                        column = 2; // Commencer à partir de la colonne B après la première colonne "Tasks for project"
-                        foreach (var datas in data)
+                        column = 2; 
+
+                        foreach (var user in users)
                         {
+                             var entete = worksheet.Cells[1, column].Value;
 
-                           var entete = worksheet.Cells[1, column].Value;
-
-                            if (entete == datas.userName)
+                            if (entete != null)
                             {
-                                
+                                foreach (var datas in data)
+                                {
+
+
+                                    if (datas.userName == user.userName && taskName.taskName == datas.taskName && entete.ToString() == user.userName)
+                                    {
+                                        worksheet.Cells[row, column].Value = $"{datas.hours}";
+                                    }
+
+                                }
                             }
-                            //var userTask = data.FirstOrDefault(d => d.taskName == taskName && d.userName == userName);
-                            //if (userTask != null)
-                            //{
-                            //    worksheet.Cells[row, column].Value = userTask.hours;
-                            //}
+
                             column++;
                         }
+
+
+                        
 
                         row++;
                     }
 
-                    // Formater l'en-tête
                     using (var range = worksheet.Cells[$"A1:{Convert.ToChar('A' + users.Count())}1"])
                     {
                         range.Style.Font.Bold = true;
@@ -120,7 +126,6 @@ namespace Application.Services
                         range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
                     }
 
-                    // Save to the specified path
                     package.SaveAs(new FileInfo(filePath));
                 }
 
