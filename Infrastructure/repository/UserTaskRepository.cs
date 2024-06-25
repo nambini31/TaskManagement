@@ -30,35 +30,40 @@ namespace Infrastructure.Repository
 
         }
 
-        public async Task DeleteUserTaskById(int UsertaskId)
+        public async Task DeleteUserTaskById(int UsertaskId, int userConnected)
         {
             //await _db.Database.ExecuteSqlAsync($"SET @userDeleteUserTask = {1}");
 
-            try
+            UserTask? Usertask = await _db.UserTask.Select(a => new UserTask
             {
 
-                UserTask? Usertask = await _db.UserTask.Select(a => new UserTask
+                userId = a.userId,
+                UserTaskId = a.UserTaskId,
+                date = a.date,
+                hours = a.hours,
+                taskId = a.taskId,
+                leaveId = a.leaveId
+
+            }).FirstOrDefaultAsync(u => u.UserTaskId == UsertaskId);
+
+            using (var transaction = _db.Database.BeginTransaction())
+            {
+                try
                 {
+                    _db.Database.ExecuteSqlRaw("SET @userConnected = {0}", userConnected);
 
-                    userId = a.userId,
-                    UserTaskId = a.UserTaskId,
-                    date = a.date,
-                    hours = a.hours,
-                    taskId = a.taskId,
-                    leaveId = a.leaveId
 
-                }).FirstOrDefaultAsync(u => u.UserTaskId == UsertaskId);
+                    _db.UserTask.Remove(Usertask);
+                    await _db.SaveChangesAsync();
 
-                _db.UserTask.Remove(Usertask);
-                await _db.SaveChangesAsync();
+                    transaction.Commit();
+
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-
-
         }
 
         public  async Task<UserTask> GetUserTaskById(int UsertaskId)
@@ -329,10 +334,25 @@ namespace Infrastructure.Repository
         }
 
         public  async Task UpdateUserTask(UserTask Usertask)
-    {
-             _db.UserTask.Update(Usertask);
+        {
+            using (var transaction = _db.Database.BeginTransaction())
+            {
+                try
+                {
+                    //denifinition du session pour utiliser dans trigger
+                    _db.Database.ExecuteSqlRaw("SET @userConnected = {0}", Usertask.UserMaj);
 
-             await _db.SaveChangesAsync();
+                    _db.UserTask.Update(Usertask);
+                    await _db.SaveChangesAsync();
+                    transaction.Commit();
+
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
 
         }
     }
