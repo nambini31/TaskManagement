@@ -60,7 +60,7 @@ function getLeaves() {
                 $("#selectProjectIdCreate").append(option);
             });
 
-            $('#selectProjectIdCreate').attr('name', "leaveId");
+            $('#selectProjectIdCreate').attr('name', "leaveId");//huu
             $('#selectProjectIdCreate').removeAttr("required");
             $('#selectTaskId').removeAttr("required");
             $("#selectTaskId").empty();
