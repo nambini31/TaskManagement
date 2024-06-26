@@ -22,6 +22,7 @@ namespace TaskManagement.Controllers
 
         public async Task<IActionResult> Index()
         {
+            @ViewData["titrePage"] = "Task Management";
             IEnumerable<TasksDto> tasks = await _tasksService.GetAllTasksAsync();
             IEnumerable<ProjectDto> projects = await _projectService.GetAllProjectAsync();
 

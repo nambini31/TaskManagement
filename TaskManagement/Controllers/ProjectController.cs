@@ -25,6 +25,7 @@ namespace TaskManagement.Controllers
 
         public async Task<IActionResult> Index()
         {
+            @ViewData["titrePage"] = "Project Management";
             var projects = await _projectService.GetAllProjectAsync();
             return View(projects);
         }

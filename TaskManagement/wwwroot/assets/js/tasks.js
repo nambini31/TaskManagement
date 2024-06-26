@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
-    $('#table_task').DataTable();
+    //$('#table_task').DataTable();
+    AfficheTasks();
 
     $('#createTaskButton').click(function () {
         $('#createTaskModal').modal('show');
@@ -97,7 +98,6 @@
         });
     });
 
-
     $(document).on('click', '#deleteTaskConfirmButton', function () {
         var taskId = $(this).data('id');
         $.ajax({
@@ -117,3 +117,7 @@
         });
     });
 });
+
+function AfficheTasks() {
+
+}
