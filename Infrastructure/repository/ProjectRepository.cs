@@ -38,19 +38,48 @@ namespace Infrastructure.repository
         }
 
 
-        public async Task UpdateAsync(Project project)
+        public async Task UpdateAsync(Project project, int user_maj)
         {
-            _context.Entry(project).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    _context.Database.ExecuteSqlRaw("SET @userConnected = {0}", user_maj);
+
+                    _context.Entry(project).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id, int user_maj)
         {
             var project = await _context.Project.FindAsync(id);
             if (project != null)
             {
-                _context.Project.Remove(project);
-                await _context.SaveChangesAsync();
+                using (var transaction = _context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        _context.Database.ExecuteSqlRaw("SET @userConnected = {0}", user_maj);
+
+                        _context.Project.Remove(project);
+                        await _context.SaveChangesAsync();
+
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback(); throw ex;
+                    }
+                }
             }
         }
     }

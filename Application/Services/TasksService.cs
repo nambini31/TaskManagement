@@ -51,17 +51,17 @@ namespace Application.Services
             await _taskRepository.CreateAsync(entity);
         }
 
-        public async Task UpdateTaskAsync(TasksDto taskDto)
+        public async Task UpdateTaskAsync(TasksDto taskDto, int user_maj)
         {
             var entity = await _taskRepository.GetByIdAsync(taskDto.taskId);
             entity.name = taskDto.name;
             entity.projectId = taskDto.projectId;
-            await _taskRepository.UpdateAsync(entity);
+            await _taskRepository.UpdateAsync(entity, user_maj);
         }
 
-        public async Task DeleteTaskAsync(int id)
+        public async Task DeleteTaskAsync(int id, int user_maj)
         {
-            await _taskRepository.DeleteAsync(id);
+            await _taskRepository.DeleteAsync(id, user_maj);
         }
 
         /*     public IEnumerable<Tasks> GetTaskByIdProject(int id)

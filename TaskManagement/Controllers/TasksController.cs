@@ -4,6 +4,7 @@ using Domain.DTO.ViewModels;
 using Domain.Entity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace TaskManagement.Controllers
@@ -122,7 +123,9 @@ namespace TaskManagement.Controllers
             {
                 try
                 {
-                    await _tasksService.UpdateTaskAsync(task);
+                    var user_maj = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                    await _tasksService.UpdateTaskAsync(task, user_maj);
                     return Json(new { success = true, message = "Task updated successfully" });
                 }
                 catch (Exception ex)
@@ -137,7 +140,8 @@ namespace TaskManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
-            await _tasksService.DeleteTaskAsync(id);
+            var user_maj = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            await _tasksService.DeleteTaskAsync(id, user_maj);
             return Json(new { success = true, message = "Task deleted successfully" });
         }
 

@@ -10,7 +10,7 @@ namespace Application.Interface
         Task<IEnumerable<TasksDto>> GetAllTasksAsync();
         Task<TasksDto> GetTaskByIdAsync(int id);
         Task CreateTaskAsync(TasksDto tasksDto);
-        Task UpdateTaskAsync(TasksDto tasksDto);
-        Task DeleteTaskAsync(int id);
+        Task UpdateTaskAsync(TasksDto tasksDto, int user_maj);
+        Task DeleteTaskAsync(int id, int user_maj);
     }
 }

@@ -2,6 +2,7 @@
 using Application.Services;
 using Domain.DTO;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace TaskManagement.Controllers
@@ -54,7 +55,8 @@ namespace TaskManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _projectService.UpdateProjectAsync(projectDto);
+                var user_maj = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                await _projectService.UpdateProjectAsync(projectDto, user_maj);
                 return RedirectToAction(nameof(Index));
             }
             return PartialView("Edit", projectDto);
@@ -74,7 +76,9 @@ namespace TaskManagement.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _projectService.DeleteProjectAsync(id);
+            var user_maj = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            await _projectService.DeleteProjectAsync(id, user_maj);
             return RedirectToAction(nameof(Index));
         }
     }

@@ -10,7 +10,7 @@ namespace Domain.Interface
         Task<IEnumerable<Tasks>> GetAllAsync();
         Task<Tasks> GetByIdAsync(int id);
         Task CreateAsync(Tasks tasks);
-        Task UpdateAsync(Tasks tasks);
-        Task DeleteAsync(int id);
+        Task UpdateAsync(Tasks tasks, int user_maj);
+        Task DeleteAsync(int id, int user_maj);
     }
 }

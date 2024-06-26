@@ -12,8 +12,8 @@ namespace Domain.Interface
         Task<IEnumerable<Project>> GetAllAsync();
         Task<Project> GetByIdAsync(int id);
         Task AddAsync(Project project);
-        Task UpdateAsync(Project project);
-        Task DeleteAsync(int id);
+        Task UpdateAsync(Project project, int user_maj);
+        Task DeleteAsync(int id, int user_maj);
     }
 }
 

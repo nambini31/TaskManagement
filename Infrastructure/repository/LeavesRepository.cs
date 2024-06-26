@@ -32,19 +32,47 @@ namespace Infrastructure.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Leaves leaves)
+        public async Task UpdateAsync(Leaves leaves, int user_maj)
         {
-            _context.Entry(leaves).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    //denifinition du session pour utiliser dans trigger
+                    _context.Database.ExecuteSqlRaw("SET @userConnected = {0}", user_maj);
+
+                    _context.Entry(leaves).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+
+                    transaction.Commit();
+
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();throw ex;
+                }
+            }
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id, int user_maj)
         {
-            var leave = await _context.Leaves.FindAsync(id);
-            if (leave != null)
+            using (var transaction = _context.Database.BeginTransaction())
             {
-                _context.Leaves.Remove(leave);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    //denifinition du session pour utiliser dans trigger
+                    var leave = await _context.Leaves.FindAsync(id);
+                    if (leave != null)
+                    {
+                        _context.Database.ExecuteSqlRaw("SET @userConnected = {0}", user_maj);
+
+                        _context.Leaves.Remove(leave);
+                        await _context.SaveChangesAsync();
+
+                        transaction.Commit();
+                    }
+                }
+                catch (Exception ex) { transaction.Rollback(); throw ex; }
             }
         }
     }

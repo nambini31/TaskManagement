@@ -12,8 +12,8 @@ namespace Application.Interface
         Task<IEnumerable<ProjectDto>> GetAllProjectAsync();
         Task<ProjectDto> GetProjectByIdAsync(int id);
         Task CreateProjectAsync(ProjectDto projectDto);
-        Task UpdateProjectAsync(ProjectDto projectDto);
-        Task DeleteProjectAsync(int id);
+        Task UpdateProjectAsync(ProjectDto projectDto, int user_maj);
+        Task DeleteProjectAsync(int id, int user_maj);
 
     }
 }

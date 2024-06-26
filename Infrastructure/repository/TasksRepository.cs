@@ -1,4 +1,5 @@
-﻿using Domain.Entity;
+﻿using Domain.DTO.ViewModels;
+using Domain.Entity;
 using Domain.Interface;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -34,17 +35,45 @@ namespace Infrastructure.repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Tasks tasks)
+        public async Task UpdateAsync(Tasks tasks, int user_maj)
         {
-            _context.Tasks.Update(tasks);
-            await _context.SaveChangesAsync();
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    //denifinition du session pour utiliser dans trigger
+                    _context.Database.ExecuteSqlRaw("SET @userConnected = {0}", user_maj);
+
+                    _context.Tasks.Update(tasks);
+                    await _context.SaveChangesAsync();
+
+                    transaction.Commit();
+                }
+                catch(Exception ex)
+                {
+                    transaction.Rollback(); 
+                    throw ex;
+                }
+            }
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id, int user_maj)
         {
-            var tasks = await _context.Tasks.FindAsync(id);
-            _context.Tasks.Remove(tasks);
-            await _context.SaveChangesAsync();
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    //denifinition du session pour utiliser dans trigger
+                    _context.Database.ExecuteSqlRaw("SET @userConnected = {0}", user_maj);
+
+                    var tasks = await _context.Tasks.FindAsync(id);
+                    _context.Tasks.Remove(tasks);
+                    await _context.SaveChangesAsync();
+
+                    transaction.Commit();
+                }
+                catch(Exception) { transaction.Rollback(); throw; }
+            }
         }
     }
 }
