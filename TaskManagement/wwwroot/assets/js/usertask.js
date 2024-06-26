@@ -591,9 +591,7 @@ function getTasks(projectId , taskId) {
                 $("#selectTaskId").append(option);
             });
 
-            //VirtualSelect.init({
-            //    ele: '#selectTaskId'
-            //});
+ 
 
             $("#selectTaskId").val(taskId);
 
