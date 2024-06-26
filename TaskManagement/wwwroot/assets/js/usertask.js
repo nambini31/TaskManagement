@@ -166,6 +166,7 @@ function formatPrixImput() {
 
 /****************suppression usertask ***********/
 $("#deleteTimeline").on("click", function (e) {
+    $("#modalDelete").modal("hide");
 
     $.ajax({
         url: '/UserTask/DeleteUserTask', // Change this URL to your actual endpoint
@@ -175,14 +176,12 @@ $("#deleteTimeline").on("click", function (e) {
             userTaskId: $('#userTaskIdDelete').val()
         },
         success: function (data) {
-            toastr["success"]("Successfully deleted")
-            $("#modalDelete").modal("hide");
+            toastr["success"]("Successfully deleted ")
             AfficheUserTask();
 
         },
         error: function (error) {
             toastr["error"]("Delete failed")
-            $("#modalDelete").modal("hide");
 
         },
 
@@ -196,26 +195,37 @@ $("#deleteTimeline").on("click", function (e) {
 
 // generale Excel
 $("#excelButton").on("click", function (event) {
+    
 
     $.ajax({
 
         url: '/UserTask/GenerateExcelUserTask',
         type: "POST",
-        dataType: "JSON",
+
         data: {
             startDate: $('#startDate').val(),
             endDate: $('#endDate').val(),
             userId: $('#userId').val()
         },
-        success: function (data) {
-            toastr["success"]("Successfully update")
-            $("#modalEdit").modal("hide");
-            AfficheUserTask();
+        xhrFields: {
+            responseType: 'blob'
+        },
+        success: function (blob) {
+
+            var link = document.createElement('a');
+            var url = window.URL.createObjectURL(blob);
+            link.href = url;
+            link.download = "UserTask.xlsx";  // Nom du fichier
+            document.body.appendChild(link);
+            link.click();
+            window.URL.revokeObjectURL(url);
+
+            toastr["success"]("Generated successfully")
 
         },
-        error: function (error) {
-            toastr["error"]("Update failed")
-            $("#modalEdit").modal("hide");
+        error: function (xhr, status, error) {
+            console.error('Erreur lors de la requête Ajax : ' + error);
+            toastr["error"]("Generated failed")
 
         },
     });
@@ -225,14 +235,6 @@ $("#excelButton").on("click", function (event) {
 
 
 /***************************** filter usertask : submit filter*/
-
-$("#filtreUserTask").on("submit", function (e) {
-    e.preventDefault(); 
-
-    AfficheUserTask();
-
-    return false; 
-});
 
 
 
@@ -446,6 +448,7 @@ function ModalEdit(id) {
 
                 // Convert JSON object to JSON string
                 const jsonString = JSON.stringify(jsonObject);
+                $("#modalEdit").modal("hide");
 
                 $.ajax({
 
@@ -461,7 +464,6 @@ function ModalEdit(id) {
                     data: jsonString,
                     success: function (data) {
                         toastr["success"]("Successfully update")
-                        $("#modalEdit").modal("hide");
                         AfficheUserTask();
 
                     },

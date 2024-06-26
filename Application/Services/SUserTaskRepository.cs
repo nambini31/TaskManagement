@@ -1,4 +1,4 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +9,7 @@ using Domain.Interface;
 using OfficeOpenXml.Style;
 using Microsoft.AspNetCore.Hosting;
 using OfficeOpenXml;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Services
 {
@@ -51,7 +52,7 @@ namespace Application.Services
             await IUserTask.UpdateUserTask(userTask);
         } 
         
-        public async Task GenerateUserTask(FiltreUserTask filter)
+        public async Task<string> GenerateUserTask(FiltreUserTask filter)
         {
 
             try
@@ -136,9 +137,8 @@ namespace Application.Services
                     package.SaveAs(new FileInfo(filePath));
                 }
 
-                // Retourner le fichier Excel en tant que téléchargement
-               // byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
-                //return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+                return filePath;
+                
             }
             catch (Exception ex)
             {
@@ -147,10 +147,6 @@ namespace Application.Services
                 throw;
             }
 
-
-
-
-            //return Ok(new { message = "File saved successfully", filePath });
         }
     }
 }

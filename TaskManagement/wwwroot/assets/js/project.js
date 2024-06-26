@@ -28,12 +28,12 @@
  
     $('#createProjectForm').submit(function (event) {
         event.preventDefault();
+        $('#createProjectModal').modal('hide');
         $.ajax({
             url: '/Project/Create',
             type: 'POST',
             data: $(this).serialize(),
             success: function () {
-                $('#createProjectModal').modal('hide');
                 AfficheProjects();
             },
             error: function (xhr, status, error) {
@@ -45,12 +45,12 @@
     
     $('#editProjectModal').on('submit', '#editProjectForm', function (event) {
         event.preventDefault();
+        $('#editProjectModal').modal('hide');
         $.ajax({
             url: '/Project/EditPost',
             type: 'POST',
             data: $(this).serialize(),
             success: function () {
-                $('#editProjectModal').modal('hide');
 
                 AfficheProjects();
             },
@@ -65,11 +65,11 @@
     // Handle delete project confirmation
     $('#deleteProjectModal').on('click', '#confirmDeleteButton', function () {
         var id = $("#ProjectId").val(); 
+                $('#deleteProjectModal').modal('hide');
         $.ajax({
             url: '/Project/DeleteConfirmed/' + id,
             type: 'POST',
             success: function () {
-                $('#deleteProjectModal').modal('hide');
                 AfficheProjects();
             },
             error: function (xhr, status, error) {
