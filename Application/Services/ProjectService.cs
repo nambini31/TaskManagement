@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Infrastructure.Repository;
 
 namespace Application.Services
 {
@@ -21,10 +20,9 @@ namespace Application.Services
             _projectRepository = projectRepository;
         }
 
-        public async Task<IEnumerable<ProjectDto>> GetAllProjectAsync()
+        public IEnumerable<ProjectDto> GetAllProjects()
         {
-            var project = await _projectRepository.GetAllAsync();
-            return project.Select(p => new ProjectDto
+            return _projectRepository.GetAll().Select(p => new ProjectDto
             {
                 projectId = p.projectId,
                 name = p.name,
@@ -33,51 +31,41 @@ namespace Application.Services
             });
         }
 
-        public async Task<ProjectDto> GetProjectByIdAsync(int id)
+        public ProjectDto GetProjectById(int id)
         {
-            var project = await _projectRepository.GetByIdAsync(id);
-            if (project == null)
-                return null;
-
+            var project = _projectRepository.GetById(id);
             return new ProjectDto
             {
                 projectId = project.projectId,
                 name = project.name,
-                description = project.description
-
+                description = project.description,
+                Tasks = project.Tasks
+                
             };
         }
 
 
-
-        public async Task CreateProjectAsync(ProjectDto projectDto)
+        public void CreateProject(ProjectDto project)
         {
-            var project = new Project
+            var entity = new Project
             {
-                projectId = projectDto.projectId,
-                name = projectDto.name,
-                description = projectDto.description
-
+                name = project.name,
+                description = project.description
             };
-
-            await _projectRepository.AddAsync(project);
+            _projectRepository.Create(entity);
         }
 
-
-        public async Task UpdateProjectAsync(ProjectDto projectDto)
+        public void UpdateProject(ProjectDto project)
         {
-            var project = await _projectRepository.GetByIdAsync(projectDto.projectId);
-            if (project == null)
-                throw new ArgumentException("Leave not found");
-
-            project.name = projectDto.name;
-            project.description = projectDto.description;
-            await _projectRepository.UpdateAsync(project);
+            var entity = _projectRepository.GetById(project.projectId);
+            entity.name = project.name;
+            entity.description = project.description;
+            _projectRepository.Update(entity);
         }
 
-        public async Task DeleteProjectAsync(int id)
+        public void DeleteProject(int id)
         {
-            await _projectRepository.DeleteAsync(id);
+            _projectRepository.Delete(id);
         }
     }
 }

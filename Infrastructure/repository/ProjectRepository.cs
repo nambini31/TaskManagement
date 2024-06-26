@@ -20,38 +20,33 @@ namespace Infrastructure.repository
             _context = context;
         }
 
-        public async Task<IEnumerable<Project>> GetAllAsync()
+        public IEnumerable<Project> GetAll()
         {
-            return await _context.Project.ToListAsync();
+            return _context.Project.ToList();
         }
 
-
-        public async Task<Project> GetByIdAsync(int id)
+        public Project GetById(int id)
         {
-            return await _context.Project.FindAsync(id);
+            return _context.Project.Find(id);
         }
 
-        public async Task AddAsync(Project project)
+        public void Create(Project project)
         {
             _context.Project.Add(project);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
 
-
-        public async Task UpdateAsync(Project project)
+        public void Update(Project project)
         {
-            _context.Entry(project).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            _context.Project.Update(project);
+            _context.SaveChanges();
         }
 
-        public async Task DeleteAsync(int id)
+        public void Delete(int id)
         {
-            var project = await _context.Project.FindAsync(id);
-            if (project != null)
-            {
-                _context.Project.Remove(project);
-                await _context.SaveChangesAsync();
-            }
+            var project = _context.Project.Find(id);
+            _context.Project.Remove(project);
+            _context.SaveChanges();
         }
     }
 }

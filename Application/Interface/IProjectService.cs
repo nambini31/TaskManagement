@@ -9,12 +9,11 @@ namespace Application.Interface
 {
     public interface IProjectService
     {
-        Task<IEnumerable<ProjectDto>> GetAllProjectAsync();
-        Task<ProjectDto> GetProjectByIdAsync(int id);
-        Task CreateProjectAsync(ProjectDto projectDto);
-        Task UpdateProjectAsync(ProjectDto projectDto);
-        Task DeleteProjectAsync(int id);
-
+        IEnumerable<ProjectDto> GetAllProjects();
+        ProjectDto GetProjectById(int id);
+        void CreateProject(ProjectDto project);
+        void UpdateProject(ProjectDto project);
+        void DeleteProject(int id);
     }
 }
 

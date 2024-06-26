@@ -1,11 +1,12 @@
-﻿using Application.Interface;
-using Application.Services;
+﻿using Application.Services;
 using Domain.DTO;
+using Domain.Entity;
+using Application.Interface;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace TaskManagement.Controllers
 {
+
     public class ProjectController : Controller
     {
         private readonly IProjectService _projectService;
@@ -15,67 +16,58 @@ namespace TaskManagement.Controllers
             _projectService = projectService;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var projects = await _projectService.GetAllProjectAsync();
-            return View(projects);
+            return View();
         }
 
-        public IActionResult Create()
+        [HttpGet]
+        public IActionResult GetAllProjects()
         {
-            return PartialView(new ProjectDto());
+            var projects = _projectService.GetAllProjects();
+            return Json(new { data = projects });
         }
 
         [HttpPost]
-       // [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ProjectDto projectDto)
+        public IActionResult Create([FromBody] ProjectDto project)
         {
             if (ModelState.IsValid)
             {
-                await _projectService.CreateProjectAsync(projectDto);
-                return RedirectToAction(nameof(Index));
+                _projectService.CreateProject(project);
+                return Json(new { success = true, message = "Project created successfully" });
             }
-            return PartialView(projectDto);
+            return Json(new { success = false, message = "Error while creating project" });
         }
 
-        public async Task<IActionResult> Edit(int id)
+        [HttpGet]
+        public IActionResult GetById(int id)
         {
-            var project = await _projectService.GetProjectByIdAsync(id);
+            var project = _projectService.GetProjectById(id);
             if (project == null)
             {
                 return NotFound();
             }
-            return PartialView(project);
+            return Json(project);
         }
 
-        [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditPost(ProjectDto projectDto)
+        [HttpPut]
+        public IActionResult Update([FromBody] ProjectDto project)
         {
             if (ModelState.IsValid)
             {
-                await _projectService.UpdateProjectAsync(projectDto);
-                return RedirectToAction(nameof(Index));
+                _projectService.UpdateProject(project);
+                return Json(new { success = true, message = "Project updated successfully" });
             }
-            return PartialView("Edit", projectDto);
+            return Json(new { success = false, message = "Error while updating project" });
         }
 
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete]
+        public IActionResult Delete(int id)
         {
-            var project = await _projectService.GetProjectByIdAsync(id);
-            if (project == null)
-            {
-                return NotFound();
-            }
-            return PartialView(project);
-        }
-
-        [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            await _projectService.DeleteProjectAsync(id);
-            return RedirectToAction(nameof(Index));
+            _projectService.DeleteProject(id);
+            return Json(new { success = true, message = "Project deleted successfully" });
         }
     }
 }
+
+    

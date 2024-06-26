@@ -1,1 +1,19 @@
-﻿
+﻿@model Domain.DTO.TasksDto
+
+<form id="editTaskForm">
+    <input type="hidden" id="taskId" value="@Model.taskId" />
+    <div class="form-group">
+        <label for="Title">Title</label>
+        <input type="text" class="form-control" id="Title" name="Title" value="@Model.name" required />
+    </div>
+    <div class="form-group">
+        <label for="ProjectId">Project</label>
+        <select class="form-control" id="ProjectId" name="ProjectId" required>
+            @foreach (var project in ViewBag.Projects)
+            {
+                <option value="@project.projectId" >@Model.projectName</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>

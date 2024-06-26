@@ -1,4 +1,5 @@
-﻿@model TasksVM
+﻿@model IEnumerable<Domain.DTO.TasksDto>
+
 @{
     Layout = "Layout/_LayoutWithMenu";
     ViewData["Title"] = "Tasks";
@@ -61,12 +62,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var task in Model.TasksList)
+                        @foreach (var task in Model)
                         {
                             <tr>
-                                <td>@(task.taskId != 0 ? task.taskId.ToString() : "N/A")</td>
-                                <td>@(task.name ?? "N/A")</td>
-                                <td>@(task.projectName ?? "N/A")</td>
+                                <td>@task.taskId</td>
+                                <td>@task.name</td>
+                                <td>@task.projectName</td>
                                 <td>
                                     <button class="action-button editTaskButton" data-id="@task.taskId">
                                         <i class="ti ti-pencil"></i>
@@ -91,16 +92,17 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="createTaskModalLabel">Create Task</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidde n="true">&times;</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                @Html.Partial("Create", Model)
+                @Html.Partial("Create", new Domain.DTO.TasksDto())
             </div>
         </div>
     </div>
 </div>
 
+<!-- Edit Modal -->
 <div class="modal fade" id="editTaskModal" tabindex="-1" role="dialog" aria-labelledby="editTaskModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -111,12 +113,13 @@
                 </button>
             </div>
             <div class="modal-body">
-                
+                @Html.Partial("Edit", new Domain.DTO.TasksDto())
             </div>
         </div>
     </div>
-</div> 
+</div>
 
+<!-- Delete Modal -->
 <div class="modal fade" id="deleteTaskModal" tabindex="-1" role="dialog" aria-labelledby="deleteTaskModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -127,10 +130,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                
+                @Html.Partial("Delete", new Domain.DTO.TasksDto())
             </div>
         </div>
     </div>
 </div>
-
-

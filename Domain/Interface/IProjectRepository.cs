@@ -9,11 +9,11 @@ namespace Domain.Interface
 {
     public interface IProjectRepository
     {
-        Task<IEnumerable<Project>> GetAllAsync();
-        Task<Project> GetByIdAsync(int id);
-        Task AddAsync(Project project);
-        Task UpdateAsync(Project project);
-        Task DeleteAsync(int id);
+        IEnumerable<Project> GetAll();
+        Project GetById(int id);
+        void Create(Project project);
+        void Update(Project project);
+        void Delete(int id);
     }
 }
 

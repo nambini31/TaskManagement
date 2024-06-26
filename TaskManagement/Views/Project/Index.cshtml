@@ -1,9 +1,8 @@
-﻿@using Domain.DTO
-@model IEnumerable<Domain.DTO.ProjectDto>
+﻿@model IEnumerable<Domain.DTO.ProjectDto>
 
 @{
     Layout = "Layout/_LayoutWithMenu";
-    ViewData["Title"] = "List of Projects";
+    ViewData["Title"] = "Projects";
 }
 
 @section VendorStyles {
@@ -18,6 +17,15 @@
     <script src="~/assets/libs/datatables/dataTables.bootstrap4.js"></script>
     <script src="~/assets/libs/datatables/dataTables.responsive.min.js"></script>
     <script src="~/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
+    <script src="~/assets/libs/datatables/dataTables.buttons.min.js"></script>
+    <script src="~/assets/libs/datatables/buttons.bootstrap4.min.js"></script>
+    <script src="~/assets/libs/datatables/buttons.html5.min.js"></script>
+    <script src="~/assets/libs/datatables/buttons.flash.min.js"></script>
+    <script src="~/assets/libs/datatables/buttons.print.min.js"></script>
+    <script src="~/assets/libs/datatables/dataTables.keyTable.min.js"></script>
+    <script src="~/assets/libs/datatables/dataTables.select.min.js"></script>
+    <script src="~/assets/libs/pdfmake/pdfmake.min.js"></script>
+    <script src="~/assets/libs/pdfmake/vfs_fonts.js"></script>
 }
 
 @section PageScripts {
@@ -26,21 +34,23 @@
 
 <style>
     .border-custom {
-        border: 1px solid #6c757d; 
+        border: 1px solid #6c757d; /* Couleur de bordure grise (Bootstrap) */
+    }
+    /* Classe pour ajuster les boutons d'actions */
+    .action-button {
+        border: none; /* Supprimer la bordure */
+        background-color: transparent; /* Fond transparent */
+        cursor: pointer; /* Curseur de souris */
     }
 
-    .action-button {
-        border: none; 
-        background-color: transparent; 
-        cursor: pointer; 
-    }
 </style>
+
 
 <div class="row">
     <div class="col-12">
         <div class="card-box">
             <h4 class="mt-0 header-title">Projects</h4>
-            <button class="btn btn-primary" id="createProjectButton" data-bs-toggle="modal" data-bs-target="#createProjectModal">
+            <button class=" d-none d-sm-inline-block border-custom" id="createProjectButton">
                 <i class="ti ti-plus ti-xs me-0 me-sm-2"></i> Create Project
             </button>
             <div class="responsive-table-plugin">
@@ -77,47 +87,54 @@
     </div>
 </div>
 
-
+<!-- Create Modal -->
 <div class="modal fade" id="createProjectModal" tabindex="-1" role="dialog" aria-labelledby="createProjectModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="createProjectModalLabel">Create Project</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-                @await Html.PartialAsync("Create", new ProjectDto())
+                @Html.Partial("Create", new Domain.DTO.ProjectDto())
             </div>
         </div>
     </div>
 </div>
 
-
+<!-- Edit Modal -->
 <div class="modal fade" id="editProjectModal" tabindex="-1" role="dialog" aria-labelledby="editProjectModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editProjectModalLabel">Edit Project</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-                @await Html.PartialAsync("Edit", new ProjectDto())
+                @Html.Partial("Edit",  new Domain.DTO.ProjectDto())
             </div>
         </div>
     </div>
 </div>
 
-
+<!-- Delete Modal -->
 <div class="modal fade" id="deleteProjectModal" tabindex="-1" role="dialog" aria-labelledby="deleteProjectModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteProjectModalLabel">Delete Project</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-                @await Html.PartialAsync("Delete", new ProjectDto())
+                @Html.Partial("Delete", new Domain.DTO.ProjectDto())
             </div>
         </div>
     </div>
 </div>
+

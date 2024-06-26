@@ -1,10 +1,11 @@
 ﻿using Domain.Entity;
 using Domain.Interface;
-using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Infrastructure.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Infrastructure.repository
@@ -18,33 +19,38 @@ namespace Infrastructure.repository
             _context = context;
         }
 
-        public async Task<IEnumerable<Tasks>> GetAllAsync()
+        public IEnumerable<Tasks> GetAll()
         {
-            return await _context.Tasks.ToListAsync();
+            return _context.Tasks.ToList();
         }
 
-        public async Task<Tasks> GetByIdAsync(int id)
+        public Tasks GetById(int id)
         {
-            return await _context.Tasks.FindAsync(id);
+            return _context.Tasks.Find(id);
+        } 
+        public IEnumerable<Tasks> GetTaskByIdProject(int id)
+        {
+            var data = _context.Tasks.Where(a => a.projectId == id ).ToList();
+            return data ;
         }
 
-        public async Task CreateAsync(Tasks tasks)
+        public void Create(Tasks tasks)
         {
-            await _context.Tasks.AddAsync(tasks);
-            await _context.SaveChangesAsync();
+            _context.Tasks.Add(tasks);
+            _context.SaveChanges();
         }
 
-        public async Task UpdateAsync(Tasks tasks)
+        public void Update(Tasks tasks)
         {
             _context.Tasks.Update(tasks);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
 
-        public async Task DeleteAsync(int id)
+        public void Delete(int id)
         {
-            var tasks = await _context.Tasks.FindAsync(id);
+            var tasks = _context.Tasks.Find(id);
             _context.Tasks.Remove(tasks);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
     }
 }

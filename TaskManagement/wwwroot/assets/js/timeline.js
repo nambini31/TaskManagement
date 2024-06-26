@@ -10,7 +10,6 @@
     });
 
     getProject();
-    getTasks();
 
     $('#checkleave').change(function () {
         if ($(this).is(':checked')) {

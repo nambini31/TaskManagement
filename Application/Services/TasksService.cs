@@ -2,8 +2,10 @@
 using Domain.DTO;
 using Domain.Entity;
 using Domain.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.Services
@@ -11,63 +13,64 @@ namespace Application.Services
     public class TasksService : ITasksService
     {
         private readonly ITasksRepository _taskRepository;
+        private readonly IProjectRepository _projectRepository;
 
-        public TasksService(ITasksRepository tasksRepository)
+        public TasksService(ITasksRepository tasksRepository, IProjectRepository projectRepository)
         {
             _taskRepository = tasksRepository;
+            _projectRepository = projectRepository;
         }
 
-        public async Task<IEnumerable<TasksDto>> GetAllTasksAsync()
+        public IEnumerable<TasksDto> GetAllTasks()
         {
-            var tasks = await _taskRepository.GetAllAsync();
-            return tasks.Select(t => new TasksDto
+            return _taskRepository.GetAll().Select(t => new TasksDto
             {
                 taskId = t.taskId,
                 name = t.name,
                 projectId = t.projectId,
-                projectName = t.project?.name
+                projectName = t.project.name
             });
         }
 
-        public async Task<TasksDto> GetTaskByIdAsync(int id)
+        public TasksDto GetTaskById(int id)
         {
-            var task = await _taskRepository.GetByIdAsync(id);
+            var task = _taskRepository.GetById(id);
             return new TasksDto
             {
                 taskId = task.taskId,
                 name = task.name,
                 projectId = task.projectId,
-                projectName = task.project?.name
+                projectName = task.project.name
             };
         }
 
-        public async Task CreateTaskAsync(TasksDto taskDto)
+        public void CreateTask(TasksDto task)
         {
             var entity = new Tasks
             {
-                name = taskDto.name,
-                projectId = taskDto.projectId
+                name = task.name,
+                projectId = task.projectId
             };
-            await _taskRepository.CreateAsync(entity);
+            _taskRepository.Create(entity);
         }
 
-        public async Task UpdateTaskAsync(TasksDto taskDto)
+        public void UpdateTask(TasksDto task)
         {
-            var entity = await _taskRepository.GetByIdAsync(taskDto.taskId);
-            entity.name = taskDto.name;
-            entity.projectId = taskDto.projectId;
-            await _taskRepository.UpdateAsync(entity);
+            var entity = _taskRepository.GetById(task.taskId);
+            entity.name = task.name;
+            entity.projectId = task.projectId;
+            _taskRepository.Update(entity);
         }
 
-        public async Task DeleteTaskAsync(int id)
+        public void DeleteTask(int id)
         {
-            await _taskRepository.DeleteAsync(id);
+            _taskRepository.Delete(id);
         }
 
         public IEnumerable<Tasks> GetTaskByIdProject(int id)
         {
 
-            return _taskRepository.GetTaskByIdProject(id);
+           return _taskRepository.GetTaskByIdProject(id);
         }
     }
 }
