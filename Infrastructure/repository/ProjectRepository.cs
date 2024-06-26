@@ -62,6 +62,7 @@ namespace Infrastructure.repository
         public async Task DeleteAsync(int id, int user_maj)
         {
             var project = await _context.Project.FindAsync(id);
+
             if (project != null)
             {
                 using (var transaction = _context.Database.BeginTransaction())

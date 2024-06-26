@@ -70,8 +70,11 @@
     $('#deleteProjectModal').on('click', '#confirmDeleteButton', function () {
         var id = $("#ProjectId").val(); 
         $.ajax({
-            url: '/Project/DeleteConfirmed/' + id,
+            url: '/Project/DeleteConfirmed/',
             type: 'POST',
+            data: {
+                id = id
+            },
             success: function () {
                 $('#deleteProjectModal').modal('hide');
                 location.reload();

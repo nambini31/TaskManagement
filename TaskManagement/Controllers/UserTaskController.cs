@@ -57,37 +57,9 @@ namespace TaskManagement.Controllers
         public IActionResult Create()
         {
             return View();
-            
-=========
-            return View();
->>>>>>>>> Temporary merge branch 2
-            
-=========
-            return View();
->>>>>>>>> Temporary merge branch 2
-            
-=========
-            return View();
->>>>>>>>> Temporary merge branch 2
-            
-=========
-            return View();
->>>>>>>>> Temporary merge branch 2
-            
-=========
-            return View();
->>>>>>>>> Temporary merge branch 2
-            
-=========
-            return View();
->>>>>>>>> Temporary merge branch 2
-            
-=========
-            return View();
->>>>>>>>> Temporary merge branch 2
-            
-=========
-            return View();
+
+        }
+
         public async Task<IActionResult> Create(UserTask model)
         {
             if (ModelState.IsValid)
@@ -126,9 +98,6 @@ namespace TaskManagement.Controllers
             }
 
         }
-        [HttpPost]
-        }
-
         
         [HttpPost]
         public async Task<IActionResult> ModalUserTaskEdit(int userTaskId)
