@@ -53,7 +53,61 @@ namespace TaskManagement.Controllers
             }
             
         }
-        
+
+        public IActionResult Create()
+        {
+            return View();
+            
+=========
+            return View();
+>>>>>>>>> Temporary merge branch 2
+            
+=========
+            return View();
+>>>>>>>>> Temporary merge branch 2
+            
+=========
+            return View();
+>>>>>>>>> Temporary merge branch 2
+            
+=========
+            return View();
+>>>>>>>>> Temporary merge branch 2
+            
+=========
+            return View();
+>>>>>>>>> Temporary merge branch 2
+            
+=========
+            return View();
+>>>>>>>>> Temporary merge branch 2
+            
+=========
+            return View();
+>>>>>>>>> Temporary merge branch 2
+            
+=========
+            return View();
+        public async Task<IActionResult> Create(UserTask model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await _SUserTask.AddUserTask(model);
+                    return Json(new { success = true });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, error = ex.Message });
+                }
+            }
+            else
+            {
+                return Json(new { success = false, error = "Invalid model state" });
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> DeleteUserTask(int userTaskId)
         {
@@ -70,8 +124,11 @@ namespace TaskManagement.Controllers
             {
                 throw ex;
             }
-            
+
         }
+        [HttpPost]
+        }
+
         
         [HttpPost]
         public async Task<IActionResult> ModalUserTaskEdit(int userTaskId)

@@ -145,11 +145,11 @@ namespace TaskManagement.Controllers
             return Json(new { success = true, message = "Task deleted successfully" });
         }
 
-        /*    [HttpPost]
-            public IActionResult GetTaskByIdProject(int projectId)
-            {
-                var tasks = _tasksService.GetTaskByIdProject(projectId);
-                return Json( tasks );
-            } */
+        [HttpPost]
+        public IActionResult GetTaskByIdProject(int projectId)
+        {
+            var tasks = _tasksService.GetTaskByIdProject(projectId);
+            return Json(tasks);
+        }
     }
 }

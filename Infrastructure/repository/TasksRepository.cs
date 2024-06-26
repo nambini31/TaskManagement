@@ -75,5 +75,10 @@ namespace Infrastructure.repository
                 catch(Exception) { transaction.Rollback(); throw; }
             }
         }
+        public IEnumerable<Tasks> GetTaskByIdProject(int id)
+        {
+            var data = _context.Tasks.Where(a => a.projectId == id).ToList();
+            return data;
+        }
     }
 }

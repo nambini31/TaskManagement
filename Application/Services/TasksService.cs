@@ -64,10 +64,10 @@ namespace Application.Services
             await _taskRepository.DeleteAsync(id, user_maj);
         }
 
-        /*     public IEnumerable<Tasks> GetTaskByIdProject(int id)
-             {
+        public IEnumerable<Tasks> GetTaskByIdProject(int id)
+        {
 
-                return _taskRepository.GetTaskByIdProject(id); 
-             }*/
+            return _taskRepository.GetTaskByIdProject(id);
+        }
     }
 }

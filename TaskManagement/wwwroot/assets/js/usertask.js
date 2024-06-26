@@ -419,7 +419,7 @@ function ModalEdit(id) {
             /* save edit *****/
             $("#formUserTask").on("submit", function (e) {
                 e.preventDefault();
-
+                
                 let data = new FormData(this);
                 data.delete('isLeave');
 
@@ -487,7 +487,7 @@ function getProject(id , idTask) {
         success: function (res) {
 
             $("#selectProjectId").empty();
-            res.data.forEach(function (item) {
+            res.data.result.forEach(function (item) {
 
                 var option = $('<option>', {
                     value: item.projectId,
@@ -591,9 +591,7 @@ function getTasks(projectId , taskId) {
                 $("#selectTaskId").append(option);
             });
 
-            //VirtualSelect.init({
-            //    ele: '#selectTaskId'
-            //});
+ 
 
             $("#selectTaskId").val(taskId);
 
@@ -601,32 +599,6 @@ function getTasks(projectId , taskId) {
 
         },
 
-    });
-
-    $('#formUserTask').submit(function (e) {
-        e.preventDefault(); 
-
-       
-        var formData = $(this).serialize();
-
-       
-        $.ajax({
-            url: '/UserTask/Create',
-            type: 'POST',
-            data: formData,
-            success: function (response) {
-                
-                console.log(response);
-                
-                window.location.href = '/UserTask/Index'; 
-            },
-            error: function (error) {
-                
-                console.error('Erreur lors de la soumission du formulaire : ', error);
-               
-                toastr.error('Erreur lors de la création du UserTask. Veuillez réessayer.');
-            }
-        });
     });
 }
 
