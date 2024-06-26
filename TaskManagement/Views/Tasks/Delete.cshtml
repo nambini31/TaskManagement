@@ -1,9 +1,10 @@
-﻿@model Domain.DTO.TasksDto
+﻿@model TasksVM
 
 <p>Are you sure you want to delete this task?</p>
 <p>
-    <strong>Title:</strong> @Model.name<br />
-    <strong>Project:</strong> @Model.projectName
+    <strong>Title:</strong>
+    <strong>Project:</strong> 
 </p>
+<button id="deleteTaskConfirmButton" class="btn btn-danger">OK</button>
 <button id="deleteTaskConfirmButton" class="btn btn-danger">Delete</button>
 

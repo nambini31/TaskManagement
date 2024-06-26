@@ -1,9 +1,11 @@
 ﻿using Domain.Entity;
 using Domain.Interface;
-using Microsoft.EntityFrameworkCore;
 using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
-
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Infrastructure.repository
 {
@@ -16,38 +18,38 @@ namespace Infrastructure.repository
             _context = context;
         }
 
-        public IEnumerable<Tasks> GetAll()
+        public async Task<IEnumerable<Tasks>> GetAllAsync()
         {
-            return _context.Tasks.ToList();
+            return await _context.Tasks.ToListAsync();
         }
 
-        public Tasks GetById(int id)
+        public async Task<Tasks> GetByIdAsync(int id)
         {
-            return _context.Tasks.Find(id);
-        } 
-        public IEnumerable<Tasks> GetTaskByIdProject(int id)
-        {
-            var data = _context.Tasks.Where(a => a.projectId == id ).ToList();
-            return data ;
+            return await _context.Tasks.FindAsync(id);
         }
 
-        public void Create(Tasks tasks)
+        public async Task CreateAsync(Tasks tasks)
         {
-            _context.Tasks.Add(tasks);
-            _context.SaveChanges();
+            await _context.Tasks.AddAsync(tasks);
+            await _context.SaveChangesAsync();
         }
 
-        public void Update(Tasks tasks)
+        public async Task UpdateAsync(Tasks tasks)
         {
             _context.Tasks.Update(tasks);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            var tasks = _context.Tasks.Find(id);
+            var tasks = await _context.Tasks.FindAsync(id);
             _context.Tasks.Remove(tasks);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+        }
+        public IEnumerable<Tasks> GetTaskByIdProject(int id)
+        {
+            var data = _context.Tasks.Where(a => a.projectId == id).ToList();
+            return data;
         }
     }
 }

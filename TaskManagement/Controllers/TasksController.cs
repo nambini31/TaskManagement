@@ -1,11 +1,13 @@
 ﻿using Application.Interface;
-using Application.Services;
 using Domain.DTO;
+using Domain.DTO.ViewModels;
+using Domain.Entity;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace TaskManagement.Controllers
 {
-
     public class TasksController : Controller
     {
         private readonly ITasksService _tasksService;
@@ -17,67 +19,125 @@ namespace TaskManagement.Controllers
             _projectService = projectService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            IEnumerable<TasksDto> tasks = await _tasksService.GetAllTasksAsync();
+            IEnumerable<ProjectDto> projects = await _projectService.GetAllProjectAsync();
+
+            TasksVM tasksVM = new TasksVM
+            {
+                ProjectList = projects,
+                TasksList = tasks,
+            };
+
+            return View(tasksVM);
         }
 
         [HttpGet]
-        public IActionResult GetAllTasks()
+        public async Task<IActionResult> GetAllTasks()
         {
-            var tasks = _tasksService.GetAllTasks();
+            var tasks = await _tasksService.GetAllTasksAsync();
+            var projects = await _projectService.GetAllProjectAsync();
+
+            if (projects == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.Projects = projects;
+            return View();
             return Json(new { data = tasks });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            try
+            {
+                var projects = await _projectService.GetAllProjectAsync();
+
+                if (projects == null)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                ViewBag.Projects = projects;
+                return View();
+            }
+            catch (Exception ex)
+            {
+                // Gérer l'exception comme vous le souhaitez
+                return RedirectToAction("Index");
+            }
+        }
+
         [HttpPost]
-        public IActionResult Create([FromBody] TasksDto task)
+        public async Task<IActionResult> Create([FromBody] TasksDto task)
         {
             if (ModelState.IsValid)
             {
-                _tasksService.CreateTask(task);
+                await _tasksService.CreateTaskAsync(task);
                 return Json(new { success = true, message = "Task created successfully" });
             }
-            return Json(new { success = false, message = "Error while creating task" });
+
+            var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+            foreach (var error in errors)
+            {
+                Console.WriteLine("ModelState error: " + error);
+            }
+
+            return Json(new { success = false, message = "Error while creating task", errors });
         }
 
-
         [HttpGet]
-        public IActionResult GetEdit(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var task = _tasksService.GetTaskById(id);
+            var task = await _tasksService.GetTaskByIdAsync(id);
             if (task == null)
             {
                 return NotFound();
             }
 
-            var projects = _projectService.GetAllProjects();
-            ViewBag.Projects = projects;
+            var projects = await _projectService.GetAllProjectAsync();
 
-            var taskDto = new TasksDto
+            if (projects == null)
             {
+                return Json(new { success = false, message = "Projects not found" });
+            }
+
+            return Json(new
+            {
+                success = true,
                 taskId = task.taskId,
                 name = task.name,
-                projectId = task.projectId
-            };
-
-            return View("Edit", taskDto);
+                projectId = task.projectId,
+                projects = projects
+            });
         }
 
-        [HttpPut]
-        public IActionResult Edit([FromBody] TasksDto task)
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromBody] TasksDto task)
         {
             if (ModelState.IsValid)
             {
-                _tasksService.UpdateTask(task);
-                return Json(new { success = true, message = "Task updated successfully" });
+                try
+                {
+                    await _tasksService.UpdateTaskAsync(task);
+                    return Json(new { success = true, message = "Task updated successfully" });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, message = "Error while updating task: " + ex.Message });
+                }
             }
-            return Json(new { success = false, message = "Error while updating task" });
+            return Json(new { success = false, message = "Invalid model state" });
         }
 
-        [HttpDelete]
-        public IActionResult Delete(int id)
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
         {
-            _tasksService.DeleteTask(id);
+            await _tasksService.DeleteTaskAsync(id);
             return Json(new { success = true, message = "Task deleted successfully" });
         }
 
@@ -85,8 +145,7 @@ namespace TaskManagement.Controllers
         public IActionResult GetTaskByIdProject(int projectId)
         {
             var tasks = _tasksService.GetTaskByIdProject(projectId);
-            return Json( tasks );
+            return Json(tasks);
         }
     }
 }
-

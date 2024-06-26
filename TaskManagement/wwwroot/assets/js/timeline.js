@@ -10,6 +10,7 @@
     });
 
     getProject();
+    getTasks();
 
     $('#checkleave').change(function () {
         if ($(this).is(':checked')) {
@@ -75,7 +76,7 @@ function getProject() {
         dataType: "JSON",
         success: function (res) {
             $("#selectProjectId").empty();
-            res.data.forEach(function (item) {
+            res.data.result.forEach(function (item) {
                 var option = $('<option>', {
                     value: item.projectId,
                     text: item.name

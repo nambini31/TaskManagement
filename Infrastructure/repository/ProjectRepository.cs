@@ -3,7 +3,11 @@ using Domain.Interface;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
-
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Domain.DTO;
 
 namespace Infrastructure.repository
 {
@@ -16,33 +20,38 @@ namespace Infrastructure.repository
             _context = context;
         }
 
-        public IEnumerable<Project> GetAll()
+        public async Task<IEnumerable<Project>> GetAllAsync()
         {
-            return _context.Project.ToList();
+            return await _context.Project.ToListAsync();
         }
 
-        public Project GetById(int id)
+
+        public async Task<Project> GetByIdAsync(int id)
         {
-            return _context.Project.Find(id);
+            return await _context.Project.FindAsync(id);
         }
 
-        public void Create(Project project)
+        public async Task AddAsync(Project project)
         {
             _context.Project.Add(project);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Update(Project project)
+
+        public async Task UpdateAsync(Project project)
         {
-            _context.Project.Update(project);
-            _context.SaveChanges();
+            _context.Entry(project).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            var project = _context.Project.Find(id);
-            _context.Project.Remove(project);
-            _context.SaveChanges();
+            var project = await _context.Project.FindAsync(id);
+            if (project != null)
+            {
+                _context.Project.Remove(project);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }
