@@ -34,7 +34,7 @@
             data: $(this).serialize(),
             success: function () {
                 $('#createProjectModal').modal('hide');
-                location.reload();
+                AfficheProjects();
             },
             error: function (xhr, status, error) {
                 alert('Error: ' + error);
@@ -51,12 +51,14 @@
             data: $(this).serialize(),
             success: function () {
                 $('#editProjectModal').modal('hide');
-                location.reload();
+
+                AfficheProjects();
             },
             error: function (xhr, status, error) {
                 alert('Error: ' + error);
             }
         });
+        return false;
     });
 
     
@@ -108,7 +110,7 @@ function AfficheProjects() {
                             data-name="${row.name}"
                             ><i class="fe-edit"></i></a>
 
-                            <a class="btn btn-sm btn-danger deleteProjectButton" style="color:white"
+                            <a class="btn btn-sm btn-danger deleteProjectButton" data-id="${row.projectId}" style="color:white"
                             data-toggle="modal" >
                             <i class="fas fa-trash"></i></a>
                         `;
@@ -147,8 +149,9 @@ function AfficheProjects() {
                 text: '<i class="ti ti-plus ti-xs me-0 me-sm-2"></i><span class="d-none d-sm-inline-block">Add</span>',
                 className: 'add-new btn btn-primary ms-2',
                 attr: {
-                    'data-bs-toggle': 'offcanvas',
-                    'data-bs-target': '#offcanvasEcommerceCategoryList'
+                    'data-bs-toggle': 'modal',
+                    'data-bs-target': '#createProjectModal',
+                    'id' : "createProjectButton"
                 }
             }
 
