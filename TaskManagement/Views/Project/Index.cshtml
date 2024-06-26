@@ -3,21 +3,21 @@
 
 @{
     Layout = "Layout/_LayoutWithMenu";
-    ViewData["Title"] = "List of Projects";
+    ViewData["Title"] = "List of Project";
 }
 
 @section VendorStyles {
     <link href="~/assets/libs/datatables/dataTables.bootstrap4.css" rel="stylesheet" type="text/css" />
     <link href="~/assets/libs/datatables/responsive.bootstrap4.css" rel="stylesheet" type="text/css" />
-    <link href="~/assets/libs/datatables/buttons.bootstrap4.css" rel="stylesheet" type="text/css" />
-    <link href="~/assets/libs/datatables/select.bootstrap4.css" rel="stylesheet" type="text/css" />
 }
+
+
 
 @section VendorScripts {
     <script src="~/assets/libs/datatables/jquery.dataTables.min.js"></script>
     <script src="~/assets/libs/datatables/dataTables.bootstrap4.js"></script>
     <script src="~/assets/libs/datatables/dataTables.responsive.min.js"></script>
-    <script src="~/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
+    <script src="~/assets/libs/datatables/dataTables.buttons.min.js"></script>
 }
 
 @section PageScripts {
@@ -40,37 +40,11 @@
     <div class="col-12">
         <div class="card-box">
             <h4 class="mt-0 header-title">Projects</h4>
-            <button class="btn btn-primary" id="createProjectButton" data-bs-toggle="modal" data-bs-target="#createProjectModal">
-                <i class="ti ti-plus ti-xs me-0 me-sm-2"></i> Create Project
-            </button>
+           
             <div class="responsive-table-plugin">
                 <table id="table_project" class="table table-bordered dt-responsive nowrap w-100">
-                    <thead>
-                        <tr>
-                            <th>ProjectId</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var project in Model)
-                        {
-                            <tr>
-                                <td>@project.projectId</td>
-                                <td>@project.name</td>
-                                <td>@project.description</td>
-                                <td>
-                                    <button class="btn btn-warning btn-sm editProjectButton" data-id="@project.projectId">
-                                        <i class="ti ti-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-danger btn-sm deleteProjectButton" data-id="@project.projectId">
-                                        <i class="ti ti-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
+                   
+                    
                 </table>
             </div>
         </div>
