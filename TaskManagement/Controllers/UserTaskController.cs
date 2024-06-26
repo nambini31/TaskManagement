@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace TaskManagement.Controllers
 {
-    [Authorize]
+   // [Authorize]
     public class UserTaskController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -30,6 +30,7 @@ namespace TaskManagement.Controllers
         {
             return View();
         }
+
 
 
         [HttpPost]
@@ -53,7 +54,33 @@ namespace TaskManagement.Controllers
             }
             
         }
-        
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(UserTask model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await _SUserTask.AddUserTask(model);
+                    return Json(new { success = true });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, error = ex.Message });
+                }
+            }
+            else
+            {
+                return Json(new { success = false, error = "Invalid model state" });
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> DeleteUserTask(int userTaskId)
         {
@@ -70,9 +97,8 @@ namespace TaskManagement.Controllers
             {
                 throw ex;
             }
-            
+
         }
-        
         [HttpPost]
         public async Task<IActionResult> ModalUserTaskEdit(int userTaskId)
         {
@@ -112,6 +138,7 @@ namespace TaskManagement.Controllers
             }
             
         }
+
         [HttpPost]
         public async Task<IActionResult> GenerateExcelUserTask(FiltreUserTask filter)
         {

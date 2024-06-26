@@ -1,0 +1,60 @@
+﻿@model UserTask
+
+@{
+    Layout = "Layout/_LayoutWithMenu";
+    ViewData["Title"] = "UserTask";
+}
+
+@section VendorStyles {
+    <link href="@Url.Content("~/assets/libs/bootstrap-select/css/bootstrap-select.min.css")" rel="stylesheet" />
+}
+
+@section VendorScripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="@Url.Content("~/assets/libs/bootstrap-select/bootstrap-select.min.js")"></script>
+}
+
+@section PageScripts {
+    <script src="@Url.Content("~/assets/js/timeline.js")"></script>
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2>Create UserTask</h2>
+            <hr />
+            <form id="formUserTask" method="post">
+                <div class="row justify-content-center mb-5">
+                    <div class="col-12 col-md-3">
+                        <label class="form-label">Date</label><br />
+                        <input type="datetime-local" required asp-for="date" class="form-control" />
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <input type="hidden" asp-for="UserTaskId" />
+                    <div class="col-12 col-md-1">
+                        <label class="form-label">Leave</label><br />
+                        <input type="checkbox" asp-for="isLeave" data-plugin="switchery" id="checkleave" data-color="#3DDCF7" />
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label id="labelleaveproject">Project</label>
+                        <select placeholder="Select project" name="projectId" data-search="true" data-silent-initial-value-set="true" class="form-control w-100" id="selectProjectId">
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label>Tasks</label>
+                        <select placeholder="Select task" name="taskId" data-search="true" data-silent-initial-value-set="true" class="form-control w-100" id="selectTaskId">
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-1">
+                        <label class="form-label">Hours</label>
+                        <input asp-for="hours" type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="modal-footer mt-4">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
