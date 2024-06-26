@@ -12,9 +12,69 @@ $(document).ready(function () {
 
 
     // Mettre à jour le Date Range Picker avec les nouvelles dates
-    setDateRange(function () {
-        AfficheUserTask();
-    });
+    function updateDateRange() {
+        return new Promise((resolve, reject) => {
+            try {
+                var bsRangePickerWeekNum = $('#daterange');
+
+                function formatDate(date) {
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const day = String(date.getDate()).padStart(2, '0');
+                    const year = date.getFullYear();
+                    return `${year}-${month}-${day}`;
+                }
+
+                // Date exacte une semaine avant aujourd'hui
+                const today = new Date();
+                const dayOfWeek = today.getDay(); // Récupérer le jour de la semaine (0 pour dimanche, 6 pour samedi)
+
+                let exactWeekBeforeStart = new Date();
+                let exactWeekBeforeEnd = new Date();
+
+                if (dayOfWeek >= 4 && dayOfWeek <= 6) {
+                    // Si aujourd'hui est jeudi, vendredi ou samedi
+                    // Date fin est le mercredi de cette semaine + 1 jour
+                    exactWeekBeforeEnd.setDate(today.getDate() - (dayOfWeek - 2) + 1);
+                    // Date début est le jeudi de la semaine précédente
+                    exactWeekBeforeStart.setDate(today.getDate() - (dayOfWeek + 3));
+                } else {
+                    // Pour les autres jours (lundi, mardi, mercredi)
+                    // Date fin est le mercredi de la semaine précédente + 1 jour
+                    exactWeekBeforeEnd.setDate(today.getDate() - (dayOfWeek + 5) + 1);
+                    // Date début est le jeudi de la 2ème semaine précédente
+                    exactWeekBeforeStart.setDate(today.getDate() - (dayOfWeek + 10));
+                }
+
+                // Insérer les dates dans l'input
+                const formattedExactWeekBeforeStart = formatDate(exactWeekBeforeStart);
+                const formattedExactWeekBeforeEnd = formatDate(exactWeekBeforeEnd);
+                const combinedDates = `${formattedExactWeekBeforeStart} - ${formattedExactWeekBeforeEnd}`;
+
+                bsRangePickerWeekNum.val(combinedDates);
+
+                // Mettre à jour le Date Range Picker avec les nouvelles dates
+                $('#startDate').val(formattedExactWeekBeforeStart);
+                $('#endDate').val(formattedExactWeekBeforeEnd);
+                $('#daterange').data('daterangepicker').setStartDate(exactWeekBeforeStart);
+                $('#daterange').data('daterangepicker').setEndDate(exactWeekBeforeEnd);
+
+                // Résoudre la promesse après avoir mis à jour les dates
+                resolve();
+            } catch (error) {
+                // Rejeter la promesse en cas d'erreur
+                reject(error);
+            }
+        });
+    }
+
+    // Fonction appelée après la mise à jour des dates
+   
+    // Appeler la fonction de mise à jour des dates et ensuite exécuter afterSettingDateRange
+    updateDateRange()
+        .then(AfficheUserTask)
+        .catch(error => {
+            console.error("Une erreur s'est produite lors de la mise à jour des dates : ", error);
+        });
 
 
     $('#userId').on('changed.bs.select', function () {
@@ -33,55 +93,6 @@ $(document).ready(function () {
 
 
 /*************************** */
-
-function setDateRange(callback) {
-    var bsRangePickerWeekNum = $('#daterange');
-
-    function formatDate(date) {
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${year}-${month}-${day}`;
-    }
-
-    // Date exacte une semaine avant aujourd'hui
-    const today = new Date();
-    const dayOfWeek = today.getDay(); // Récupérer le jour de la semaine (0 pour dimanche, 6 pour samedi)
-
-    let exactWeekBeforeStart = new Date();
-    let exactWeekBeforeEnd = new Date();
-
-    if (dayOfWeek >= 4 && dayOfWeek <= 6) {
-        // Si aujourd'hui est jeudi, vendredi ou samedi
-        // Date fin est le mercredi de cette semaine + 1 jour
-        exactWeekBeforeEnd.setDate(today.getDate() - (dayOfWeek - 2) + 1);
-        // Date début est le jeudi de la semaine précédente
-        exactWeekBeforeStart.setDate(today.getDate() - (dayOfWeek + 3));
-    } else {
-        // Pour les autres jours (lundi, mardi, mercredi)
-        // Date fin est le mercredi de la semaine précédente + 1 jour
-        exactWeekBeforeEnd.setDate(today.getDate() - (dayOfWeek + 5) + 1);
-        // Date début est le jeudi de la 2ème semaine précédente
-        exactWeekBeforeStart.setDate(today.getDate() - (dayOfWeek + 10));
-    }
-
-    // Insérer les dates dans l'input
-    const formattedExactWeekBeforeStart = formatDate(exactWeekBeforeStart);
-    const formattedExactWeekBeforeEnd = formatDate(exactWeekBeforeEnd);
-    const combinedDates = `${formattedExactWeekBeforeStart} - ${formattedExactWeekBeforeEnd}`;
-
-    bsRangePickerWeekNum.val(combinedDates);
-
-    $('#startDate').val(formattedExactWeekBeforeStart);
-    $('#endDate').val(formattedExactWeekBeforeEnd);
-    $('#daterange').data('daterangepicker').setStartDate(exactWeekBeforeStart);
-    $('#daterange').data('daterangepicker').setEndDate(exactWeekBeforeEnd);
-
-    // Exécute le callback après avoir mis à jour les dates
-    if (typeof callback === "function") {
-        callback();
-    }
-}
 
 /************configuration input date from to */
 $('#daterange').daterangepicker({
