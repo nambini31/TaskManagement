@@ -68,8 +68,7 @@ namespace Application.Services
         {
             var project = await _projectRepository.GetByIdAsync(projectDto.projectId);
             if (project == null)
-                throw new ArgumentException("Leave not found");
-
+                throw new ArgumentException("Leave not found";
             project.name = projectDto.name;
             project.description = projectDto.description;
             await _projectRepository.UpdateAsync(project);
