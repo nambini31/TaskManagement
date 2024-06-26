@@ -10,9 +10,31 @@ $(document).ready(function () {
         actionsBox: true
     });
 
-    
+
+    // Mettre à jour le Date Range Picker avec les nouvelles dates
+    setDateRange(function () {
+        AfficheUserTask();
+    });
 
 
+    $('#userId').on('changed.bs.select', function () {
+
+
+            AfficheUserTask();
+ 
+
+    });
+   
+
+
+
+
+});
+
+
+/*************************** */
+
+function setDateRange(callback) {
     var bsRangePickerWeekNum = $('#daterange');
 
     function formatDate(date) {
@@ -50,35 +72,16 @@ $(document).ready(function () {
 
     bsRangePickerWeekNum.val(combinedDates);
 
-    // Mettre à jour le Date Range Picker avec les nouvelles dates
     $('#startDate').val(formattedExactWeekBeforeStart);
     $('#endDate').val(formattedExactWeekBeforeEnd);
     $('#daterange').data('daterangepicker').setStartDate(exactWeekBeforeStart);
     $('#daterange').data('daterangepicker').setEndDate(exactWeekBeforeEnd);
 
-
-
-
-    AfficheUserTask();
-
-
-    $('#userId').on('changed.bs.select', function () {
-
-
-            AfficheUserTask();
- 
-
-    });
-   
-
-
-
-
-});
-
-
-/*************************** */
-
+    // Exécute le callback après avoir mis à jour les dates
+    if (typeof callback === "function") {
+        callback();
+    }
+}
 
 /************configuration input date from to */
 $('#daterange').daterangepicker({

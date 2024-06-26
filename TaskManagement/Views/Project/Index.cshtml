@@ -45,32 +45,8 @@
             </button>
             <div class="responsive-table-plugin">
                 <table id="table_project" class="table table-bordered dt-responsive nowrap w-100">
-                    <thead>
-                        <tr>
-                            <th>ProjectId</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var project in Model)
-                        {
-                            <tr>
-                                <td>@project.projectId</td>
-                                <td>@project.name</td>
-                                <td>@project.description</td>
-                                <td>
-                                    <button class="btn btn-warning btn-sm editProjectButton" data-id="@project.projectId">
-                                        <i class="ti ti-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-danger btn-sm deleteProjectButton" data-id="@project.projectId">
-                                        <i class="ti ti-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
+                   
+                    
                 </table>
             </div>
         </div>
