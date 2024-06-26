@@ -70,7 +70,7 @@
             type: 'POST',
             success: function () {
                 $('#deleteProjectModal').modal('hide');
-                location.reload();
+                AfficheProjects();
             },
             error: function (xhr, status, error) {
                 alert('Error: ' + error);
