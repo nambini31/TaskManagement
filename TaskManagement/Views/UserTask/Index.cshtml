@@ -3,6 +3,7 @@
 
     Layout = "Layout/_LayoutWithMenu";
     ViewData["Title"] = "Task of user";
+    ViewData["titrePage"] = "Task for user";
 }
 
 @section VendorStyles {
@@ -42,8 +43,8 @@
                         <div class="row justify-content-center">
                             <div class="col-12 col-md-3">
                                 <input type="text" id="daterange" class="form-control min-width-300" value="01/01/2018 - 01/15/2018" />
-                                <input type="hidden"  id="startDate" value="" />
-                                <input type="hidden"  id="endDate" value="" />
+                                <input type="hidden"  id="startDate" />
+                                <input type="hidden"  id="endDate" />
                             </div>
                             <div class="col-12 col-md-3">
                                 <select placeholder="Select user" multiple data-actions-box="true" class="selectpicker w-100" id="userId">

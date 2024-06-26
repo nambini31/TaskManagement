@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace TaskManagement.Controllers
 {
-   // [Authorize]
+   [Authorize]
     public class UserTaskController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -144,11 +144,12 @@ namespace TaskManagement.Controllers
             try
             {
 
-                await _SUserTask.GenerateUserTask(filter);
+                string filePath = await _SUserTask.GenerateUserTask(filter);
+                byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                string fileName = Path.GetFileName(filePath);
+                return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
 
-                var responseData = new { message = "Success" };
 
-                return Ok(responseData);
 
             }
             catch (Exception ex)
@@ -158,5 +159,7 @@ namespace TaskManagement.Controllers
             }
             
         }
+        
+        
     }
 }

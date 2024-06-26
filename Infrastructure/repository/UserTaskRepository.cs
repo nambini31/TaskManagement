@@ -133,7 +133,7 @@ namespace Infrastructure.Repository
                             from 
                             usertask LEFT JOIN tasks on tasks.taskId = usertask.taskId
                             LEFT JOIN leaves on leaves.leaveId = usertask.leaveId LEFT JOIN user on user.userId = usertask.userId 
-                            WHERE ( usertask.date BETWEEN @start AND @end ) {user}
+                            WHERE ( date(usertask.date) BETWEEN @start AND @end ) {user}
                                 ";
 
                 IEnumerable<UserTaskVM> data = await _db.UserTask.FromSqlRaw(sql,
@@ -192,7 +192,7 @@ namespace Infrastructure.Repository
                 LEFT JOIN tasks ON tasks.taskId = usertask.taskId
                 LEFT JOIN leaves ON leaves.leaveId = usertask.leaveId 
                 LEFT JOIN user ON user.userId = usertask.userId 
-            WHERE ( usertask.date BETWEEN @start AND @end ) {user}
+            WHERE ( date(usertask.date) BETWEEN @start AND @end ) {user}
             GROUP BY 
                 user.userId, 
                 taskName 
@@ -249,7 +249,7 @@ namespace Infrastructure.Repository
                 LEFT JOIN tasks ON tasks.taskId = usertask.taskId
                 LEFT JOIN leaves ON leaves.leaveId = usertask.leaveId 
                 LEFT JOIN user ON user.userId = usertask.userId 
-            WHERE ( usertask.date BETWEEN @start AND @end ) {user}
+            WHERE ( date(usertask.date) BETWEEN @start AND @end ) {user}
             GROUP BY 
                 user.userId                             
                                 ";
@@ -304,7 +304,7 @@ namespace Infrastructure.Repository
                 LEFT JOIN tasks ON tasks.taskId = usertask.taskId
                 LEFT JOIN leaves ON leaves.leaveId = usertask.leaveId 
                 LEFT JOIN user ON user.userId = usertask.userId 
-            WHERE ( usertask.date BETWEEN @start AND @end ) {user}
+            WHERE ( date(usertask.date) BETWEEN @start AND @end ) {user}
             GROUP BY 
                 taskName                             
                                 ";
