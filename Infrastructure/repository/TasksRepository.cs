@@ -46,5 +46,10 @@ namespace Infrastructure.repository
             _context.Tasks.Remove(tasks);
             await _context.SaveChangesAsync();
         }
+        public IEnumerable<Tasks> GetTaskByIdProject(int id)
+        {
+            var data = _context.Tasks.Where(a => a.projectId == id).ToList();
+            return data;
+        }
     }
 }

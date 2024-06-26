@@ -6,16 +6,16 @@
 }
 
 @section VendorStyles {
-    <link href="@Url.Content("~/assets/libs/bootstrap-select/css/bootstrap-select.min.css")" rel="stylesheet" />
+    <link href="~/assets/libs/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
 }
 
 @section VendorScripts {
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="@Url.Content("~/assets/libs/bootstrap-select/bootstrap-select.min.js")"></script>
+    <script src="~/assets/libs/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/assets/libs/cleave.js/cleave.min.js"></script>
 }
 
 @section PageScripts {
-    <script src="@Url.Content("~/assets/js/timeline.js")"></script>
+    <script src="~/assets/js/timeline.js"></script>
 }
 
 <div class="container">
@@ -23,7 +23,7 @@
         <div class="col-md-8 offset-md-2">
             <h2>Create UserTask</h2>
             <hr />
-            <form id="formUserTask" method="post">
+            <form id="formUserTaskHome" method="post">
                 <div class="row justify-content-center mb-5">
                     <div class="col-12 col-md-3">
                         <label class="form-label">Date</label><br />
@@ -38,7 +38,7 @@
                     </div>
                     <div class="col-12 col-md-4">
                         <label id="labelleaveproject">Project</label>
-                        <select placeholder="Select project" name="projectId" data-search="true" data-silent-initial-value-set="true" class="form-control w-100" id="selectProjectId">
+                        <select placeholder="Select project" name="projectId" data-search="true" data-silent-initial-value-set="true" class="form-control w-100" id="selectProjectIdCreate">
                         </select>
                     </div>
                     <div class="col-12 col-md-6">
@@ -48,7 +48,7 @@
                     </div>
                     <div class="col-12 col-md-1">
                         <label class="form-label">Hours</label>
-                        <input asp-for="hours" type="text" class="form-control" />
+                        <input asp-for="hours" type="text"  class="form-control" />
                     </div>
                 </div>
                 <div class="modal-footer mt-4">

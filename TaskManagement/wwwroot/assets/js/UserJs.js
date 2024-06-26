@@ -234,15 +234,21 @@ $(document).ready(function () {
         const userInput = document.getElementById('Email');
         var inputValue = userInput.value.trim();
 
-        // Expression régulière pour valider l'input (sans espaces, commence par une lettre, au moins 5 caractères)
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+\w+$/;
-        //valide
-        if (regex.test(inputValue)) {
+        if (inputValue != '') {
+            // Expression régulière pour valider l'input (sans espaces, commence par une lettre, au moins 5 caractères)
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+\w+$/;
+            //valide
+            if (regex.test(inputValue)) {
+                inputError.textContent = '';
+                return true;
+            } else {
+                inputError.textContent = 'Email Address Invalid';
+                return false;
+            }
+        }
+        else {
             inputError.textContent = '';
             return true;
-        } else {
-            inputError.textContent = 'Email Address Invalid';
-            return false;
         }
     }
     //-----------------------------------

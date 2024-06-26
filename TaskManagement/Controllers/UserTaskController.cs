@@ -81,7 +81,24 @@ namespace TaskManagement.Controllers
             }
         }
 
-        
+        [HttpPost]
+        public async Task<IActionResult> DeleteUserTask(int userTaskId)
+        {
+            try
+            {
+                var userConnected = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                await _SUserTask.DeleteUserTaskById(userTaskId, userConnected);
+
+                var responseData = new { message = "Success" };
+
+                return Ok(responseData);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
         [HttpPost]
         public async Task<IActionResult> ModalUserTaskEdit(int userTaskId)
         {
@@ -104,7 +121,9 @@ namespace TaskManagement.Controllers
         {
             try
             {
-                userTask.userId = 1;
+                userTask.UserMaj = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                userTask.userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
                 await _SUserTask.UpdateUserTask(userTask);
 
                 var responseData = new { message = "Success" };

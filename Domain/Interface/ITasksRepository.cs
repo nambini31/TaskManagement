@@ -8,6 +8,7 @@ namespace Domain.Interface
     public interface ITasksRepository
     {
         Task<IEnumerable<Tasks>> GetAllAsync();
+        IEnumerable<Tasks> GetTaskByIdProject(int id);
         Task<Tasks> GetByIdAsync(int id);
         Task CreateAsync(Tasks tasks);
         Task UpdateAsync(Tasks tasks);

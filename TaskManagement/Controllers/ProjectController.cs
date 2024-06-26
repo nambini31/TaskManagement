@@ -15,6 +15,13 @@ namespace TaskManagement.Controllers
             _projectService = projectService;
         }
 
+        [HttpGet]
+        public IActionResult GetAllProjects()
+        {
+            var projects = _projectService.GetAllProjectAsync();
+            return Json(new { data = projects });
+        }
+
         public async Task<IActionResult> Index()
         {
             var projects = await _projectService.GetAllProjectAsync();
@@ -25,6 +32,7 @@ namespace TaskManagement.Controllers
         {
             return PartialView(new ProjectDto());
         }
+
 
         [HttpPost]
        // [ValidateAntiForgeryToken]

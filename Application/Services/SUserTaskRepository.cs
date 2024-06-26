@@ -27,9 +27,9 @@ namespace Application.Services
              await IUserTask.AddUserTask(article);
         }
 
-        public async Task DeleteUserTaskById(int articleId)
+        public async Task DeleteUserTaskById(int articleId, int userConnected)
         {
-           await IUserTask.DeleteUserTaskById(articleId);
+           await IUserTask.DeleteUserTaskById(articleId, userConnected);
         }
 
         public  async Task<UserTask> GetUserTaskById(int articleId)
@@ -84,13 +84,18 @@ namespace Application.Services
                         column++;
                     }
 
-                    
+                    worksheet.Cells[1, column].Value = "Total";
+
+                   
+
                     int row = 2; 
                     foreach (var taskName in tasks)
                     {
                         worksheet.Cells[$"A{row}"].Value = taskName.taskName; 
 
-                        column = 2; 
+                        column = 2;
+                        
+                        double total = 0.0;
 
                         foreach (var user in users)
                         {
@@ -105,6 +110,7 @@ namespace Application.Services
                                     if (datas.userName == user.userName && taskName.taskName == datas.taskName && entete.ToString() == user.userName)
                                     {
                                         worksheet.Cells[row, column].Value = $"{datas.hours}";
+                                        total += datas.hours;
                                     }
 
                                 }
@@ -114,7 +120,8 @@ namespace Application.Services
                         }
 
 
-                        
+                        worksheet.Cells[row, column].Value = total;
+
 
                         row++;
                     }
