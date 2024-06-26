@@ -1,25 +1,48 @@
 ﻿$(document).ready(function () {
+    
     $("#selectTaskId").selectpicker({
         liveSearch: true,
         actionsBox: true
     });
 
-    $("#selectProjectId").selectpicker({
+    $("#selectProjectIdCreate").selectpicker({
         liveSearch: true,
         actionsBox: true
     });
 
     getProject();
-    getTasks();
 
-    $('#checkleave').change(function () {
-        if ($(this).is(':checked')) {
-            getLeaves();
-        } else {
-            getProject();
-        }
-    });
+   
+    formatPrixImput();
 });
+
+$('#checkleave').change(function () {
+
+    if ($(this).is(':checked')) {
+        getLeaves();
+    } else {
+        getProject();
+    }
+});
+
+function formatPrixImput() {
+
+    var inputPrix = $("#hoursEditUsrTask");
+
+    inputPrix.each(function () {
+        clave = new Cleave(this, {
+            numeral: true,
+            numeralDecimalMark: '.',
+            numeralDecimalScale: 2,
+            numeralPositiveOnly: true,
+            numeralThousandsGroupStyle: 'thousand',
+            delimiter: '',
+            numeralPositiveOnly: true,
+            numeralIntegerScale: 4,
+        });
+    });
+
+}
 
 function getLeaves() {
     $.ajax({
@@ -27,22 +50,24 @@ function getLeaves() {
         type: 'GET',
         dataType: "JSON",
         success: function (res) {
-            $("#selectProjectId").empty();
+            $("#selectProjectIdCreate").empty();
+
             res.data.forEach(function (item) {
                 var option = $('<option>', {
                     value: item.leaveId,
                     text: item.reason
                 });
-                $("#selectProjectId").append(option);
+                $("#selectProjectIdCreate").append(option);
             });
 
-            $('#selectProjectId').attr('name', "leaveId");
-            $('#selectProjectId').removeAttr("required");
+            $('#selectProjectIdCreate').attr('name', "leaveId");
+            $('#selectProjectIdCreate').removeAttr("required");
             $('#selectTaskId').removeAttr("required");
             $("#selectTaskId").empty();
             $('#labelleaveproject').text("Leave");
             $('#selectTaskId').prop('disabled', true);
             $("#selectTaskId").selectpicker("refresh");
+            $("#selectProjectIdCreate").selectpicker("refresh");
         },
     });
 }
@@ -64,6 +89,7 @@ function getTasks(projectId) {
                 });
                 $("#selectTaskId").append(option);
             });
+            
             $("#selectTaskId").selectpicker("refresh");
         },
     });
@@ -75,27 +101,35 @@ function getProject() {
         type: 'GET',
         dataType: "JSON",
         success: function (res) {
-            $("#selectProjectId").empty();
+            $("#selectProjectIdCreate").empty();
             res.data.result.forEach(function (item) {
                 var option = $('<option>', {
                     value: item.projectId,
                     text: item.name
                 });
-                $("#selectProjectId").append(option);
+                $("#selectProjectIdCreate").append(option);
             });
 
-            $('#selectProjectId').attr('name', "projectId");
-            $('#selectProjectId').attr('required', "required");
+            $('#selectProjectIdCreate').attr('name', "projectId");
+            $('#selectProjectIdCreate').attr('required', "required");
             $('#selectTaskId').attr('required', "required");
             $('#selectTaskId').prop('disabled', false);
             $('#labelleaveproject').text("Project");
             $("#selectTaskId").selectpicker("refresh");
 
-            $('#selectProjectId').on('change', function () {
+            $('#selectProjectIdCreate').on('change', function () {
                 getTasks($(this).val());
             });
 
-            $("#selectProjectId").selectpicker("refresh");
+            $("#selectProjectIdCreate").selectpicker("refresh");
+
+            if ($("#selectProjectIdCreate").find('option').length > 0) {
+                // Select the first option
+                $("#selectProjectIdCreate").val($("#selectProjectIdCreate").find('option:first').val());
+                getTasks($("#selectProjectIdCreate").find('option:first').val());
+                // Refresh the selectpicker to reflect the change
+                $("#selectProjectIdCreate").selectpicker('refresh');
+            }
         },
     });
 }
