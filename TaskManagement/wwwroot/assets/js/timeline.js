@@ -1,21 +1,29 @@
 ﻿$(document).ready(function () {
     // Initialisation des select pickers
 
-    var taskRowIdCounter = 2;
+    let taskRowIdCounter = 2;
 
     // Récupération des projets au chargement de la page
-    getProject($('.task-container').find('.task-row1'));
+    getProject(1);
+
+    $(`.checkleave1`).change(function () {
+
+        if ($(this).is(':checked')) {
+
+            var rowId = $(this).closest('[class^="task-row"]').data('row-id');
+            getLeaves(rowId);
+
+        } else {
+            var rowId = $(this).closest('[class^="task-row"]').data('row-id');
+            getProject(rowId);
+
+        }
+    });
 
     // Formatage de l'input prix
     formatPrixInput();
 
-    $('#checkleave').change(function () {
-        if ($(this).is(':checked')) {
-            getLeaves();
-        } else {
-            getProject();
-        }
-    });
+    
 
     function formatPrixInput() {
         var inputPrix = $("#hoursEditUsrTask");
@@ -32,13 +40,16 @@
         });
     }
 
-    function getLeaves(rowtask) {
-        var newRowSelect = rowtask.find('.selectProjectIdCreate');
+    function getLeaves(rowId) {
+        
+        var newRowSelect = $('#selectProjectIdCreate' + rowId);
+        var newRowTask = $('#selectTaskId' + rowId);
 
         newRowSelect.selectpicker({
             liveSearch: true,
             actionsBox: true
         });
+
         $.ajax({
             url: '/Leaves/GetAllLeaves',
             type: 'GET',
@@ -54,7 +65,7 @@
                 });
                 newRowSelect.attr('name', "leaveId");
                 newRowSelect.removeAttr("required");
-                var newRowTask = rowtask.find('.selectTaskId');
+               
                 newRowTask.empty();
                 $('#labelleaveproject').text("Leave");
                 newRowTask.prop('disabled', true);
@@ -67,9 +78,8 @@
         });
     }
 
-    function getTasks(rowtask, projectId) {
-        var newRowTask = rowtask.find('.selectTaskId');
-
+    function getTasks(rowId, projectId) {
+        var newRowTask = $('#selectTaskId' + rowId);
          newRowTask.selectpicker({
             liveSearch: true,
             actionsBox: true
@@ -97,8 +107,12 @@
         });
     }
 
-    function getProject(rowtask) {
-        var newRowSelect = rowtask.find('.selectProjectIdCreate');
+    function getProject(rowId) {
+
+
+        var newRowSelect = $('#selectProjectIdCreate' + rowId);
+        var newRowTask = $('#selectTaskId' + rowId);
+
         newRowSelect.selectpicker({
             liveSearch: true,
             actionsBox: true
@@ -119,12 +133,11 @@
                 });
                 newRowSelect.attr('name', "projectId");
                 newRowSelect.attr('required', "required");
-                var newRowTask = rowtask.find('.selectTaskId');
                 newRowTask.attr('required', "required");
                 newRowTask.prop('disabled', false);
                 $('#labelleaveproject').text("Project");
                 newRowSelect.on('change', function () {
-                    getTasks(rowtask, newRowSelect.val());
+                    getTasks(rowId, newRowSelect.val());
                 });
                 newRowSelect.selectpicker("refresh");
 
@@ -132,7 +145,7 @@
                     
                     newRowSelect.val(newRowSelect.find('option:first').val());
 
-                    getTasks(rowtask, newRowSelect.val());
+                    getTasks(rowId, newRowSelect.val());
                     newRowSelect.selectpicker('refresh');
                 }
             },
@@ -175,21 +188,21 @@
 
     $('.btn-plus-small').click(function () {
 
-        var newRow = $(`<div class="task-row${taskRowIdCounter} row align-items-end mb-3">` +
+        var newRow = $(`<div class="task-row${taskRowIdCounter} row align-items-end mb-3"  data-row-id="${taskRowIdCounter}">` +
                             '<div class="col-12 col-md-1 mt-3">' +
-                                '<input asp-for="isLeave" type="checkbox" class="checkleave" />' +
+            `<input asp-for="isLeave" type="checkbox" class="checkleave${taskRowIdCounter}" />` +
                             '</div>' +
                             '<div class="col-12 col-md-3 mt-3">' +
-                                '<select placeholder="Select project" name="projectId" data-search="true" data-silent-initial-value-set="true" class="form-control w-100 selectProjectIdCreate"></select>' +
+            `<select placeholder="Selectpicker project" name="projectId" data-search="true" data-silent-initial-value-set="true" id="selectProjectIdCreate${taskRowIdCounter}" class="form-control w-100 selectProjectIdCreate${taskRowIdCounter}"></select>` +
                             '</div>' +
                             '<div class="col-12 col-md-4 mt-3">' +
-                                '<select placeholder="Select task" name="taskId" data-search="true" data-silent-initial-value-set="true" class="form-control w-100 selectTaskId"></select>' +
+            `<select placeholder="Selectpicker task" name="taskId" data-search="true" data-silent-initial-value-set="true" id="selectTaskId${taskRowIdCounter}" class="form-control w-100 selectTaskId${taskRowIdCounter}"></select>` +
                             '</div>' +
                             '<div class="col-12 col-md-1 mt-3">' +
                                 '<input asp-for="hours" type="text" class="form-control hours-input" />' +
                             '</div>' +
                             '<div class="col-12 col-md-1 mt-3 btn-container">' +
-                                '<button type="button" class="btn btn-delete btn-sm mt-auto">' +
+                                `<button type="button" class="btn btn-delete btn-sm mt-auto">` +
                                 '<i class="fa fa-trash"></i>' +
                                 '</button>' +
                             '</div>' +
@@ -199,38 +212,50 @@
         var container = $('.task-container').find(`.task-row${taskRowIdCounter}`);
 
 
-        container.find(`.checkleave`) .change(function () {
+        container.find(`.checkleave${taskRowIdCounter}`).change(function () {
+
             if ($(this).is(':checked')) {
-                getLeaves(container);
+
+                var rowId = $(this).closest('[class^="task-row"]').data('row-id');
+                getLeaves(rowId);
+
             } else {
-                getProject(container);
+                var rowId = $(this).closest('[class^="task-row"]').data('row-id');
+                getProject(rowId);
+
             }
         });
 
         // Initialisation des select pickers pour la nouvelle ligne ajoutée
-        getProject(container);
+        getProject(taskRowIdCounter);
 
         taskRowIdCounter++;
     });
 
     // Initialize the delete button to remove rows
     $(document).on('click', '.btn-delete', function () {
-        $(`.task-row${taskRowIdCounter}`).remove();
+        var rowId = $(this).closest('[class^="task-row"]').data('row-id'); // Récupère l'ID de la ligne à supprimer
+        $('.task-container').find('[data-row-id="' + rowId + '"]').remove(); // Supprime l'élément parent avec classe et data-row-id
+        // Ajoutez ici d'autres logiques après la suppression si nécessaire
     });
 
+    //$(document).on('click', '.btn-delete', function () {
+    //    $(this).closest(`.task-row${taskRowIdCounter}`).remove();
+    //    checkTaskRows();
+    //});
+
     // Check the number of task rows and toggle visibility of the date input and save button
-    function checkTaskRows() {
-        if ($(`.task-container .task-row${taskRowIdCounter}`).length === 0) {
-            $('#date').closest('.form-group').hide();
-            $('button[type="submit"]').hide();
-        } else {
-            $('#date').closest('.form-group').show();
-            $('button[type="submit"]').show();
-        }
-    }
+    //function checkTaskRows() {
+    //    if ($(`.task-container .task-row${taskRowIdCounter}`).length === 0) {
+    //        $('#date').closest('.form-group').hide();
+    //        $('button[type="submit"]').hide();
+    //    } else {
+    //        $('#date').closest('.form-group').show();
+    //        $('button[type="submit"]').show();
+    //    }
+    //}
 
     // Initial check
-    checkTaskRows();
 
     // Fonction pour initialiser les select pickers dans une nouvelle ligne
 
