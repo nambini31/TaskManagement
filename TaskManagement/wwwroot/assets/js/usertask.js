@@ -339,6 +339,7 @@ function AfficheUserTask() {
                 attr: {
                     'data-bs-toggle': 'offcanvas',
                     'data-bs-target': '#offcanvasEcommerceCategoryList',
+                    'onclick' : `location.href='Create'`
                 }
             }
 

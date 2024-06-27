@@ -97,7 +97,6 @@ namespace Infrastructure.repository
             // Exclure les utilisateurs avec les noms d'utilisateur spécifiés
             query = query.Where(u => !excludedUsernames.Contains(u.Username));
 
-            query = query.Where(u => u.Username != "lesgars");
             if (!string.IsNullOrEmpty(includeProperties))
             {
                 foreach (var includeProp in includeProperties
