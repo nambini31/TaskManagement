@@ -160,25 +160,26 @@
 
     $('.btn-plus-small').click(function () {
         var newRow = $('<div class="task-row row align-items-end mb-3">' +
-            '<div class="col-12 col-md-3">' +
+            '<div class="col-12 col-md-1 mt-3">' +
             '<input asp-for="isLeave" type="checkbox" id="checkleave" />' +
             '</div>' +
-            '<div class="col-12 col-md-3">' +
+            '<div class="col-12 col-md-3 mt-3">' +
             '<select placeholder="Select project" name="projectId" data-search="true" data-silent-initial-value-set="true" class="form-control w-100" id="selectProjectIdCreate"></select>' +
             '</div>' +
-            '<div class="col-12 col-md-3">' +
+            '<div class="col-12 col-md-4 mt-3">' +
             '<select placeholder="Select task" name="taskId" data-search="true" data-silent-initial-value-set="true" class="form-control w-100" id="selectTaskId"></select>' +
             '</div>' +
-            '<div class="col-12 col-md-2">' +
+            '<div class="col-12 col-md-1 mt-3">' +
             '<input asp-for="hours" type="text" class="form-control hours-input" />' +
             '</div>' +
-            '<div class="col-12 col-md-1 btn-container">' +
+            '<div class="col-12 col-md-1 mt-3 btn-container">' +
             '<button type="button" class="btn btn-delete btn-sm mt-auto">' +
             '<i class="fa fa-trash"></i>' +
             '</button>' +
             '</div>' +
             '</div>');
         $('.task-container').append(newRow);
+
         checkTaskRows();
     });
 
