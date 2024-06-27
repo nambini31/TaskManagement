@@ -91,7 +91,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=User}/{action=Login}/{id?}");
 
-// Initialisez la base de données
+// Initialisez la base de données pour enregistrer les comptes administrateurs par defaut
 using (var scope = app.Services.CreateScope())
 {
     var dbInitializer = scope.ServiceProvider.GetRequiredService<UserServiceRepository>();
