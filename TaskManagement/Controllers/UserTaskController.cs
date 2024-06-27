@@ -146,6 +146,14 @@ namespace TaskManagement.Controllers
             {
 
                 string filePath = await _SUserTask.GenerateUserTask(filter);
+
+                await _SUserTask.UpdateHistoGenereExcel(new Export
+                {
+                    dateFrom = filter.startDate,
+                    dateTo = filter.endDate,
+                    user_maj = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))
+                });
+
                 byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
                 string fileName = Path.GetFileName(filePath);
                 return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
