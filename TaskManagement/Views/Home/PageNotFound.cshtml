@@ -1,0 +1,72 @@
+﻿@{
+    Layout = "Layout/_LayoutWithoutMenu";
+    ViewData["Title"] = "Page not found";
+}
+
+
+@section VendorStyles {
+    <link href="~/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+}
+
+@section VendorScripts {
+
+}
+
+
+@section PageStyles {
+
+}
+
+@section PageScripts {
+
+}
+@* ************** Content ************** *@
+
+<body class="authentication-bg">
+
+    <div class="account-pages mt-5 mb-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6 col-xl-5">
+                    <div class="text-center">
+                        <h2 class="text-muted mt-2 mb-1">GesPro</h2>
+                    </div>
+                    <div class="card">
+
+                        <div class="card-body p-4">
+
+                            <div class="text-center">
+                                <h1 class="text-error">404</h1>
+                                <h3 class="mt-1 mb-1">Page not Found</h3>
+                                <p class="text-muted mb-3">
+                                    We're sorry, but the page you requested could not be found.
+                                </p>
+
+                                <a href="javascript:goBack()" class="btn btn-danger waves-effect waves-light"><i class="fas fa-home mr-1"></i> Back</a>
+                            </div>
+
+
+                        </div> <!-- end card-body -->
+                    </div>
+                    <!-- end card -->
+
+                </div> <!-- end col -->
+            </div>
+            <!-- end row -->
+        </div>
+        <!-- end container -->
+    </div>
+    <!-- end page -->
+    <!-- Vendor js -->
+    <script src="assets/js/vendor.min.js"></script>
+
+    <!-- App js -->
+    <script src="assets/js/app.min.js"></script>
+
+</body>
+
+<script>
+    function goBack() {
+        history.back();
+    }
+</script>

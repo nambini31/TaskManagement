@@ -44,16 +44,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
             {
                 options.LoginPath = "/User/MustLogin";
                 options.AccessDeniedPath = "/User/AccesDenied";
-
-                //gere la redirection pour souvenir les pages precedent
-                //options.Events = new CookieAuthenticationEvents
-                //{
-                //    OnRedirectToLogin = context =>
-                //    {
-                //        context.Response.Redirect(context.RedirectUri + "&returnUrl=" + context.Request.Path);
-                //        return Task.CompletedTask;
-                //    }
-                //};
             });
 builder.Services.AddScoped<IUserTaskRepository, UserTaskRepository>();
 builder.Services.AddScoped<SUserTaskRepository>();
@@ -87,6 +77,7 @@ app.UseRequestLocalization(new RequestLocalizationOptions
     SupportedUICultures = supportedCultures
 });
 
+app.UseStatusCodePagesWithReExecute("/Home/PageNotFound");
 
 app.UseStaticFiles();
 

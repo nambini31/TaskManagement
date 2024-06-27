@@ -13,11 +13,11 @@ namespace TaskManagement.Controllers
    [Authorize]
     public class UserTaskController : Controller
     {
-        private readonly ILogger<Home__Controller> _logger;
+        private readonly ILogger<HomeController> _logger;
         private readonly SUserTaskRepository _SUserTask;
         private readonly UserServiceRepository _UserService;
 
-        public UserTaskController(ILogger<Home__Controller> logger, SUserTaskRepository _SUserTask, UserServiceRepository _UserService)
+        public UserTaskController(ILogger<HomeController> logger, SUserTaskRepository _SUserTask, UserServiceRepository _UserService)
         {
             _logger = logger;
             this._SUserTask = _SUserTask;
