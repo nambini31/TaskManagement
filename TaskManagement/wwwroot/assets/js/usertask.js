@@ -625,3 +625,278 @@ function getTasks(projectId , taskId) {
 }
 
 /******************************* */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$(document).ready(function () {
+    // Initialisation des select pickers
+
+
+    // Formatage de l'input prix
+    formatPrixInput();
+
+
+    function formatPrixInput() {
+        var inputPrix = $("#hoursEditUsrTask");
+        inputPrix.each(function () {
+            new Cleave(this, {
+                numeral: true,
+                numeralDecimalMark: '.',
+                numeralDecimalScale: 2,
+                numeralPositiveOnly: true,
+                numeralThousandsGroupStyle: 'thousand',
+                delimiter: '',
+                numeralIntegerScale: 4,
+            });
+        });
+    }
+
+
+    // Gestion de la soumission du formulaire avec AJAX
+    $('#formUserTaskHome').submit(function (e) {
+        e.preventDefault();
+        var formData = {
+            date: $('input[asp-for="date"]').val(),
+            isLeave: $('input[asp-for="isLeave"]').is(':checked'),
+            projectId: $('.selectProjectIdCreate').val(),
+            taskId: $('.selectTaskId').val(),
+            hours: $('input[asp-for="hours"]').val()
+        };
+
+        $.ajax({
+            url: '/UserTask/Create',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function (data) {
+                if (data.success) {
+                    alert('Task created successfully');
+                    location.reload();
+                } else {
+                    alert('Error while creating task: ' + data.error);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('An error occurred:', error);
+                alert('An error occurred: ' + error);
+            }
+        });
+    });
+
+
+    initialiserSelectPicker($('.task-container'));
+
+
+    // Gestion de l'ajout de nouvelles lignes
+    $('.btn-plus-small').click(function () {
+        var newRow = $('<div class="task-row row align-items-end mb-3">' +
+            '<div class="col-12 col-md-1 mt-4">' +
+            '<input type="checkbox" class="checkleave" />' +
+            '</div>' +
+            '<div class="col-12 col-md-3 mt-4">' +
+            '<select placeholder="Select project" name="projectId" data-search="true" data-silent-initial-value-set="true" class="form-control w-100 selectProjectIdCreate"></select>' +
+            '</div>' +
+            '<div class="col-12 col-md-4 mt-4">' +
+            '<select placeholder="Select task" name="taskId" data-search="true" data-silent-initial-value-set="true" class="form-control w-100 selectTaskId"></select>' +
+            '</div>' +
+            '<div class="col-12 col-md-1 mt-4">' +
+            '<input type="text" class="form-control hours-input" />' +
+            '</div>' +
+            '<div class="col-12 col-md-1 mt-4 btn-container">' +
+            '<button type="button" class="btn btn-delete btn-sm mt-auto">' +
+            '<i class="fa fa-trash"></i>' +
+            '</button>' +
+            '</div>' +
+            '</div>');
+        $('.task-container').append(newRow);
+        initialiserSelectPicker(newRow);
+    });
+
+    // Gestion de la suppression des lignes
+    $(document).on('click', '.btn-delete', function () {
+        $(this).closest('.task-row').remove();
+    });
+
+    // Délégation d'événements pour les cases à cocher
+    $(document).on('change', '.checkleave', function () {
+        var row = $(this).closest('.task-row');
+        if ($(this).is(':checked')) {
+            getLeaves(row);
+        } else {
+            getProject(row);
+        }
+    });
+
+
+});
+
+
+function initialiserSelectPicker(container) {
+    container.find('.selectTaskId').each(function () {
+        $(this).selectpicker({
+            liveSearch: true,
+            actionsBox: true
+        });
+    });
+
+    container.find('.selectProjectIdCreate').each(function () {
+        $(this).selectpicker({
+            liveSearch: true,
+            actionsBox: true
+        });
+    });
+
+    // Récupération des projets
+    getProject(container);
+}
+
+function getLeaves(row) {
+    $.ajax({
+        url: '/Leaves/GetAllLeaves',
+        type: 'GET',
+        dataType: 'JSON',
+        success: function (res) {
+            var $selectTask = row.find('.selectTaskId');
+            $selectTask.empty();
+            res.data.result.forEach(function (item) {
+                var option = $('<option>', {
+                    value: item.leaveId,
+                    text: item.reason
+                });
+                $selectTask.append(option);
+            });
+            $selectTask.attr('name', 'leaveId');
+            $selectTask.attr('required', 'required');
+            $selectTask.prop('disabled', false);
+            $selectTask.selectpicker('refresh');
+        },
+        error: function (xhr, status, error) {
+            console.error('Error fetching leaves:', error);
+        }
+    });
+}
+
+function getProject(container) {
+    $.ajax({
+        url: '/Project/GetAllProjects',
+        type: 'GET',
+        dataType: 'JSON',
+        success: function (res) {
+            container.find('.selectProjectIdCreate').each(function () {
+                var $selectProject = $(this);
+                $selectProject.empty();
+                res.data.result.forEach(function (item) {
+                    var option = $('<option>', {
+                        value: item.projectId,
+                        text: item.name
+                    });
+                    $selectProject.append(option);
+                });
+                $selectProject.attr('name', 'projectId');
+                $selectProject.attr('required', 'required');
+                $selectProject.on('change', function () {
+                    getTasks($(this).val(), $selectProject.closest('.task-row'));
+                });
+                $selectProject.selectpicker('refresh');
+                if ($selectProject.find('option').length > 0) {
+                    $selectProject.val($selectProject.find('option:first').val());
+                    getTasks($selectProject.find('option:first').val(), $selectProject.closest('.task-row'));
+                    $selectProject.selectpicker('refresh');
+                }
+            });
+
+            container.find('.selectTaskId').each(function () {
+                var $selectTask = $(this);
+                $selectTask.selectpicker({
+                    liveSearch: true,
+                    actionsBox: true
+                });
+                $selectTask.attr('required', 'required');
+                $selectTask.prop('disabled', false);
+                $('#labelleaveproject').text('Project');
+                $selectTask.selectpicker('refresh');
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error('Error fetching projects:', error);
+        }
+    });
+}
+
+function getTasks(projectId, row) {
+    $.ajax({
+        url: '/Tasks/GetTasksByProject',
+        type: 'GET',
+        data: { projectId: projectId },
+        dataType: 'JSON',
+        success: function (res) {
+            var $selectTask = row.find('.selectTaskId');
+            $selectTask.empty();
+            res.data.result.forEach(function (item) {
+                var option = $('<option>', {
+                    value: item.taskId,
+                    text: item.name
+                });
+                $selectTask.append(option);
+            });
+            $selectTask.selectpicker('refresh');
+        },
+        error: function (xhr, status, error) {
+            console.error('Error fetching tasks:', error);
+        }
+    });
+}
+
+
