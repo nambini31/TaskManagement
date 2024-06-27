@@ -8,13 +8,13 @@ using TaskManagement.Models;
 namespace TaskManagement.Controllers
 {
     [Authorize]
-    public class HomeController : Controller
+    public class Home__Controller : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<Home__Controller> _logger;
 
         private readonly SUserTaskRepository _SUserTask;
 
-        public HomeController(ILogger<HomeController> logger , SUserTaskRepository _SUserTask)
+        public Home__Controller(ILogger<Home__Controller> logger , SUserTaskRepository _SUserTask)
         {
             _logger = logger;
 

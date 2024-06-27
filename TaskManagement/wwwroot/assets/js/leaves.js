@@ -17,11 +17,13 @@
             type: 'POST',
             data: $(this).serialize(),
             success: function () {
+                toastr["success"]("Successfuly !!");
                 $('#createLeaveModal').modal('hide');
                 AfficheLeaves();
             },
             error: function (xhr, status, error) {
-                alert('Error: ' + error);
+                toastr["error"]("Leaves's Name already exist !!");
+
             }
         });
     });
@@ -170,10 +172,11 @@ function editSubmit() {
             reason: $("#Reasons").val()
         },
         success: function () {
+            toastr["success"]("Successfuly !!");
             AfficheLeaves();
         },
         error: function (xhr, status, error) {
-            alert('Error: ' + error);
+            toastr["error"]("Leaves's Name already exist !!");
         }
     });
 }
@@ -181,6 +184,7 @@ function editSubmit() {
 
             $('#deleteLeaveModal').modal('hide');
         $.post('/Leaves/DeleteConfirmed', { id: id }, function () {
+            toastr["success"]("Successfuly");
             AfficheLeaves();
         }).fail(function (xhr, status, error) {
             alert('Error: ' + error);
