@@ -40,6 +40,8 @@
             type: 'POST',
             data: $(this).serialize(),
             success: function () {
+                toastr["success"]("Successfuly !!");
+
                 $('#createProjectModal').modal('hide');
                 AfficheProjects();
             },
@@ -57,6 +59,8 @@
             type: 'POST',
             data: $(this).serialize(),
             success: function () {
+                toastr["success"]("Successfuly !!");
+                
                 $('#editProjectModal').modal('hide');
 
                 AfficheProjects();
@@ -77,6 +81,8 @@
                 id: projectId
             },
             success: function () {
+                toastr["success"]("Successfuly !!");
+
                 $('#deleteProjectModal').modal('hide');
                 AfficheProjects();
             },

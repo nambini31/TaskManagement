@@ -6,7 +6,8 @@
         $('#createTaskModal').modal('show');
     });
 
-    $('.editTaskButton').click(function () {
+   
+    $(document).on('click', '.editTaskButton', function () {
         var taskId = $(this).data('id');
         $.get('/Tasks/Get/' + taskId, function (data) {
             var editFormHtml = `
@@ -22,15 +23,16 @@
                             ${data.projects.map(project => `<option value="${project.projectId}" ${project.projectId == data.projectId ? "selected" : ""}>${project.name}</option>`).join('')}
                         </select>
                     </div>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Save</button>
                 </form>
             `;
             $('#editTaskModal .modal-body').html(editFormHtml);
             $('#editTaskModal').modal('show');
         });
-    });
+    }); 
 
-    $('.deleteTaskButton').click(function () {
+    $(document).on('click', '.deleteTaskButton', function () {
         var taskId = $(this).data('id');
         $.get('/Tasks/Get/' + taskId, function (data) {
             var deleteFormHtml = `
@@ -57,8 +59,9 @@
             data: JSON.stringify(formData),
             success: function (data) {
                 if (data.success) {
+                    toastr["success"]("Successfuly !!");
                     $('#createTaskModal').modal('hide');
-                    location.reload();
+                    AfficheTasks();
                 } else {
                     alert('Error while creating task: ' + data.message);
                 }
@@ -86,8 +89,9 @@
             data: JSON.stringify(formData),
             success: function (data) {
                 if (data.success) {
+                    toastr["success"]("Successfuly !!");
                     $('#editTaskModal').modal('hide');
-                    location.reload(); // Recharger la page pour afficher les changements
+                    AfficheTasks(); // Recharger la page pour afficher les changements
                 } else {
                     alert('Error while updating task: ' + data.message);
                 }
@@ -105,8 +109,9 @@
             type: 'POST',
             success: function (data) {
                 if (data.success) {
+                    toastr["success"]("Successfuly !!");
                     $('#deleteTaskModal').modal('hide');
-                    location.reload();
+                    AfficheTasks();
                 } else {
                     alert('Error while deleting task: ' + data.message);
                 }
@@ -119,5 +124,91 @@
 });
 
 function AfficheTasks() {
+
+    $('#table_task').DataTable({
+        ajax: {
+            url: '/Tasks/GetAllTasks',
+            type: 'GET',
+            dataType: "JSON",
+            dataSrc: function (json) {
+                return json.data;
+            }
+        },
+        columns: [
+            { data: 'taskId', title: '#' }, 
+            { data: 'name', title: 'Name' },
+            { data: 'projectName', title: 'Project' },
+            {
+                data: null,
+                title: 'Action',
+                render: function (data, type, row) {
+                    return `
+                                <a class="btn btn-sm btn-primary editTaskButton" style="color:white"
+
+                                id="tasks_${row.taskId}"
+                                data-id="${row.taskId}"
+                                data-name="${row.name}"
+                                ><i class="fe-edit"></i></a>
+
+                                <a class="btn btn-sm btn-danger deleteTaskButton" data-id="${row.taskId}" style="color:white"
+                                data-toggle="modal" >
+                                <i class="fas fa-trash"></i></a>
+                            `;
+                },
+                orderable: false,
+                searchable: false
+            }
+
+        ],
+        destroy: true,
+        ordering: true,
+        order: [[0, "desc"]],
+        "lengthChange": false,
+        "paging": true,
+        "info": false,
+        "filter": true,
+        pageLength: 7,
+        "initComplete": function (settings, json) {
+            $('div.dataTables_wrapper div.dataTables_filter input')
+                .attr('placeholder', 'Recherche')
+                .attr('class', 'form-control');
+
+        },
+        language: {
+            "search": "",
+            "zeroRecords": "Aucun enregistrement",
+            paginate: {
+                previous: "Previous",
+                next: "Next",
+            },
+        }
+        ,
+        buttons: [
+
+            {
+                text: '<i class="ti ti-plus ti-xs me-0 me-sm-2"></i><span class="d-none d-sm-inline-block">Add</span>',
+                className: 'add-new btn btn-info ms-2',
+                attr: {
+                    'data-toggle': 'modal',
+                    'data-target': '#createTaskModal',
+                    'id': "createTaskButton"
+                }
+            }
+
+
+        ],
+
+
+        dom:
+            '<"card-header d-flex flex-wrap pb-2"' +
+            '<f>' +
+            '<"d-flex justify-content-center justify-content-md-end align-items-baseline"<"dt-action-buttons d-flex justify-content-center flex-md-row mb-3 mb-md-0 ps-1 ms-1 align-items-baseline"lB>>' +
+            '>t' +
+            '<"row mx-2"' +
+            '<"col-sm-12 col-md-6"i>' +
+            '<"col-sm-12 col-md-6"p>' +
+            '>',
+
+    });
 
 }

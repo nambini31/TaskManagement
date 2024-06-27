@@ -47,7 +47,7 @@ namespace TaskManagement.Controllers
             }
 
             ViewBag.Projects = projects;
-            return View();
+            //return View();
             return Json(new { data = tasks });
         }
 
