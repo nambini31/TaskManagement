@@ -42,6 +42,7 @@ namespace TaskManagement.Controllers
         //----------------------------------
 
         //-- get all User for datatable with role
+        [Authorize]
         [HttpPost]
         public IActionResult GetAllUser()
         {
@@ -64,12 +65,14 @@ namespace TaskManagement.Controllers
         }
         //----------------------------------
 
+        [Authorize]
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Register(RegisterViewModel model)
         {
@@ -101,7 +104,6 @@ namespace TaskManagement.Controllers
             return Json(new { success = false, erreurValidation });
         }
 
-
         [HttpGet]
         public IActionResult Login(string? ReturnUrl = null)
         {
@@ -109,6 +111,7 @@ namespace TaskManagement.Controllers
             TempData["appName"] = "GesPro";
             return View();
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model, string? ReturnUrl = null)
@@ -142,7 +145,7 @@ namespace TaskManagement.Controllers
                     {
                         // Redirect to default page
                         //return RedirectToAction("Index", "Home");
-                        return RedirectToAction("Index", "UserTask");
+                        return RedirectToAction("Create", "UserTask");
                     }
 
                 }
@@ -159,7 +162,9 @@ namespace TaskManagement.Controllers
             return RedirectToAction("Login", "User");
         }
 
+
         //-- Update User ----
+        [Authorize]
         public IActionResult Update(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -200,6 +205,7 @@ namespace TaskManagement.Controllers
 
         //-- Delete User ------
         // Action POST pour supprimer un utilisateur
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Delete(int userId)
         {

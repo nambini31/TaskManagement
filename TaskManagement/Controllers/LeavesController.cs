@@ -1,11 +1,13 @@
 ﻿using Domain.DTO;
 using Domain.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace TaskManagement.Controllers
 {
+    [Authorize]
     public class LeavesController : Controller
     {
         private readonly ILeavesService _leavesService;

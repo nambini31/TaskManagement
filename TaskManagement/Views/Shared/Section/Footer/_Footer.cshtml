@@ -6,10 +6,10 @@
             </div>
             <div class="col-md-6">
                 <div class="text-md-right footer-links d-none d-sm-block">
-                    <a href="#">Home </a>
+                    <a asp-action="Create" asp-controller="UserTask">Home </a>
                     <a asp-action="Index" asp-controller="UserTask"> Timeline </a>
                     <a asp-action="Index" asp-controller="Project">Project</a>                        
-                    <a asp-action="Index" asp-controller="Task">Task</a>
+                    <a asp-action="Index" asp-controller="Tasks">Task</a>
                     <a asp-action="Index" asp-controller="Leaves">Leave</a>
                     @if (User.IsInRole("Admin"))
                     {

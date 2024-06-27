@@ -1,12 +1,14 @@
 ﻿using Application.Interface;
 using Application.Services;
 using Domain.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace TaskManagement.Controllers
 {
+    [Authorize]
     public class ProjectController : Controller
     {
         private readonly IProjectService _projectService;

@@ -2,6 +2,7 @@
 using Domain.DTO;
 using Domain.DTO.ViewModels;
 using Domain.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Security.Claims;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace TaskManagement.Controllers
 {
+    [Authorize]
     public class TasksController : Controller
     {
         private readonly ITasksService _tasksService;
