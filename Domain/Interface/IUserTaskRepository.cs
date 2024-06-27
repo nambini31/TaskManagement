@@ -19,6 +19,7 @@ namespace Domain.Interface
         Task<IEnumerable<UserTaskVM>> GetUserTasksGrouperVM(FiltreUserTask filter);
 
         Task<UserTask> GetUserTaskById(int articleId);
+        Task UpdateHistoGenereExcel(Export filter);
         Task AddUserTask(UserTask article);
         Task UpdateUserTask(UserTask article);
         Task DeleteUserTaskById(int articleId, int userConnected);

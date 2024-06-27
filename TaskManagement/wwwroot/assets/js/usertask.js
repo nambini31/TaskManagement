@@ -58,6 +58,10 @@ $(document).ready(function () {
                 $('#daterange').data('daterangepicker').setStartDate(exactWeekBeforeStart);
                 $('#daterange').data('daterangepicker').setEndDate(exactWeekBeforeEnd);
 
+                $('#daterange').on('change.daterangepicker', function (ev, picker) {
+                    AfficheUserTask();
+                });
+
                 // Résoudre la promesse après avoir mis à jour les dates
                 resolve();
             } catch (error) {
@@ -76,6 +80,8 @@ $(document).ready(function () {
             console.error("Une erreur s'est produite lors de la mise à jour des dates : ", error);
         });
 
+
+    
 
     $('#userId').on('changed.bs.select', function () {
 

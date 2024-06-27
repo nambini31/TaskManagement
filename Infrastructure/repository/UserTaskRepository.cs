@@ -355,5 +355,24 @@ namespace Infrastructure.Repository
             }
 
         }
+        public  async Task UpdateHistoGenereExcel(Export filter)
+        {
+            
+                try
+                {
+                    
+
+                    await _db.Exportexcel_histo.AddAsync(filter);
+                    await _db.SaveChangesAsync();
+
+
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            
+
+        }
     }
 }

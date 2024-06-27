@@ -50,6 +50,11 @@ namespace Application.Services
         public async Task UpdateUserTask(UserTask userTask)
         {
             await IUserTask.UpdateUserTask(userTask);
+        }
+       
+        public async Task UpdateHistoGenereExcel(Export export)
+        {
+            await IUserTask.UpdateHistoGenereExcel(export);
         } 
         
         public async Task<string> GenerateUserTask(FiltreUserTask filter)
@@ -74,22 +79,23 @@ namespace Application.Services
                 {
                     var worksheet = package.Workbook.Worksheets.Add("User Task");
 
-                    
-                    worksheet.Cells["A1"].Value = "Tasks for project";
+                    worksheet.Cells[2, 1].Value = $"From : { filter.startDate.ToString("yyyy-MM-dd")}  To : {filter.endDate.ToString("yyyy-MM-dd")}";
+
+                    worksheet.Cells["A4"].Value = "Tasks for project";
 
                     
                     int column = 2;
                     foreach (var userName in users)
                     {
-                        worksheet.Cells[1, column].Value = $"{userName.userName}";
+                        worksheet.Cells[4, column].Value = $"{userName.userName}";
                         column++;
                     }
 
-                    worksheet.Cells[1, column].Value = "Total";
+                    worksheet.Cells[4, column].Value = "Total";
 
                    
 
-                    int row = 2; 
+                    int row = 5; 
                     foreach (var taskName in tasks)
                     {
                         worksheet.Cells[$"A{row}"].Value = taskName.taskName; 
@@ -100,7 +106,7 @@ namespace Application.Services
 
                         foreach (var user in users)
                         {
-                             var entete = worksheet.Cells[1, column].Value;
+                             var entete = worksheet.Cells[4, column].Value;
 
                             if (entete != null)
                             {
@@ -110,7 +116,7 @@ namespace Application.Services
 
                                     if (datas.userName == user.userName && taskName.taskName == datas.taskName && entete.ToString() == user.userName)
                                     {
-                                        worksheet.Cells[row, column].Value = $"{datas.hours}";
+                                        worksheet.Cells[row, column].Value = datas.hours;
                                         total += datas.hours;
                                     }
 
@@ -127,15 +133,17 @@ namespace Application.Services
                         row++;
                     }
 
-                    using (var range = worksheet.Cells[$"A1:{Convert.ToChar('A' + users.Count())}1"])
+                    using (var range = worksheet.Cells[$"A4:{Convert.ToChar('A' + users.Count()+1)}4"])
                     {
                         range.Style.Font.Bold = true;
                         range.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                        range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
+                        range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGreen);
                     }
 
                     package.SaveAs(new FileInfo(filePath));
                 }
+
+                
 
                 return filePath;
                 

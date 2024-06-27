@@ -3,29 +3,24 @@
 @{
     Layout = "Layout/_LayoutWithMenu";
     ViewData["Title"] = "Leaves";
+    ViewData["titrePage"] = "Leaves";
 }
 
 @section VendorStyles {
-        <link href="~/assets/libs/datatables/dataTables.bootstrap4.css" rel="stylesheet" type="text/css" />
-        <link href="~/assets/libs/datatables/responsive.bootstrap4.css" rel="stylesheet" type="text/css" />
-        <link href="~/assets/libs/datatables/buttons.bootstrap4.css" rel="stylesheet" type="text/css" />
-        <link href="~/assets/libs/datatables/select.bootstrap4.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/libs/datatables/dataTables.bootstrap4.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/libs/datatables/responsive.bootstrap4.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/libs/daterangepicker/daterangepicker.min.css" rel="stylesheet" />
+    <link href="~/assets/libs/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
 }
 
+
+
 @section VendorScripts {
-        <script src="~/assets/libs/datatables/jquery.dataTables.min.js"></script>
-        <script src="~/assets/libs/datatables/dataTables.bootstrap4.js"></script>
-        <script src="~/assets/libs/datatables/dataTables.responsive.min.js"></script>
-        <script src="~/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
-        <script src="~/assets/libs/datatables/dataTables.buttons.min.js"></script>
-        <script src="~/assets/libs/datatables/buttons.bootstrap4.min.js"></script>
-        <script src="~/assets/libs/datatables/buttons.html5.min.js"></script>
-        <script src="~/assets/libs/datatables/buttons.flash.min.js"></script>
-        <script src="~/assets/libs/datatables/buttons.print.min.js"></script>
-        <script src="~/assets/libs/datatables/dataTables.keyTable.min.js"></script>
-        <script src="~/assets/libs/datatables/dataTables.select.min.js"></script>
-        <script src="~/assets/libs/pdfmake/pdfmake.min.js"></script>
-        <script src="~/assets/libs/pdfmake/vfs_fonts.js"></script>
+    <script src="~/assets/libs/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/assets/libs/datatables/dataTables.bootstrap4.js"></script>
+    <script src="~/assets/libs/datatables/dataTables.responsive.min.js"></script>
+    <script src="~/assets/libs/datatables/dataTables.buttons.min.js"></script>
+    <script src="~/assets/libs/moment/moment.js"></script>
 }
 
 @section PageScripts {
@@ -47,36 +42,10 @@
 <div class="row">
     <div class="col-12">
         <div class="card-box">
-            <h4 class="mt-0 header-title">Leaves</h4>
-            <button class="d-none d-sm-inline-block border-custom" id="createLeaveButton">
-                <i class="ti ti-plus ti-xs me-1"></i> Create Leave
-            </button>
+           
             <div class="responsive-table-plugin">
                 <table id="table_leave" class="table table-bordered dt-responsive nowrap w-100">
-                    <thead>
-                        <tr>
-                            <th>Leave ID</th>
-                            <th>Reason</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var leave in Model)
-                        {
-                                <tr>
-                                    <td>@leave.leaveId</td>
-                                    <td>@leave.reason</td>
-                                    <td>
-                                        <button class="action-button editLeaveButton" data-id="@leave.leaveId">
-                                            <i class="ti ti-pencil"></i>
-                                        </button>
-                                        <button class="action-button deleteLeaveButton" data-id="@leave.leaveId">
-                                            <i class="ti ti-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                        }
-                    </tbody>
+                    
                 </table>
             </div>
         </div>
