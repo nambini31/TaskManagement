@@ -18,41 +18,100 @@
     <script src="~/assets/js/timeline.js"></script>
 }
 
+<style>
+    .btn-plus-small {
+        width: 24px;
+        height: 24px;
+        font-size: 1.2em;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 20px; /* Ajustement de la marge à gauche pour déplacer le bouton plus à droite */
+    }
+
+    .btn-delete {
+        border: none;
+        background-color: red;
+        width: 30px;
+        height: 30px;
+        font-size: 1.1em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 20px; /* Ajustement de la marge à gauche pour déplacer le bouton trash */
+        margin-top: -10px; /* Monter un peu plus haut le bouton trash */
+    }
+
+    .form-control.hours-input {
+        height: 24px; /* Réduire la hauteur de l'input Hours */
+        font-size: 1em; /* Réduire la taille de la police de l'input Hours */
+    }
+</style>
+
 <div class="container">
     <div class="row">
-        <div class="col-md-8 offset-md-2">
-            <h2>Create UserTask</h2>
-            <hr />
+        <div class="col-md-12">
+            <h2 class="mb-4">SAISIE TEMPS</h2>
             <form id="formUserTaskHome" method="post">
-                <div class="row justify-content-center mb-5">
+                <!-- Date input -->
+                <div class="form-group row justify-content-center align-items-end mb-3">
+                    <label for="date" class="col-12 col-md-1 col-form-label text-center">Date</label>
+                    <div class="col-12 col-md-4 d-flex justify-content-center">
+                        <input type="date" asp-for="date" class="form-control" id="date" />
+                    </div>
+                </div>
+
+                <!-- Labels and "Add" button row -->
+                <div class="row align-items-end mb-3">
                     <div class="col-12 col-md-3">
-                        <label class="form-label">Date</label><br />
-                        <input type="datetime-local" required asp-for="date" class="form-control" />
+                        <label class="form-label">Is Leave</label>
                     </div>
-                </div>
-                <div class="row justify-content-center">
-                    <input type="hidden" asp-for="UserTaskId" />
-                    <div class="col-12 col-md-1">
-                        <label class="form-label">Leave</label><br />
-                        <input type="checkbox" asp-for="isLeave" data-plugin="switchery" id="checkleave" data-color="#3DDCF7" />
-                    </div>
-                    <div class="col-12 col-md-4">
+                    <div class="col-12 col-md-3">
                         <label id="labelleaveproject">Project</label>
-                        <select placeholder="Select project" name="projectId" data-search="true" data-silent-initial-value-set="true" class="form-control w-100" id="selectProjectIdCreate">
-                        </select>
                     </div>
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-3">
                         <label>Tasks</label>
-                        <select placeholder="Select task" name="taskId" data-search="true" data-silent-initial-value-set="true" class="form-control w-100" id="selectTaskId">
-                        </select>
                     </div>
-                    <div class="col-12 col-md-1">
+                    <div class="col-12 col-md-2">
                         <label class="form-label">Hours</label>
-                        <input asp-for="hours" type="text"  class="form-control" />
+                    </div>
+                    <div class="col-12 col-md-1 btn-container">
+                        <button type="button" class="btn btn-success btn-sm rounded-circle btn-plus-small mb-2">
+                            <i class="fa fa-plus"></i>
+                        </button>
                     </div>
                 </div>
-                <div class="modal-footer mt-4">
-                    <button type="submit" class="btn btn-primary">Save</button>
+
+                <!-- Container for dynamically added task rows -->
+                <div class="task-container">
+                    <!-- Initial row -->
+                    <div class="task-row row align-items-end mb-3">
+                        <div class="col-12 col-md-3">
+                            <input asp-for="isLeave" type="checkbox" id="checkleave" />
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <select placeholder="Select project" name="projectId" data-search="true" data-silent-initial-value-set="true" class="form-control w-100" id="selectProjectIdCreate"></select>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <select placeholder="Select task" name="taskId" data-search="true" data-silent-initial-value-set="true" class="form-control w-100" id="selectTaskId"></select>
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <input asp-for="hours" type="text" class="form-control hours-input" />
+                        </div>
+                        <div class="col-12 col-md-1 btn-container">
+                            <button type="button" class="btn btn-delete btn-sm mt-auto">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Save button -->
+                <div class="row justify-content-center mt-3">
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary btn-block">Save</button>
+                    </div>
                 </div>
             </form>
         </div>
