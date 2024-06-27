@@ -12,7 +12,7 @@ namespace Domain.Interface
         Task<IEnumerable<Leaves>> GetAllAsync();
         Task<Leaves> GetByIdAsync(int id);
         Task AddAsync(Leaves leaves);
-        Task UpdateAsync(Leaves leaves);
-        Task DeleteAsync(int id);
+        Task UpdateAsync(Leaves leaves, int user_maj);
+        Task DeleteAsync(int id, int user_maj);
     }
 }

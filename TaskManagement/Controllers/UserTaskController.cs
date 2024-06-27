@@ -32,7 +32,6 @@ namespace TaskManagement.Controllers
         }
 
 
-
         [HttpPost]
         public async Task<IActionResult> UserTaskList(FiltreUserTask filter)
         {
@@ -58,9 +57,9 @@ namespace TaskManagement.Controllers
         public IActionResult Create()
         {
             return View();
+
         }
 
-        [HttpPost]
         public async Task<IActionResult> Create(UserTask model)
         {
             if (ModelState.IsValid)
@@ -99,6 +98,7 @@ namespace TaskManagement.Controllers
             }
 
         }
+        
         [HttpPost]
         public async Task<IActionResult> ModalUserTaskEdit(int userTaskId)
         {
@@ -138,7 +138,6 @@ namespace TaskManagement.Controllers
             }
             
         }
-
         [HttpPost]
         public async Task<IActionResult> GenerateExcelUserTask(FiltreUserTask filter)
         {

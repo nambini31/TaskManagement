@@ -55,19 +55,19 @@ namespace Application.Services
             await _leavesRepository.AddAsync(leave);
         }
 
-        public async Task UpdateLeaveAsync(LeaveDto leaveDto)
+        public async Task UpdateLeaveAsync(LeaveDto leaveDto, int user_maj)
         {
             var leave = await _leavesRepository.GetByIdAsync(leaveDto.leaveId);
             if (leave == null)
                 throw new ArgumentException("Leave not found");
 
             leave.reason = leaveDto.reason;
-            await _leavesRepository.UpdateAsync(leave);
+            await _leavesRepository.UpdateAsync(leave, user_maj);
         }
 
-        public async Task DeleteLeaveAsync(int id)
+        public async Task DeleteLeaveAsync(int id, int user_maj)
         {
-            await _leavesRepository.DeleteAsync(id);
+            await _leavesRepository.DeleteAsync(id, user_maj);
         }
 
        

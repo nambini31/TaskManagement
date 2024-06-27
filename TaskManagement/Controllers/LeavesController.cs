@@ -1,6 +1,7 @@
 ﻿using Domain.DTO;
 using Domain.Interface;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace TaskManagement.Controllers
@@ -39,6 +40,7 @@ namespace TaskManagement.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
+
             var leave = await _leavesService.GetLeaveByIdAsync(id);
             if (leave == null)
             {
@@ -52,7 +54,9 @@ namespace TaskManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _leavesService.UpdateLeaveAsync(leaveDto);
+                var user_maj = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                await _leavesService.UpdateLeaveAsync(leaveDto, user_maj);
                 return RedirectToAction(nameof(Index));
             }
             return PartialView(leaveDto);
@@ -71,7 +75,9 @@ namespace TaskManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _leavesService.DeleteLeaveAsync(id);
+            var user_maj = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            await _leavesService.DeleteLeaveAsync(id, user_maj);
             return RedirectToAction(nameof(Index));
         }
 

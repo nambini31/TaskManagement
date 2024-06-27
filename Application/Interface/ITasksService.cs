@@ -11,7 +11,7 @@ namespace Application.Interface
         IEnumerable<Tasks> GetTaskByIdProject(int id);
         Task<TasksDto> GetTaskByIdAsync(int id);
         Task CreateTaskAsync(TasksDto tasksDto);
-        Task UpdateTaskAsync(TasksDto tasksDto);
-        Task DeleteTaskAsync(int id);
+        Task UpdateTaskAsync(TasksDto tasksDto, int user_maj);
+        Task DeleteTaskAsync(int id, int user_maj);
     }
 }

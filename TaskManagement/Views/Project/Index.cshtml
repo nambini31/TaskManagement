@@ -40,7 +40,6 @@
 <div class="row">
     <div class="col-12">
         <div class="card-box">
-            <h4 class="mt-0 header-title">Projects</h4>
            
             <div class="responsive-table-plugin">
                 <table id="table_project" class="table table-bordered dt-responsive nowrap w-100">
@@ -53,12 +52,12 @@
 </div>
 
 
-<div class="modal fade" id="createProjectModal" tabindex="-1" role="dialog" aria-labelledby="createProjectModalLabel" aria-hidden="true">
+<div class="modal fade" id="createProjectModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="createProjectModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="createProjectModalLabel">Create Project</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
             </div>
             <div class="modal-body">
                 @await Html.PartialAsync("Create", new ProjectDto())
@@ -68,12 +67,12 @@
 </div>
 
 
-<div class="modal fade" id="editProjectModal" tabindex="-1" role="dialog" aria-labelledby="editProjectModalLabel" aria-hidden="true">
+<div class="modal fade" id="editProjectModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="editProjectModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editProjectModalLabel">Edit Project</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
             </div>
             <div class="modal-body">
                 @await Html.PartialAsync("Edit", new ProjectDto())
@@ -83,12 +82,12 @@
 </div>
 
 
-<div class="modal fade" id="deleteProjectModal" tabindex="-1" role="dialog" aria-labelledby="deleteProjectModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteProjectModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="deleteProjectModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteProjectModalLabel">Delete Project</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
             </div>
             <div class="modal-body">
                 @await Html.PartialAsync("Delete", new ProjectDto())

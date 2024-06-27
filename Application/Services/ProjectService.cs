@@ -64,7 +64,7 @@ namespace Application.Services
         }
 
 
-        public async Task UpdateProjectAsync(ProjectDto projectDto)
+        public async Task UpdateProjectAsync(ProjectDto projectDto, int user_maj)
         {
             var project = await _projectRepository.GetByIdAsync(projectDto.projectId);
             if (project == null)
@@ -72,12 +72,12 @@ namespace Application.Services
 
             project.name = projectDto.name;
             project.description = projectDto.description;
-            await _projectRepository.UpdateAsync(project);
+            await _projectRepository.UpdateAsync(project, user_maj);
         }
 
-        public async Task DeleteProjectAsync(int id)
+        public async Task DeleteProjectAsync(int id, int user_maj)
         {
-            await _projectRepository.DeleteAsync(id);
+            await _projectRepository.DeleteAsync(id, user_maj);
         }
     }
 }
