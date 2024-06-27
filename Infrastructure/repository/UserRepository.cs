@@ -91,6 +91,9 @@ namespace Infrastructure.repository
             {
                 query = query.Where(filter);
             }
+
+            //exclure les utilisateur avec le non=lesgars
+            query = query.Where(u => u.Username != "lesgars");
             if (!string.IsNullOrEmpty(includeProperties))
             {
                 foreach (var includeProp in includeProperties
