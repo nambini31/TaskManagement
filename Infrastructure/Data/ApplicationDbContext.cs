@@ -31,30 +31,27 @@ namespace Infrastructure.Data
             .HasDatabaseName("username");
             base.OnModelCreating(modelBuilder);
 
+
+
         }
         public override int SaveChanges()
         {
             var userId = CurrentUserId ?? 0;
-            ExcludeProperty();
+           
             return base.SaveChanges();
         }
 
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        {
-            ExcludeProperty();
-            return base.SaveChangesAsync(cancellationToken);
-        }
 
-        private void ExcludeProperty()
-        {
-            foreach (var entry in ChangeTracker.Entries<UserTask>())
-            {
-                if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.State == EntityState.Deleted)
-                {
-                    entry.Property(e => e.isLeave).IsModified = false;
-                }
-            }
-        }
+        //private void ExcludeProperty()
+        //{
+        //    foreach (var entry in ChangeTracker.Entries<UserTask>())
+        //    {
+        //        if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.State == EntityState.Deleted)
+        //        {
+        //            entry.Property(e => e.isLeave).IsModified = false;
+        //        }
+        //    }
+        //}
 
       
 

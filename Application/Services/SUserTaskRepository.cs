@@ -23,7 +23,7 @@ namespace Application.Services
             this._env = _env;
 
         }
-        public async Task AddUserTask(UserTask article)
+        public async Task AddUserTask(List<UserTask> article)
         {
              await IUserTask.AddUserTask(article);
         }
