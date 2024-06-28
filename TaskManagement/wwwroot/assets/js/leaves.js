@@ -10,23 +10,7 @@
     
 
     // Create leave form submission
-    $('#createLeaveForm').submit(function (event) {
-        event.preventDefault();
-        $.ajax({
-            url: '/Leaves/Create',
-            type: 'POST',
-            data: $(this).serialize(),
-            success: function () {
-                toastr["success"]("Successfuly !!");
-                $('#createLeaveModal').modal('hide');
-                AfficheLeaves();
-            },
-            error: function (xhr, status, error) {
-                toastr["error"]("Leaves's Name already exist !!");
-
-            }
-        });
-    });
+    
 
   
     
@@ -127,6 +111,23 @@ function AfficheLeaves() {
         rowCallback: function (row, data) {
             $('#createLeaveButton').click(function () {
                 $('#createLeaveModal').modal('show');
+                $('#createLeaveForm').submit(function (event) {
+                    event.preventDefault();
+                    $.ajax({
+                        url: '/Leaves/Create',
+                        type: 'POST',
+                        data: $(this).serialize(),
+                        success: function () {
+                            toastr["success"]("Successfuly !!");
+                            $('#createLeaveModal').modal('hide');
+                            AfficheLeaves();
+                        },
+                        error: function (xhr, status, error) {
+                            toastr["error"]("Leaves's Name already exist !!");
+
+                        }
+                    });
+                });
             });
             if (data.leaveId > 0) {
                 // Show edit modal with data
