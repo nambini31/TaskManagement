@@ -20,7 +20,7 @@ namespace Domain.Interface
 
         Task<UserTask> GetUserTaskById(int articleId);
         Task UpdateHistoGenereExcel(Export filter);
-        Task AddUserTask(UserTask article);
+        Task AddUserTask(List<UserTask> article);
         Task UpdateUserTask(UserTask article);
         Task DeleteUserTaskById(int articleId, int userConnected);
 

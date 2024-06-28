@@ -22,10 +22,16 @@ namespace Infrastructure.Repository
         {
             this._db = db;
         }
-        public async Task AddUserTask(UserTask Usertask)
+        public async Task AddUserTask(List<UserTask> usertask)
         {
-            
-           await _db.UserTask.AddAsync(Usertask);
+
+            foreach (var item in usertask)
+            {
+                
+                await _db.UserTask.AddAsync(item);
+                
+            }
+
             await _db.SaveChangesAsync();
 
         }
@@ -71,12 +77,7 @@ namespace Infrastructure.Repository
 
             try
             {
-                string sql = @"select *, 
-                            
-                            CASE 
-                                WHEN leaveId IS NOT NULL AND leaveId != 0 THEN true 
-                                ELSE false 
-                            END AS isLeave
+                string sql = @"select *
                             from
                             usertask WHERE userTaskId = {0}
                                 ";
@@ -121,11 +122,7 @@ namespace Infrastructure.Repository
                             usertask.hours, 
                             usertask.date, 
                             tasks.taskId, 
-                            CASE 
-                                WHEN usertask.leaveId IS NOT NULL  AND usertask.leaveId != 0 THEN true 
-                                ELSE false 
-                            END AS isLeave,
-
+                            isLeave,
                             leaves.leaveId, 
                             leaves.reason AS leaveName, 
                             user.userId,
@@ -176,10 +173,7 @@ namespace Infrastructure.Repository
                 SUM(usertask.hours) AS hours, 
                 usertask.date, 
                 tasks.taskId, 
-                CASE 
-                    WHEN usertask.leaveId IS NOT NULL  AND usertask.leaveId != 0 THEN true 
-                    ELSE false 
-                END AS isLeave,
+                isLeave,
                 CASE 
                     WHEN usertask.leaveId IS NOT NULL AND usertask.leaveId != 0 THEN leaves.reason 
                     ELSE tasks.name 
@@ -233,10 +227,7 @@ namespace Infrastructure.Repository
                 SUM(usertask.hours) AS hours, 
                 usertask.date, 
                 tasks.taskId, 
-                CASE 
-                    WHEN usertask.leaveId IS NOT NULL  AND usertask.leaveId != 0 THEN true 
-                    ELSE false 
-                END AS isLeave,
+                isLeave,
                 CASE 
                     WHEN usertask.leaveId IS NOT NULL AND usertask.leaveId != 0 THEN leaves.reason 
                     ELSE tasks.name 
@@ -288,10 +279,7 @@ namespace Infrastructure.Repository
                 SUM(usertask.hours) AS hours, 
                 usertask.date, 
                 tasks.taskId, 
-                CASE 
-                    WHEN usertask.leaveId IS NOT NULL  AND usertask.leaveId != 0 THEN true 
-                    ELSE false 
-                END AS isLeave,
+                isLeave,
                 CASE 
                     WHEN usertask.leaveId IS NOT NULL AND usertask.leaveId != 0 THEN leaves.reason 
                     ELSE tasks.name 

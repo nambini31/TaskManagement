@@ -55,26 +55,28 @@ namespace TaskManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] UserTask model)
+        public async Task<IActionResult> Create([FromBody , Bind(include: "taskId,leaveId,projectId,date,hours")] List<UserTask> model)
         {
-            if (ModelState.IsValid)
-            {
+            
                 try
                 {
+                    var userConnected = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                    foreach (var item in model)
+                    {
+
+                        item.userId = userConnected;      
+
+                    }
+
                     await _SUserTask.AddUserTask(model);
+
                     return Json(new { success = true });
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Erreur lors de la sauvegarde de la tâche utilisateur");
-                    return Json(new { success = false, error = "Une erreur s'est produite lors de l'enregistrement des modifications. Voir l'exception interne pour plus de détails." });
+                throw ex;
                 }
-            }
-            else
-            {
-                var errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage));
-                return Json(new { success = false, error = "État du modèle invalide", errors });
-            }
+            
         }
 
         [HttpPost]
@@ -107,8 +109,7 @@ namespace TaskManagement.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erreur lors de la récupération de la tâche utilisateur pour modification");
-                return StatusCode(500, "Erreur interne du serveur");
+                throw ex;
             }
         }
 
@@ -156,8 +157,7 @@ namespace TaskManagement.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erreur lors de la génération du fichier Excel pour les tâches utilisateur");
-                return StatusCode(500, "Erreur interne du serveur");
+                throw ex;
             }
         }
         

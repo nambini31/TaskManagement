@@ -7,9 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\assets\libs\multiselect-01\**" />
+    <Compile Remove="wwwroot\assets\libs\multiselect-15\**" />
     <Compile Remove="wwwroot\js\**" />
+    <Content Remove="wwwroot\assets\libs\multiselect-01\**" />
+    <Content Remove="wwwroot\assets\libs\multiselect-15\**" />
     <Content Remove="wwwroot\js\**" />
+    <EmbeddedResource Remove="wwwroot\assets\libs\multiselect-01\**" />
+    <EmbeddedResource Remove="wwwroot\assets\libs\multiselect-15\**" />
     <EmbeddedResource Remove="wwwroot\js\**" />
+    <None Remove="wwwroot\assets\libs\multiselect-01\**" />
+    <None Remove="wwwroot\assets\libs\multiselect-15\**" />
     <None Remove="wwwroot\js\**" />
   </ItemGroup>
 
@@ -38,24 +46,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\assets\uploads\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="wwwroot\assets\libs\multiselect-01\.DS_Store" />
-    <None Include="wwwroot\assets\libs\multiselect-01\css\.DS_Store" />
-    <None Include="wwwroot\assets\libs\multiselect-01\css\bootstrap\.DS_Store" />
-    <None Include="wwwroot\assets\libs\multiselect-01\css\bootstrap\mixins\.DS_Store" />
-    <None Include="wwwroot\assets\libs\multiselect-01\fonts\.DS_Store" />
-    <None Include="wwwroot\assets\libs\multiselect-01\images\.DS_Store" />
-    <None Include="wwwroot\assets\libs\multiselect-01\js\.DS_Store" />
-    <None Include="wwwroot\assets\libs\multiselect-01\scss\.DS_Store" />
-    <None Include="wwwroot\assets\libs\multiselect-01\scss\bootstrap\.DS_Store" />
-    <None Include="wwwroot\assets\libs\multiselect-15\multiselect-15\.DS_Store" />
-    <None Include="wwwroot\assets\libs\multiselect-15\multiselect-15\css\.DS_Store" />
-    <None Include="wwwroot\assets\libs\multiselect-15\multiselect-15\fonts\.DS_Store" />
-    <None Include="wwwroot\assets\libs\multiselect-15\multiselect-15\images\.DS_Store" />
-    <None Include="wwwroot\assets\libs\multiselect-15\multiselect-15\js\.DS_Store" />
-    <None Include="wwwroot\assets\libs\multiselect-15\multiselect-15\scss\.DS_Store" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
     // Initialisation des select pickers
+    let alltask = [1];
 
     let taskRowIdCounter = 2;
 
@@ -21,12 +22,12 @@
     });
 
     // Formatage de l'input prix
-    formatPrixInput();
+    formatPrixInput("hoursEditUsrTask1");
 
     
 
-    function formatPrixInput() {
-        var inputPrix = $("#hoursEditUsrTask");
+    function formatPrixInput(classs) {
+        var inputPrix = $(`.${classs}`);
         inputPrix.each(function () {
             new Cleave(this, {
                 numeral: true,
@@ -156,50 +157,63 @@
     }
 
     // Gestion de la soumission du formulaire avec AJAX
-    //$('#formUserTaskHome').submit(function (e) {
-    //    e.preventDefault();
-    //    var formData = {
-    //        date: $('input[asp-for="date"]').val(),
-    //        isLeave: $('input[asp-for="isLeave"]').is(':checked'),
-    //        projectId: $('.task-container').find('.task-row:last').find('.selectProjectIdCreate').val(),
-    //        taskId: $('.task-container').find('.task-row:last').find('.selectTaskId').val(),
-    //        hours: $('.task-container').find('.task-row:last').find('input[asp-for="hours"]').val()
-    //    };
+    $('#formUserTaskHome').submit(function (e) {
+        e.preventDefault();
 
-    //    $.ajax({
-    //        url: '/UserTask/Create',
-    //        type: 'POST',
-    //        contentType: 'application/json',
-    //        data: JSON.stringify(formData),
-    //        success: function (data) {
-    //            if (data.success) {
-    //                alert('Task created successfully');
-    //                location.reload();
-    //            } else {
-    //                alert('Error while creating task: ' + data.error);
-    //            }
-    //        },
-    //        error: function (xhr, status, error) {
-    //            console.error('An error occurred:', error);
-    //            alert('An error occurred: ' + error);
-    //        }
-    //    });
-    //});
+        let data = [];
+        alltask.forEach(function (element) {
+
+
+            let a = {
+                hours: parseFloat($(`.hoursEditUsrTask${element}`).val()) || 0, // Convertir en nombre, par défaut à 0 si vide
+                taskId: $(`#selectTaskId${element}`).val() ? parseInt($(`#selectTaskId${element}`).val()) : null, // Convertir en entier ou null
+                isLeave: $(`.checkleave${element}`).is(':checked'),
+                [$(`#selectProjectIdCreate${element}`).attr('name')]: $(`#selectProjectIdCreate${element}`).val() ? parseInt($(`#selectProjectIdCreate${element}`).val()) : null ,
+                date: $(`#date`).val()
+            };
+
+            data.push(a);
+
+
+        });
+
+        console.log(data);
+     
+
+        $.ajax({
+            url: '/UserTask/Create',
+            type: 'POST',
+            dataType: "JSON",
+            headers: {
+                'Content-Type': 'application/json'  // Assurez-vous que le Content-Type est correct
+            },
+            data: JSON.stringify(data),
+            success: function (data) {
+                toastr["success"]("Successfully deleted ")
+                removerow();
+
+            },
+            error: function (error) {
+                toastr["error"]("Delete failed")
+
+            },
+        });
+    });
 
     $('.btn-plus-small').click(function () {
 
         var newRow = $(`<div class="task-row${taskRowIdCounter} row align-items-end mb-3"  data-row-id="${taskRowIdCounter}">` +
                             '<div class="col-12 col-md-1 mt-3">' +
-            `<input asp-for="isLeave" type="checkbox" class="checkleave${taskRowIdCounter}" />` +
+                            `<input type="checkbox" class="checkleave${taskRowIdCounter}" />` +
                             '</div>' +
                             '<div class="col-12 col-md-3 mt-3">' +
-            `<select placeholder="Selectpicker project" name="projectId" data-search="true" data-silent-initial-value-set="true" id="selectProjectIdCreate${taskRowIdCounter}" class="form-control w-100 selectProjectIdCreate${taskRowIdCounter}"></select>` +
+                            `<select placeholder="Selectpicker project" name="projectId" data-search="true" data-silent-initial-value-set="true" id="selectProjectIdCreate${taskRowIdCounter}" class="form-control w-100 selectProjectIdCreate${taskRowIdCounter}"></select>` +
                             '</div>' +
                             '<div class="col-12 col-md-4 mt-3">' +
-            `<select placeholder="Selectpicker task" name="taskId" data-search="true" data-silent-initial-value-set="true" id="selectTaskId${taskRowIdCounter}" class="form-control w-100 selectTaskId${taskRowIdCounter}"></select>` +
+                            `<select placeholder="Selectpicker task" name="taskId" data-search="true" data-silent-initial-value-set="true" id="selectTaskId${taskRowIdCounter}" class="form-control w-100 selectTaskId${taskRowIdCounter}"></select>` +
                             '</div>' +
                             '<div class="col-12 col-md-1 mt-3">' +
-                                '<input asp-for="hours" type="text" class="form-control hours-input" />' +
+                            `<input name="hours" type="text" class="form-control required hoursEditUsrTask${taskRowIdCounter}" />` +
                             '</div>' +
                             '<div class="col-12 col-md-1 mt-3 btn-container">' +
                                 `<button type="button" class="btn btn-delete btn-sm mt-auto">` +
@@ -225,9 +239,11 @@
 
             }
         });
-
+        formatPrixInput(`hoursEditUsrTask${taskRowIdCounter}`);
         // Initialisation des select pickers pour la nouvelle ligne ajoutée
         getProject(taskRowIdCounter);
+
+        alltask.push(taskRowIdCounter);
 
         taskRowIdCounter++;
     });
@@ -237,29 +253,23 @@
         var rowId = $(this).closest('[class^="task-row"]').data('row-id'); // Récupère l'ID de la ligne à supprimer
         $('.task-container').find('[data-row-id="' + rowId + '"]').remove(); // Supprime l'élément parent avec classe et data-row-id
         // Ajoutez ici d'autres logiques après la suppression si nécessaire
+        alltask = alltask.filter(item => item !== rowId);
     });
 
-    //$(document).on('click', '.btn-delete', function () {
-    //    $(this).closest(`.task-row${taskRowIdCounter}`).remove();
-    //    checkTaskRows();
-    //});
+    function removerow() {
+        alltask.forEach(function (element) {
 
-    // Check the number of task rows and toggle visibility of the date input and save button
-    //function checkTaskRows() {
-    //    if ($(`.task-container .task-row${taskRowIdCounter}`).length === 0) {
-    //        $('#date').closest('.form-group').hide();
-    //        $('button[type="submit"]').hide();
-    //    } else {
-    //        $('#date').closest('.form-group').show();
-    //        $('button[type="submit"]').show();
-    //    }
-    //}
+            if (element != 1) {
 
-    // Initial check
+            $('.task-container').find('[data-row-id="' + element + '"]').remove(); // Supprime l'élément parent avec classe et data-row-id
+            }
+            // Ajoutez ici d'autres logiques après la suppression si nécessaire
+           
 
-    // Fonction pour initialiser les select pickers dans une nouvelle ligne
+        });
 
-    // Fonction pour récupérer les projets pour une nouvelle ligne
+        alltask = [1];
+    }
     
 
 });

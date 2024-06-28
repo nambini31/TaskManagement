@@ -444,13 +444,16 @@ function ModalEdit(id) {
                 e.preventDefault();
                 
                 let data = new FormData(this);
-                data.delete('isLeave');
 
 
                 // Convert FormData to JSON object
                 const jsonObject = {};
                 data.forEach((value, key) => {
-                    jsonObject[key] = value;
+                    if (key === "isLeave") {
+                        jsonObject[key] = $('#checkleave').is(':checked');
+                    } else {
+                        jsonObject[key] = value;
+                    }
                 });
 
                 // Convert JSON object to JSON string
