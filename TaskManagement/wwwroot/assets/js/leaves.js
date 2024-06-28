@@ -12,7 +12,7 @@
     // Create leave form submission
     
 
-    $('#createLeaveButton').click(function () {
+    $('#createLeaveButton').on('click', function () {
         $('#createLeaveForm')[0].reset();
         $('#createLeaveModal').modal('show');
     });
@@ -26,6 +26,7 @@
             success: function () {
                 toastr["success"]("Successfuly !!");
                 $('#createLeaveModal').modal('hide');
+                $('#createLeaveForm')[0].reset();
                 AfficheLeaves();
             },
             error: function (xhr, status, error) {
@@ -180,6 +181,7 @@ function editSubmit() {
         },
         success: function () {
             toastr["success"]("Successfuly !!");
+            $('#createLeaveForm')[0].reset();
             AfficheLeaves();
         },
         error: function (xhr, status, error) {
