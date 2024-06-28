@@ -10,23 +10,7 @@
     
 
     // Create leave form submission
-    $('#createLeaveForm').submit(function (event) {
-        event.preventDefault();
-        $.ajax({
-            url: '/Leaves/Create',
-            type: 'POST',
-            data: $(this).serialize(),
-            success: function () {
-                toastr["success"]("Successfuly !!");
-                $('#createLeaveModal').modal('hide');
-                AfficheLeaves();
-            },
-            error: function (xhr, status, error) {
-                toastr["error"]("Leaves's Name already exist !!");
-
-            }
-        });
-    });
+    
 
   
     
@@ -88,6 +72,28 @@ function AfficheLeaves() {
                 .attr('placeholder', 'Recherche')
                 .attr('class', 'form-control');
 
+            $('#createLeaveButton').on("click", function () {
+                $('#createLeaveModal').modal('show');
+                $('#createLeaveForm').submit(function (event) {
+                    event.preventDefault();
+                    $.ajax({
+                        url: '/Leaves/Create',
+                        type: 'POST',
+                        data: $(this).serialize(),
+                        success: function () {
+                            toastr["success"]("Successfuly !!");
+                            $('#createLeaveModal').modal('hide');
+                            AfficheLeaves();
+                        },
+                        error: function (xhr, status, error) {
+                            toastr["error"]("Leaves's Name already exist !!");
+
+                        }
+                    });
+                });
+            });
+
+
         },
         language: {
             "search": "",
@@ -125,9 +131,7 @@ function AfficheLeaves() {
             '>',
 
         rowCallback: function (row, data) {
-            $('#createLeaveButton').click(function () {
-                $('#createLeaveModal').modal('show');
-            });
+            
             if (data.leaveId > 0) {
                 // Show edit modal with data
                 $(document).on('click', '.editLeaveButton', function () {
