@@ -189,7 +189,7 @@
             },
             data: JSON.stringify(data),
             success: function (data) {
-                toastr["success"]("Successfully deleted ")
+                toastr["success"](" Added Successfully  ")
                 removerow();
 
             },
