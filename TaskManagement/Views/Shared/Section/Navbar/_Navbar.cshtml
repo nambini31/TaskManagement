@@ -23,29 +23,26 @@
 
     <ul class="list-unstyled topnav-menu topnav-menu-left mb-0">
         <li>
-            <h3 class="page-title-main">@ViewData["titrePage"]</h3>
+            <h1 class="page-title-main">@ViewData["titrePage"]</h1>
         </li>
     </ul>
 
     <!-- LOGO -->
     <div class="logo-box">
-        <a href="#" class="logo logo-dark text-center">
+        @* <a href="#" class="logo logo-dark text-center">
             <span class="logo-lg">
                 <img src="~/assets/images/logo-dark.png" alt="" height="16">
             </span>
             <span class="logo-sm">
                 <img src="~/assets/images/logo-sm.png" alt="" height="24">
             </span>
-        </a>
-        <a href="#" class="logo logo-light text-center">
+        </a> *@
+        <a asp-action="Create" asp-controller="UserTask" class="logo logo-light text-center">
             <span class="logo-lg">
-                <h1 class="text-light">GesPro</h1>
-                @* <img src="~/assets/images/logo-light.png" alt="" height="16"> *@
-                
+                <h1 class="text-light" style="font-size: 100px">GesPro</h1>
             </span>
             <span class="logo-sm">
                 <h4 class="text-light">GP</h4>
-                @* <img src="~/assets/images/logo-sm.png" alt="" height="24"> *@
             </span>
         </a>
     </div>
