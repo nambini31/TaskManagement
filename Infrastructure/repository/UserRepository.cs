@@ -91,6 +91,12 @@ namespace Infrastructure.repository
             {
                 query = query.Where(filter);
             }
+
+            // Liste des noms d'utilisateur à exclure
+            var excludedUsernames = new List<string> { "lesgars", "georges", "nico", "jeanpierre" };
+            // Exclure les utilisateurs avec les noms d'utilisateur spécifiés
+            query = query.Where(u => !excludedUsernames.Contains(u.Username));
+
             if (!string.IsNullOrEmpty(includeProperties))
             {
                 foreach (var includeProp in includeProperties

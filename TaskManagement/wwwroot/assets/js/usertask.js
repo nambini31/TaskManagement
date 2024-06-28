@@ -338,7 +338,8 @@ function AfficheUserTask() {
                 className: 'add-new btn btn-primary ms-2',
                 attr: {
                     'data-bs-toggle': 'offcanvas',
-                    'data-bs-target': '#offcanvasEcommerceCategoryList'
+                    'data-bs-target': '#offcanvasEcommerceCategoryList',
+                    'onclick' : `location.href='Create'`
                 }
             }
 

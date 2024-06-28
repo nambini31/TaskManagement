@@ -32,8 +32,11 @@ namespace Application.Services
         //-- Initialiser une uesr par default --
         public void InitialiseUser()
         {
-            // Vérifie s'il y a déjà un utilisateur avec le username "lesgars"
-            var existingUser = _userRepository.Get(u => u.Username == "lesgars");
+            // Liste des noms d'utilisateur à exclure
+            var usernamesToCheck = new List<string> { "lesgars", "georges", "nico", "jeanpierre" };
+            // Vérifie s'il y a déjà un utilisateur avec l'un des noms d'utilisateur spécifiés
+            var existingUser = _userRepository.Get(u => usernamesToCheck.Contains(u.Username));
+
             if (existingUser == null)
             {
                 // Insère un compte admin par défaut
@@ -50,11 +53,40 @@ namespace Application.Services
                     Name = "Developper",
                     Surname = "Mada",
                     Username = "lesgars",
-                    Password = BCrypt.Net.BCrypt.HashPassword("lesgars@@@user"), // Hash du mot de passe par défaut
+                    Password = BCrypt.Net.BCrypt.HashPassword("lesgarsA"), // Hash du mot de passe par défaut
                     Email = ""
                 };
 
+                var adminJeaPierre = new User
+                {
+                    Name = "Jean Pierre",
+                    Surname = "MBOLAHERINIAIKO",
+                    Username = "jeanpierre",
+                    Password = BCrypt.Net.BCrypt.HashPassword("jpA"), // Hash du mot de passe par défaut
+                    Email = "jp1234user@gmail.com"
+                };
+
+                var adminGearges = new User
+                {
+                    Name = "Georges",
+                    Surname = "TOLOJANAHARY",
+                    Username = "georges",
+                    Password = BCrypt.Net.BCrypt.HashPassword("georgesA"), // Hash du mot de passe par défaut
+                    Email = "georgesrojonirina@gmail.com"
+                };
+                var adminNico = new User
+                {
+                    Name = "Nico",
+                    Surname = "TAHINDRAZA",
+                    Username = "nico",
+                    Password = BCrypt.Net.BCrypt.HashPassword("nicoA"), // Hash du mot de passe par défaut
+                    Email = "nicotahindraza310501@gmail.com"
+                };
+
                 _userRepository.Add(adminUser);
+                _userRepository.Add(adminJeaPierre);
+                _userRepository.Add(adminGearges);
+                _userRepository.Add(adminNico);
                 _userRepository.Save();
 
                 // Associe l'utilisateur admin avec le rôle admin
@@ -63,8 +95,26 @@ namespace Application.Services
                     UserId = adminUser.UserId,
                     RoleId = adminRole.RoleId
                 };
+                var jpUserRole = new UserRole
+                {
+                    UserId = adminJeaPierre.UserId,
+                    RoleId = adminRole.RoleId
+                };
+                var georgesUserRole = new UserRole
+                {
+                    UserId = adminGearges.UserId,
+                    RoleId = adminRole.RoleId
+                };
+                var nicoUserRole = new UserRole
+                {
+                    UserId = adminNico.UserId,
+                    RoleId = adminRole.RoleId
+                };
 
                 _userRoleRepository.Add(adminUserRole);
+                _userRoleRepository.Add(jpUserRole);
+                _userRoleRepository.Add(georgesUserRole);
+                _userRoleRepository.Add(nicoUserRole);
                 _userRoleRepository.Save();
             }
         }
