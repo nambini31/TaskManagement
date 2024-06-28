@@ -213,7 +213,7 @@
                             `<select placeholder="Selectpicker task" name="taskId" data-search="true" data-silent-initial-value-set="true" id="selectTaskId${taskRowIdCounter}" class="form-control w-100 selectTaskId${taskRowIdCounter}"></select>` +
                             '</div>' +
                             '<div class="col-12 col-md-1 mt-3">' +
-                            `<input name="hours" type="text" class="form-control required hoursEditUsrTask${taskRowIdCounter}" />` +
+                            `<input name="hours" type="text" required class="form-control  hoursEditUsrTask${taskRowIdCounter}" />` +
                             '</div>' +
                             '<div class="col-12 col-md-1 mt-3 btn-container">' +
                                 `<button type="button" class="btn btn-delete btn-sm mt-auto">` +
