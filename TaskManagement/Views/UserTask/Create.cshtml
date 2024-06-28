@@ -52,20 +52,19 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h2 class="mb-4">SAISIE TEMPS</h2>
             <form id="formUserTaskHome" method="post">
                 <!-- Date input -->
                 <div class="form-group row justify-content-center align-items-end mb-3">
-                    <label for="date" class="col-12 col-md-1 col-form-label text-center">Date</label>
-                    <div class="col-12 col-md-4 d-flex justify-content-center">
-                        <input type="date" asp-for="date" class="form-control" id="date" />
+                    <div class="col-12 col-md-3 d-flex justify-content-center">
+                       
+                        <input type="datetime-local" asp-for="date" class="form-control" id="date" />
                     </div>
                 </div>
 
                 <!-- Labels and "Add" button row -->
                 <div class="row align-items-end mb-1">
                     <div class="col-12 col-md-1">
-                        <label class="form-label">Is Leave</label>
+                        <label class="form-label">Leave</label>
                     </div>
                     <div class="col-12 col-md-3">
                         <label id="labelleaveproject">Project</label>
@@ -86,23 +85,21 @@
                 <!-- Container for dynamically added task rows -->
                 <div class="task-container">
                     <!-- Initial row -->
-                    <div class="task-row row align-items-end mb-3">
+                    <div class="task-row1 row align-items-end mb-3" data-row-id="1">
                         <div class="col-12 col-md-1 mt-4">
-                            <input asp-for="isLeave" type="checkbox" id="checkleave" />
+                            <input asp-for="isLeave" type="checkbox" class="checkleave1" />
                         </div>
                         <div class="col-12 col-md-3 mt-4">
-                            <select placeholder="Select project" name="projectId" data-search="true" data-silent-initial-value-set="true" class="form-control w-100" id="selectProjectIdCreate"></select>
+                            <select placeholder="Select project " name="projectId" data-search="true" data-silent-initial-value-set="true" id="selectProjectIdCreate1" class="form-control w-100 selectProjectIdCreate1"></select>
                         </div>
                         <div class="col-12 col-md-4 mt-4">
-                            <select placeholder="Select task" name="taskId" data-search="true" data-silent-initial-value-set="true" class="form-control w-100" id="selectTaskId"></select>
+                            <select placeholder="Select task " name="taskId" data-search="true" data-silent-initial-value-set="true" id="selectTaskId1" class="form-control w-100 selectTaskId1"></select>
                         </div>
                         <div class="col-12 col-md-1 mt-4">
                             <input asp-for="hours" type="text" class="form-control hours-input" />
                         </div>
                         <div class="col-12 col-md-1 mt-4 btn-container">
-                            <button type="button" class="btn btn-delete btn-sm mt-auto">
-                                <i class="fa fa-trash"></i>
-                            </button>
+                            
                         </div>
                     </div>
                 </div>

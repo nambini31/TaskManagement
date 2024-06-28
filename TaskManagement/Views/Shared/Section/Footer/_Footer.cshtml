@@ -10,9 +10,9 @@
                     <a asp-action="Index" asp-controller="UserTask"> Timeline </a>
                     <a asp-action="Index" asp-controller="Project">Project</a>                        
                     <a asp-action="Index" asp-controller="Tasks">Task</a>
-                    <a asp-action="Index" asp-controller="Leaves">Leave</a>
                     @if (User.IsInRole("Admin"))
                     {
+                        <a asp-action="Index" asp-controller="Leaves">Leave</a>
                         <a asp-action="Index" asp-controller="User">User</a>
                     }
                 </div>
