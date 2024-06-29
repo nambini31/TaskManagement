@@ -43,8 +43,7 @@ namespace TaskManagement.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erreur lors de la récupération des tâches utilisateur");
-                return StatusCode(500, "Erreur interne du serveur");
+                throw ex;
             }
         }
 
@@ -93,8 +92,7 @@ namespace TaskManagement.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erreur lors de la suppression de la tâche utilisateur");
-                return StatusCode(500, "Erreur interne du serveur");
+                throw ex;
             }
         }
 
@@ -129,8 +127,7 @@ namespace TaskManagement.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erreur lors de la mise à jour de la tâche utilisateur");
-                return StatusCode(500, "Erreur interne du serveur");
+                throw ex;
             }
         }
         [HttpPost]
