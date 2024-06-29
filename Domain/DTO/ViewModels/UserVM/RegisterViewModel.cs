@@ -9,7 +9,6 @@ namespace Domain.DTO.ViewModels.UserVM
         [Required]
         public string Name { get; set; }
 
-        [Required]
         [StringLength(255)]
         public string? Surname { get; set; }
 
