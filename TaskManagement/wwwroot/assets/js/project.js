@@ -111,6 +111,7 @@
 
                 { data: 'projectId', title: '#' },
                 { data: 'name', title: 'Name' },
+                { data: 'description', title: 'Decription' },
                 {
                     data: null,
                     title: 'Action',
