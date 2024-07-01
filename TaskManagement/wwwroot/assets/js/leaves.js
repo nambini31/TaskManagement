@@ -12,7 +12,29 @@
     // Create leave form submission
     
 
-  
+    $('#createLeaveButton').on('click', function () {
+        $('#createLeaveForm')[0].reset();
+        $('#createLeaveModal').modal('show');
+    });
+
+    $('#createLeaveForm').submit(function (event) {
+        event.preventDefault();
+        $.ajax({
+            url: '/Leaves/Create',
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function () {
+                toastr["success"]("Successfuly !!");
+                $('#createLeaveModal').modal('hide');
+                $('#createLeaveForm')[0].reset();
+                AfficheLeaves();
+            },
+            error: function (xhr, status, error) {
+                toastr["error"]("Leaves's Name already exist !!");
+            }
+        });
+    });
+
     
 
     
@@ -72,26 +94,6 @@ function AfficheLeaves() {
                 .attr('placeholder', 'Recherche')
                 .attr('class', 'form-control');
 
-            $('#createLeaveButton').on("click", function () {
-                $('#createLeaveModal').modal('show');
-                $('#createLeaveForm').submit(function (event) {
-                    event.preventDefault();
-                    $.ajax({
-                        url: '/Leaves/Create',
-                        type: 'POST',
-                        data: $(this).serialize(),
-                        success: function () {
-                            toastr["success"]("Successfuly !!");
-                            $('#createLeaveModal').modal('hide');
-                            AfficheLeaves();
-                        },
-                        error: function (xhr, status, error) {
-                            toastr["error"]("Leaves's Name already exist !!");
-
-                        }
-                    });
-                });
-            });
 
 
         },
@@ -110,8 +112,8 @@ function AfficheLeaves() {
                 text: '<i class="ti ti-plus ti-xs me-0 me-sm-2"></i><span class="d-none d-sm-inline-block">Add</span>',
                 className: 'add-new btn btn-primary ms-2',
                 attr: {
-                    //'data-bs-toggle': 'modal',
-                    //'data-bs-target': '#createProjectModal',
+                    'data-toggle': 'modal',
+                    'data-target': '#createLeaveModal',
                     'id': "createLeaveButton"
                 }
             }
@@ -158,6 +160,8 @@ function AfficheLeaves() {
             }
         }
 
+
+
     });
 
     
@@ -177,6 +181,7 @@ function editSubmit() {
         },
         success: function () {
             toastr["success"]("Successfuly !!");
+            $('#createLeaveForm')[0].reset();
             AfficheLeaves();
         },
         error: function (xhr, status, error) {

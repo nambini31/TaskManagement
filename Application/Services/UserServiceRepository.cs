@@ -50,10 +50,10 @@ namespace Application.Services
 
                 var adminUser = new User
                 {
-                    Name = "Developper",
-                    Surname = "Mada",
-                    Username = "lesgars",
-                    Password = BCrypt.Net.BCrypt.HashPassword("lesgarsA"), // Hash du mot de passe par défaut
+                    Name = "Default Admin",
+                    Surname = "User",
+                    Username = "defaultUser",
+                    Password = BCrypt.Net.BCrypt.HashPassword("SAIMLtd2024"), // Hash du mot de passe par défaut
                     Email = ""
                 };
 

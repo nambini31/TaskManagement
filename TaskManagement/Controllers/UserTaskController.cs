@@ -49,6 +49,7 @@ namespace TaskManagement.Controllers
 
         public IActionResult Create()
         {
+            ViewData["titrePage"] = "Time Tracking";
             return View();
 
         }
