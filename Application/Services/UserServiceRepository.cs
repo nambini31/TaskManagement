@@ -33,7 +33,7 @@ namespace Application.Services
         public void InitialiseUser()
         {
             // Liste des noms d'utilisateur à exclure
-            var usernamesToCheck = new List<string> { "lesgars", "georges", "nico", "jeanpierre" };
+            var usernamesToCheck = new List<string> { "defaultUser", "georges", "nico", "jeanpierre" };
             // Vérifie s'il y a déjà un utilisateur avec l'un des noms d'utilisateur spécifiés
             var existingUser = _userRepository.Get(u => usernamesToCheck.Contains(u.Username));
 
