@@ -179,6 +179,7 @@
 
         console.log(data);
      
+        removerow();
 
         $.ajax({
             url: '/UserTask/Create',
@@ -190,7 +191,7 @@
             data: JSON.stringify(data),
             success: function (data) {
                 toastr["success"](" Added Successfully  ")
-                removerow();
+                
 
             },
             error: function (error) {
