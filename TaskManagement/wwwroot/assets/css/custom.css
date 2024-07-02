@@ -106,6 +106,26 @@
     color: #282828;
 }
 
+.page-title-main {
+    margin: 0;
+    line-height: 70px;
+    padding: 0 20px;
+    font-size: 15px !important;
+}
+
+.footer {
+    bottom: 0;
+    padding-left: 10px !important;
+    position: absolute;
+    right: 0;
+    color: #6c757d;
+    left: 240px;
+    background-color: #e3e9ed;
+    -webkit-transition: all .2s ease-out;
+    transition: all .2s ease-out;
+    padding-right: 15px !important;
+}
+
 .vscomp-ele {
     display: inline-block;
     max-width: unset !important;
