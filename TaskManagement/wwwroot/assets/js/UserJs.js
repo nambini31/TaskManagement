@@ -51,7 +51,7 @@ $(document).ready(function () {
         buttons: [
             {
                 className: "btn btn-sm btn-primary btn-min-width mr-2 actualiser",
-                text: '<i class="ft-refresh"> Actualiser</i>',
+                text: '<i class="ft-refresh"> Refresh</i>',
                 action: function (e, dt, node, config) {
                     table.ajax.reload();
                     table.search('').draw(); 
