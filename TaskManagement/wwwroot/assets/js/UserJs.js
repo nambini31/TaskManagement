@@ -37,7 +37,7 @@ $(document).ready(function () {
         ],
 
         "initComplete": function (settings, json) {
-            $('div.dataTables_wrapper div.dataTables_filter input').attr('placeholder', 'Recherche').attr('class', 'form-control');
+            $('div.dataTables_wrapper div.dataTables_filter input').attr('placeholder', 'Recherche').attr('class', 'form-control').attr('id', 'inputRecherche');
         },
         language: {
             "search": "",
@@ -50,10 +50,11 @@ $(document).ready(function () {
         ,
         buttons: [
             {
-                className: "btn btn-sm btn-primary btn-min-width mr-2",
+                className: "btn btn-sm btn-primary btn-min-width mr-2 actualiser",
                 text: '<i class="ft-refresh"> Actualiser</i>',
-                action: function () {
+                action: function (e, dt, node, config) {
                     table.ajax.reload();
+                    table.search('').draw(); 
                 },
             },
             {
