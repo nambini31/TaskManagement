@@ -107,7 +107,7 @@ namespace Infrastructure.Repository
         {
             
 
-            string user =   filter.userId == null    ?  "" : $"and user.userId  IN ({string.Join(',', filter.userId)}) ";
+            string user =   filter.userId == null    ? "and UserTask.userId != 0" : $"and user.userId  IN ({string.Join(',', filter.userId)}) ";
 
 
             if (true)
@@ -165,7 +165,7 @@ namespace Infrastructure.Repository
         public async Task<IEnumerable<UserTaskVM>> GetUserTasksByUsersVM(FiltreUserTask filter)
         {
 
-            string user = filter.userId == null ? "" : $"and user.userId  IN ({string.Join(',', filter.userId)}) ";
+            string user = filter.userId == null ? "and UserTask.userId != 0" : $"and user.userId  IN ({string.Join(',', filter.userId)}) ";
 
             try
             {
@@ -219,12 +219,11 @@ namespace Infrastructure.Repository
         public async Task<IEnumerable<UserTaskVM>> GetUserTasksForTwoDate(FiltreUserTask filter)
         {
 
-            string user = filter.userId == null ? "" : $"and user.userId  IN ({string.Join(',', filter.userId)}) ";
+            string user = filter.userId == null ? "and UserTask.userId != 0" : $"and user.userId  IN ({string.Join(',', filter.userId)}) ";
 
             try
             {
-                string sql = $@"SELECT 
-                SUM(usertask.hours) AS hours, 
+                string sql = $@"SELECT hours, 
                 usertask.date, 
                 tasks.taskId, 
                 isLeave,
@@ -271,17 +270,16 @@ namespace Infrastructure.Repository
         public async Task<IEnumerable<UserTaskVM>> GetUserTasksGrouperVM(FiltreUserTask filter)
         {
 
-            string user = filter.userId == null ? "" : $"and user.userId  IN ({string.Join(',', filter.userId)}) ";
+            string user = filter.userId == null ? "and UserTask.userId != 0" : $"and user.userId  IN ({string.Join(',', filter.userId)}) ";
 
             try
             {
-                string sql = $@"SELECT 
-                SUM(usertask.hours) AS hours, 
+                string sql = $@"SELECT hours, 
                 usertask.date, 
                 tasks.taskId, 
                 isLeave,
                 CASE 
-                    WHEN usertask.leaveId IS NOT NULL AND usertask.leaveId != 0 THEN leaves.reason 
+                    WHEN usertask.isLeave THEN leaves.reason 
                     ELSE tasks.name 
                 END AS taskName,
                 user.userName ,
@@ -294,8 +292,7 @@ namespace Infrastructure.Repository
                 LEFT JOIN user ON user.userId = usertask.userId 
             WHERE ( date(usertask.date) BETWEEN @start AND @end ) {user}
             GROUP BY 
-                taskName                             
-                                ";
+                taskName";
 
                 IEnumerable<UserTaskVM> data = await _db.UserTask.FromSqlRaw(sql,
                     new MySqlParameter(sql="@start", filter.startDate.ToString("yyyy-MM-dd")),
