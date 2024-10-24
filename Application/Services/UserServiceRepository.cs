@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Helper;
 
 namespace Application.Services
 {
@@ -15,8 +16,9 @@ namespace Application.Services
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
         private readonly IUserRoleRepository _userRoleRepository;
-        
-        public UserServiceRepository(IUserRepository userRepository, IRoleRepository roleRepository, IUserRoleRepository userRoleRepository)
+        private readonly DataEncryptor _dataEncryptor;
+
+        public UserServiceRepository(IUserRepository userRepository, IRoleRepository roleRepository, IUserRoleRepository userRoleRepository, DataEncryptor _dataEncryptor)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
@@ -148,7 +150,7 @@ namespace Application.Services
                     Name = name,
                     Surname = surname,
                     Username = username,
-                    Password = BCrypt.Net.BCrypt.HashPassword(password), // Hash password
+                    Password = _dataEncryptor.Encrypt(password), // Hash password
                     Email = email
                 };
 
@@ -192,7 +194,7 @@ namespace Application.Services
                     Name = name,
                     Surname = surname,
                     Username = username,
-                    Password = BCrypt.Net.BCrypt.HashPassword(password), // Hash password
+                    Password = _dataEncryptor.Encrypt(password), // Hash password
                     Email = email
                 };
                 var role = _roleRepository.Get(r => r.Name == roleName); //pour recuperer l'RoleId
