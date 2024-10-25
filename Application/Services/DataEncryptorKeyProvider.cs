@@ -1,6 +1,5 @@
-﻿using Domain.
-using Domain.Interface;
-namespace Infrastructure.repository
+﻿using Application.Helper.Security;
+namespace Application.Services
 {
     public class DataEncryptorKeyProvider : IDataEncryptorKeyProvider
     {
@@ -20,8 +19,9 @@ namespace Infrastructure.repository
             }
             catch (Exception e)
             {
-                LogHelper.LogException(e);
-                return string.Empty;
+                throw;
+                //LogHelper.LogException(e);
+                //return string.Empty;
             }
         }
     }

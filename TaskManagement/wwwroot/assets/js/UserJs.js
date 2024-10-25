@@ -6,11 +6,12 @@ $(document).ready(function () {
         destroy: true,
         ordering: true,
         order: [[0, "desc"]],
+        "lengthChange": false,
         responsive: true,
         info: false,
         paging: true,
         deferRender: true,
-        pageLength: 7,
+        //pageLength: 7,
 
         ajax: {
             url: '/User/GetAllUser', // Remplacez par l'URL de votre API qui retourne la liste des utilisateurs
@@ -64,7 +65,6 @@ $(document).ready(function () {
                     'data-toggle' : 'modal',
                     'data-target': '#modalAddUser',
                     'id': 'btnAddUser',
-                    //'style':'margin-left:3px'
                 }
             }
 
@@ -170,7 +170,7 @@ $(document).ready(function () {
     });
     //----------------------------------------------
 
-    //--- Ouvir le model pour l'edit d'un utilisateur
+    //--- Ouvir le modal pour l'edit d'un utilisateur
     $('#table_user').on('click', '.btn-edit', function () {
         var userId = $(this).data('id');
         $.post('/User/GetUserById', { id: userId }, function (user) {
@@ -185,6 +185,8 @@ $(document).ready(function () {
             $('#userForm').find('input[name="Name"]').val(user.name);
             $('#userForm').find('input[name="Surname"]').val(user.surname);
             $('#userForm').find('input[name="Username"]').val(user.username);
+            $('#userForm').find('input[name="Password"]').val(user.password);
+            $('#userForm').find('input[name="ConfirmPassword"]').val(user.password);
             $('#userForm').find('input[name="Email"]').val(user.email);
             $('#userForm').find('select[name="Role"]').val(user.roleName);
             $('#modalAddUser').modal('show');

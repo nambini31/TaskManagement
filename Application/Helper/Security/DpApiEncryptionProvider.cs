@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace Domain.Helper.Security
+namespace Application.Helper.Security
 {
     /// <summary>
     /// Provides encryption services. These methods are supported only on Windows OS.

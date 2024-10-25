@@ -13,6 +13,7 @@ namespace Domain.Interface
     {
         IEnumerable<UserListWithRole> GetAll(Expression<Func<User, bool>>? filter = null, string? includeProperties = null);
         UserListWithRole Get(Expression<Func<User, bool>>? filter, string? includeProperties = null);
+        UserListWithRole Authenticate(string? username, string? pass);
         User GetUserWithoutRole(Expression<Func<User, bool>>? filter, string? includeProperties = null);
         
         void Add(User entity);

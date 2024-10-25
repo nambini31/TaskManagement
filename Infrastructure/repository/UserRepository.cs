@@ -27,6 +27,35 @@ namespace Infrastructure.repository
             _context.SaveChanges();
         }
 
+        public UserListWithRole Authenticate(string? username, string? pass)
+        {
+            try
+            {
+                var result = new UserListWithRole();
+                var user = _context.User.FirstOrDefault(u => u.Username == username && u.Password == pass);
+                if (user != null)
+                {
+                    result = new UserListWithRole
+                    {
+                        UserId = user.UserId,
+                        Surname = user.Surname,
+                        Name = user.Name,
+                        Username = user.Username,  
+                        Email = user.Email,
+                    };     
+                    return result;   
+                }
+                else
+                {
+                    return result=null;
+                }  
+
+            }
+            catch (Exception ex) {
+                throw;
+            }
+        }
+
         public UserListWithRole Get(Expression<Func<User, bool>>? filter, string? includeProperties = null)
         {
             IQueryable<User> query = _context.Set<User>();

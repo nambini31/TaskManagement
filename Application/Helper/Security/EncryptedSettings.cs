@@ -1,4 +1,4 @@
-﻿namespace Domain.Helper.Security;
+﻿namespace Application.Helper.Security;
 
 public class EncryptedSettings
 {

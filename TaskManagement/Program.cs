@@ -1,6 +1,7 @@
 
 using Application.Interface;
 using Application.Services;
+using Domain.Helper;
 using Domain.Interface;
 using Infrastructure.Data;
 using Infrastructure.repository;
@@ -56,6 +57,8 @@ builder.Services.AddScoped<ILeavesService, LeavesService>();
 
 builder.Services.AddScoped<ITasksRepository, TasksRepository>();
 builder.Services.AddScoped<ITasksService, TasksService>();
+builder.Services.AddTransient<IDataEncryptorKeyProvider, DataEncryptorKeyProvider>();
+builder.Services.AddSingleton<DataEncryptor>();
 
 
 // Configuration d'AutoMapper

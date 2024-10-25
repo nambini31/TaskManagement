@@ -1,13 +1,8 @@
 ﻿using Domain.DTO;
 using Domain.Entity;
 using Domain.Interface;
-using Org.BouncyCastle.Crypto.Generators;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Domain.Helper;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services
 {
@@ -18,11 +13,12 @@ namespace Application.Services
         private readonly IUserRoleRepository _userRoleRepository;
         private readonly DataEncryptor _dataEncryptor;
 
-        public UserServiceRepository(IUserRepository userRepository, IRoleRepository roleRepository, IUserRoleRepository userRoleRepository, DataEncryptor _dataEncryptor)
+        public UserServiceRepository(IUserRepository userRepository, IRoleRepository roleRepository, IUserRoleRepository userRoleRepository, DataEncryptor dataEncryptor)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _userRoleRepository = userRoleRepository;
+            _dataEncryptor = dataEncryptor;
         }
 
         //definir une exception personnamisé
@@ -35,7 +31,7 @@ namespace Application.Services
         public void InitialiseUser()
         {
             // Liste des noms d'utilisateur à exclure
-            var usernamesToCheck = new List<string> { "defaultUser", "georges", "nico", "jeanpierre" };
+            var usernamesToCheck = new List<string> { "defaultUser","jeanpierre" };
             // Vérifie s'il y a déjà un utilisateur avec l'un des noms d'utilisateur spécifiés
             var existingUser = _userRepository.Get(u => usernamesToCheck.Contains(u.Username));
 
@@ -55,7 +51,7 @@ namespace Application.Services
                     Name = "Default Admin",
                     Surname = "User",
                     Username = "defaultUser",
-                    Password = BCrypt.Net.BCrypt.HashPassword("SAIMLtd2024"), // Hash du mot de passe par défaut
+                    Password = _dataEncryptor.Encrypt("SAIMLtd2024"), // Hash du mot de passe par défaut
                     Email = ""
                 };
 
@@ -64,31 +60,12 @@ namespace Application.Services
                     Name = "Jean Pierre",
                     Surname = "MBOLAHERINIAIKO",
                     Username = "jeanpierre",
-                    Password = BCrypt.Net.BCrypt.HashPassword("jpA"), // Hash du mot de passe par défaut
+                    Password = _dataEncryptor.Encrypt("jpA"), // Hash du mot de passe par défaut
                     Email = "jp1234user@gmail.com"
-                };
-
-                var adminGearges = new User
-                {
-                    Name = "Georges",
-                    Surname = "TOLOJANAHARY",
-                    Username = "georges",
-                    Password = BCrypt.Net.BCrypt.HashPassword("georgesA"), // Hash du mot de passe par défaut
-                    Email = "georgesrojonirina@gmail.com"
-                };
-                var adminNico = new User
-                {
-                    Name = "Nico",
-                    Surname = "TAHINDRAZA",
-                    Username = "nico",
-                    Password = BCrypt.Net.BCrypt.HashPassword("nicoA"), // Hash du mot de passe par défaut
-                    Email = "nicotahindraza310501@gmail.com"
                 };
 
                 _userRepository.Add(adminUser);
                 _userRepository.Add(adminJeaPierre);
-                _userRepository.Add(adminGearges);
-                _userRepository.Add(adminNico);
                 _userRepository.Save();
 
                 // Associe l'utilisateur admin avec le rôle admin
@@ -102,21 +79,9 @@ namespace Application.Services
                     UserId = adminJeaPierre.UserId,
                     RoleId = adminRole.RoleId
                 };
-                var georgesUserRole = new UserRole
-                {
-                    UserId = adminGearges.UserId,
-                    RoleId = adminRole.RoleId
-                };
-                var nicoUserRole = new UserRole
-                {
-                    UserId = adminNico.UserId,
-                    RoleId = adminRole.RoleId
-                };
 
                 _userRoleRepository.Add(adminUserRole);
                 _userRoleRepository.Add(jpUserRole);
-                _userRoleRepository.Add(georgesUserRole);
-                _userRoleRepository.Add(nicoUserRole);
                 _userRoleRepository.Save();
             }
         }
@@ -216,14 +181,13 @@ namespace Application.Services
         // -------------------------------------------
 
         public UserListWithRole Authenticate(string username, string password)
-        {
-            var user = _userRepository.Get(u => u.Username == username);
-            if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.Password))
+        {    
+            var cryptPass = "";
+            if (password != null || password != "") 
             {
-                return null;
+                cryptPass = _dataEncryptor.Encrypt(password);
             }
-
-            return user;
+            return _userRepository.Authenticate(username, cryptPass);
         }
 
         public Role GetRoleByUserId(int userId)
@@ -243,7 +207,18 @@ namespace Application.Services
 
         public UserListWithRole GetUserById(int userId)
         {
-            return _userRepository.Get(u => u.UserId == userId);
+            var u = _userRepository.Get(u => u.UserId == userId);
+            UserListWithRole user = new UserListWithRole
+            {
+                UserId = u.UserId,
+                Name = u.Name,
+                Surname = u.Surname,
+                Username = u.Username,
+                Email = u.Email,
+                Password = _dataEncryptor.Decrypt(u.Password),
+                RoleName = u.RoleName,
+            };
+            return user;
         }
 
         public User GetUserWithoutRole(int userId)
