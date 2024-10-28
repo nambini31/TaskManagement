@@ -24,14 +24,18 @@
                 <form id="editTaskForm">
                     <input type="hidden" id="taskId" name="taskId" value="${data.taskId}" />
                     <div class="form-group">
-                        <label for="Title">Title</label>
-                        <input type="text" class="form-control" id="TitleForm" name="Title" value="${data.name}" required />
-                    </div>
-                    <div class="form-group">
                         <label for="ProjectId">Project</label>
                         <select class="form-control" id="ProjectIdForm" name="ProjectId" required>
                             ${data.projects.map(project => `<option value="${project.projectId}" ${project.projectId == data.projectId ? "selected" : ""}>${project.name}</option>`).join('')}
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Title">Title</label>
+                        <input type="text" class="form-control" id="TitleForm" name="Title" value="${data.name}" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="TimeTotalForm">Total Times</label>
+                        <input type="text" class="form-control" id="TimeTotalForm" name="TimeTotalForm" value="${data.timeTotal}" required />
                     </div>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Save</button>
@@ -59,7 +63,8 @@
         e.preventDefault();
         var formData = {
             name: $('#Title').val(),
-            projectId: $('#ProjectId').val()
+            projectId: $('#ProjectId').val(),
+            timeTotal: $('#TimeTotal').val()
         };
 
         $.ajax({
@@ -86,8 +91,9 @@
         e.preventDefault();
 
         var formData = {
-            taskId: $('#taskId').val(),
+            taskId: $('#taskId').val(), 
             name: $('#TitleForm').val(),
+            timeTotal: $('#TimeTotalForm').val(),
             projectId: $('#ProjectIdForm').val(),
             projectName: $('#ProjectIdForm option:selected').text() // Si nécessaire
         };
@@ -148,6 +154,9 @@ function AfficheTasks() {
             { data: 'taskId', title: '#' }, 
             { data: 'name', title: 'Name' },
             { data: 'projectName', title: 'Project' },
+            { data: 'timeTotal', title: 'Total Time(Hour)' },
+            { data: 'timeElapsed', title: 'Time Elapsed(Hour)' },
+            { data: 'status', title: 'Status(%)' },
             {
                 data: null,
                 title: 'Action',

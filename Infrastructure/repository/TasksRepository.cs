@@ -21,7 +21,10 @@ namespace Infrastructure.repository
 
         public async Task<IEnumerable<Tasks>> GetAllAsync()
         {
-            return await _context.Tasks.ToListAsync();
+            //return await _context.Tasks.ToListAsync();
+            return await _context.Tasks
+            .Include(t => t.project)  // Inclut les données de la table Project
+            .ToListAsync();
         }
 
         public async Task<Tasks> GetByIdAsync(int id)

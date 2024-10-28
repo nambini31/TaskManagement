@@ -23,6 +23,10 @@ namespace Application.Services
             this._env = _env;
 
         }
+        public Double TotalTimeElapsedByTask(double taskId)
+        {
+            return IUserTask.TotalTimeElapsedByTask(taskId);
+        }
         public async Task AddUserTask(List<UserTask> article)
         {
              await IUserTask.AddUserTask(article);

@@ -22,6 +22,12 @@ namespace Infrastructure.Repository
         {
             this._db = db;
         }
+        public Double TotalTimeElapsedByTask(double taskId)
+        {
+            return _db.UserTask
+                .Where(t => t.taskId == taskId)
+                .Sum(t => t.hours);
+        }
         public async Task AddUserTask(List<UserTask> usertask)
         {
 

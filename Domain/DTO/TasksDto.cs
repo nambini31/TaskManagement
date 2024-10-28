@@ -15,7 +15,10 @@ namespace Domain.DTO
         public int projectId { get; set; }
         
         public string? projectName { get; set; }
-   
+        public double? timeTotal { get; set; }
+        public double? timeElapsed { get; set; }
+        public double? status { get; set; }
+
     }
 
 }

@@ -23,6 +23,7 @@ namespace Domain.Interface
         Task AddUserTask(List<UserTask> article);
         Task UpdateUserTask(UserTask article);
         Task DeleteUserTaskById(int articleId, int userConnected);
+        Double TotalTimeElapsedByTask(double taskId);
 
     }
 }

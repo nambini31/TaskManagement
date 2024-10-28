@@ -11,22 +11,35 @@ namespace Application.Services
     public class TasksService : ITasksService
     {
         private readonly ITasksRepository _taskRepository;
+        private readonly SUserTaskRepository _SUserTask;
 
-        public TasksService(ITasksRepository tasksRepository)
+        public TasksService(ITasksRepository tasksRepository, SUserTaskRepository _SUserTask)
         {
             _taskRepository = tasksRepository;
+            this._SUserTask = _SUserTask;
         }
 
         public async Task<IEnumerable<TasksDto>> GetAllTasksAsync()
         {
             var tasks = await _taskRepository.GetAllAsync();
-            return tasks.Select(t => new TasksDto
+
+            return tasks.Select(t =>
             {
-                taskId = t.taskId,
-                name = t.name,
-                projectId = t.projectId,
-                projectName = t.project?.name
-            });
+                var timeElapsed = _SUserTask.TotalTimeElapsedByTask(t.taskId);
+                var calculatedStatus = (timeElapsed / (double)t.timeTotal) * 100;
+
+                // Crée un nouvel objet TasksDto avec le statut calculé
+                return new TasksDto
+                {
+                    taskId = t.taskId,
+                    name = t.name,
+                    projectId = t.projectId,
+                    projectName = t.project?.name,
+                    timeTotal = t.timeTotal,
+                    timeElapsed = timeElapsed,
+                    status = (int)Math.Min(calculatedStatus, 100), // Assurez-vous que le statut ne dépasse pas 100%
+                };
+            }).ToList();
         }
 
         public async Task<TasksDto> GetTaskByIdAsync(int id)
@@ -37,16 +50,21 @@ namespace Application.Services
                 taskId = task.taskId,
                 name = task.name,
                 projectId = task.projectId,
-                projectName = task.project?.name
+                projectName = task.project?.name,
+                timeTotal = task.timeTotal,
             };
         }
 
         public async Task CreateTaskAsync(TasksDto taskDto)
         {
+            var timeTotal = taskDto.timeTotal;
+            var status = (0 / timeTotal) * 100;
             var entity = new Tasks
             {
                 name = taskDto.name,
-                projectId = taskDto.projectId
+                projectId = taskDto.projectId,
+                timeTotal = timeTotal,
+                status = status,
             };
             await _taskRepository.CreateAsync(entity);
         }
@@ -56,6 +74,11 @@ namespace Application.Services
             var entity = await _taskRepository.GetByIdAsync(taskDto.taskId);
             entity.name = taskDto.name;
             entity.projectId = taskDto.projectId;
+            var timeTotal = taskDto.timeTotal;
+            var timeElapsed = _SUserTask.TotalTimeElapsedByTask(taskDto.taskId);
+            var calculatedStatus = (timeElapsed / (double)timeTotal) * 100;
+            entity.timeTotal = timeTotal;
+            entity.status = (int)Math.Min(calculatedStatus, 100);
             await _taskRepository.UpdateAsync(entity, user_maj);
         }
 

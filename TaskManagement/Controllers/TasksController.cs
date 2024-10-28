@@ -115,7 +115,8 @@ namespace TaskManagement.Controllers
                 taskId = task.taskId,
                 name = task.name,
                 projectId = task.projectId,
-                projects = projects
+                projects = projects,
+                timeTotal = task.timeTotal,
             });
         }
 
