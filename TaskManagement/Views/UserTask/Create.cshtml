@@ -90,6 +90,9 @@
                         <div class="col-12 col-md-1">
                             <label class="form-label">Hours</label>
                         </div>
+                        <div class="col-12 col-md-1">
+                            <label class="form-label">Finished</label>
+                        </div>
                         <div class="col-12 col-md-1 btn-container">
                             <button type="button" class="btn btn-success btn-sm rounded-circle btn-plus-small mb-2">
                                 <i class="fa fa-plus"></i>
@@ -102,7 +105,7 @@
                         <!-- Initial row -->
                         <div class="task-row1 row align-items-end mb-3" data-row-id="1">
                             <div class="col-12 col-md-1 mt-4">
-                                <input type="checkbox" class="checkleave1" />
+                                <input type="checkbox" class="form-control checkleave1" />
                             </div>
                             <div class="col-12 col-md-3 mt-4">
                                 <select placeholder="Select project" name="projectId" data-search="true" data-silent-initial-value-set="true" id="selectProjectIdCreate1" class="form-control w-100"></select>
@@ -112,6 +115,9 @@
                             </div>
                             <div class="col-12 col-md-1 mt-4">
                                 <input asp-for="hours" type="text" required class="form-control hoursEditUsrTask1" />
+                            </div>
+                            <div class="col-12 col-md-1 mt-4">
+                                <input type="checkbox" class="form-control finishedCheckleave1" />
                             </div>
                             <div class="col-12 col-md-1 mt-4 btn-container">
                             </div>

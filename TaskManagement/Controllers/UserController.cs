@@ -145,7 +145,7 @@ namespace TaskManagement.Controllers
                     {
                         // Redirect to default page
                         //return RedirectToAction("Index", "Home");
-                        return RedirectToAction("Create", "UserTask");
+                        return RedirectToAction("Dashboard", "Home");
                     }
 
                 }

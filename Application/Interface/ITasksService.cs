@@ -8,6 +8,7 @@ namespace Application.Interface
     public interface ITasksService
     {
         Task<IEnumerable<TasksDto>> GetAllTasksAsync();
+        Task<IEnumerable<TasksDto>> ChartProjectProcess();
         IEnumerable<Tasks> GetTaskByIdProject(int id);
         Task<TasksDto> GetTaskByIdAsync(int id);
         Task CreateTaskAsync(TasksDto tasksDto);
