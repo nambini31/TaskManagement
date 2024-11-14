@@ -44,6 +44,13 @@ namespace TaskManagement.Controllers
             return Json(tasks);
         }
 
+        [HttpPost]
+        public async Task<JsonResult> ChartTaskProcessByProject()
+        {
+            var tasks = await _tasksService.ChartTaskProcessByProject();
+            return Json(tasks);
+        }
+
 
         //public IActionResult Privacy()
         //{

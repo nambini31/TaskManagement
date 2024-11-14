@@ -9,6 +9,7 @@ namespace Application.Interface
     {
         Task<IEnumerable<TasksDto>> GetAllTasksAsync();
         Task<IEnumerable<TasksDto>> ChartProjectProcess();
+        Task<IEnumerable<TasksDto>> ChartTaskProcessByProject();
         IEnumerable<Tasks> GetTaskByIdProject(int id);
         Task<TasksDto> GetTaskByIdAsync(int id);
         Task CreateTaskAsync(TasksDto tasksDto);

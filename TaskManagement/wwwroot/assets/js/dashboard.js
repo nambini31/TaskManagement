@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
     projecProcccess()
+    taskPrecessByProject()
 });
 
 function projecProcccess(){
@@ -50,5 +51,29 @@ function projecProcccess(){
         error: function (err) {
             console.error("Erreur lors de la récupération des données :", err);
         }
+    });
+}
+
+function taskPrecessByProject() {
+    const ctx = document.getElementById('taskProcessByProject').getContext('2d');
+    const config = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: [
+                'Red',
+                'Blue',
+                'Yellow'
+            ],
+            datasets: [{
+                label: 'My First Dataset',
+                data: [300, 50, 100],
+                backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)'
+                ],
+                hoverOffset: 4
+            }]
+        },
     });
 }

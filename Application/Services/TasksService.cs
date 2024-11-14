@@ -144,5 +144,28 @@ namespace Application.Services
             //    };
             //}).ToList();
         }
+
+        //public Task<IEnumerable<TasksDto>> ChartTaskProcessByProject()
+        //{
+        //    var tasks = await _taskRepository.GetAllAsync();
+
+        //    return tasks.Select(t =>
+        //    {
+        //        var timeElapsed = _SUserTask.TotalTimeElapsedByTask(t.taskId);
+        //        var calculatedStatus = (timeElapsed / (double)t.timeTotal) * 100;
+
+        //        // Crée un nouvel objet TasksDto avec le statut calculé
+        //        return new TasksDto
+        //        {
+        //            taskId = t.taskId,
+        //            name = t.name,
+        //            projectId = t.projectId,
+        //            projectName = t.project?.name,
+        //            timeTotal = t.timeTotal,
+        //            timeElapsed = timeElapsed,
+        //            status = (int)Math.Min(calculatedStatus, 100), // Assurez-vous que le statut ne dépasse pas 100%
+        //        };
+        //    }).ToList();
+        //}
     }
 }
