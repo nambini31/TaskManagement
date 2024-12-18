@@ -145,6 +145,11 @@ namespace Application.Services
             //}).ToList();
         }
 
+        public Task<IEnumerable<TasksDto>> ChartTaskProcessByProject()
+        {
+            throw new NotImplementedException();
+        }
+
         //public Task<IEnumerable<TasksDto>> ChartTaskProcessByProject()
         //{
         //    var tasks = await _taskRepository.GetAllAsync();
