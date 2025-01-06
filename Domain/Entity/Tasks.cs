@@ -17,6 +17,7 @@ namespace Domain.Entity
         public int projectId { get; set; }
 
         public double? timeTotal { get; set; }
+        public double? timeElapsed { get; set; }
         public double? status {  get; set; }
         public Project? project{ get; set; }
 

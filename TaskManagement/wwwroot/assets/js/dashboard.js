@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    projecProcccess()
+    projecProcccess();
     taskPrecessByProject()
 });
 
@@ -55,25 +55,39 @@ function projecProcccess(){
 }
 
 function taskPrecessByProject() {
-    const ctx = document.getElementById('taskProcessByProject').getContext('2d');
-    const config = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: [
-                'Red',
-                'Blue',
-                'Yellow'
-            ],
-            datasets: [{
-                label: 'My First Dataset',
-                data: [300, 50, 100],
-                backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)'
-                ],
-                hoverOffset: 4
-            }]
-        },
+
+    $.ajax({
+        type: "POST",
+        url: "/Home/ChartTaskProcessByProject",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            const labels = data.map(task => task.name);
+            const statusData = data.map(task => task.status);
+
+            const colors = ['rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'];
+            const backgroundColors = statusData.map((_, index) => colors[index % colors.length]);
+            const ctx = document.getElementById('taskProcessByProject').getContext('2d');
+            const config = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'My First Dataset',
+                        data: statusData,
+                        backgroundColor: backgroundColors,
+                        borderColor: backgroundColors.map(color => color.replace('0.2', '1')),
+                        borderWidth: 1,
+                        hoverOffset: 4
+                    }]
+                },
+            });
+        }
     });
+
 }

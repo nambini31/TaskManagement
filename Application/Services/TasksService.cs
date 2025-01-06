@@ -96,24 +96,14 @@ namespace Application.Services
         public async Task<IEnumerable<TasksDto>> ChartProjectProcess()
         {
 
-            // Grouper les tâches par projectId et calculer l'avancement pour chaque projet
             var tasks = await _taskRepository.GetAllAsync();
-
-            // Grouper les tâches par projectId et calculer l'avancement pour chaque projet
             return tasks
                 .GroupBy(t => t.projectId)
                 .Select(g =>
                 {
-                    // Calculer le temps total et le temps écoulé pour chaque projet
                     var totalElapsedTime = g.Sum(t => _SUserTask.TotalTimeElapsedByTask(t.taskId));
                     var totalEstimatedTime = g.Sum(t => t.timeTotal);
-
-                    // Calculer l'avancement en pourcentage du projet
-                    var calculatedProgress = totalEstimatedTime > 0
-                        ? (totalElapsedTime / (double)totalEstimatedTime) * 100
-                        : 0;
-
-                    // Créer un objet ProjectProgressDto pour représenter l'avancement du projet
+                    var calculatedProgress = totalEstimatedTime > 0 ? (totalElapsedTime / (double)totalEstimatedTime) * 100 : 0;
                     return new TasksDto
                     {
                         projectId = g.Key,
@@ -124,30 +114,25 @@ namespace Application.Services
                     };
                 })
                 .ToList();
-            //var tasks = await _taskRepository.GetAllAsync();
-
-            //return tasks.Select(t =>
-            //{
-            //    var timeElapsed = _SUserTask.TotalTimeElapsedByTask(t.taskId);
-            //    var calculatedStatus = (timeElapsed / (double)t.timeTotal) * 100;
-
-            //    // Crée un nouvel objet TasksDto avec le statut calculé
-            //    return new TasksDto
-            //    {
-            //        taskId = t.taskId,
-            //        name = t.name,
-            //        projectId = t.projectId,
-            //        projectName = t.project?.name,
-            //        timeTotal = t.timeTotal,
-            //        timeElapsed = timeElapsed,
-            //        status = (int)Math.Min(calculatedStatus, 100), // Assurez-vous que le statut ne dépasse pas 100%
-            //    };
-            //}).ToList();
         }
 
-        public Task<IEnumerable<TasksDto>> ChartTaskProcessByProject()
+        public async Task<IEnumerable<TasksDto>> ChartTaskProcessByProject()
         {
-            throw new NotImplementedException();
+            var idProject = 1;
+            var tasks = await _taskRepository.GetAllAsync();
+            return tasks
+                .Where(t => t.projectId == idProject)
+                .Select(t => {
+                    {
+                        var totalElapsedTime = _SUserTask.TotalTimeElapsedByTask(t.taskId);
+                        return new TasksDto
+                        {
+                            name = t.name,
+                            status = t.timeTotal > 0 ? Math.Round((totalElapsedTime / (double)t.timeTotal) * 100, 2) : 0
+                        };
+                    }
+                })
+                .ToList();
         }
 
         //public Task<IEnumerable<TasksDto>> ChartTaskProcessByProject()

@@ -23,7 +23,7 @@ namespace Infrastructure.repository
         {
             //return await _context.Tasks.ToListAsync();
             return await _context.Tasks
-            .Include(t => t.project)  // Inclut les données de la table Project
+            .Include(t => t.project)
             .ToListAsync();
         }
 
