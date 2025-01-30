@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TaskManagement.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class ProjectController : Controller
     {
         private readonly IProjectService _projectService;

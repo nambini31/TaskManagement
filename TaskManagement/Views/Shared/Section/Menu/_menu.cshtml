@@ -1,4 +1,8 @@
-﻿<div class="left-side-menu">
+﻿@{
+    // var roleName = Context.Session.GetString("RoleName");
+}
+
+<div class="left-side-menu">
 
     <div class="slimscroll-menu">
 
@@ -31,7 +35,7 @@
                         <span> Task </span>
                     </a>
                 </li>
-                @if (User.IsInRole("Admin"))
+                @* @if (roleName == "Admin")
                 {
                     <li>
                         <a asp-action="Index" asp-controller="Leaves">
@@ -45,7 +49,7 @@
                             <span> User </span>
                         </a>
                     </li>
-                }                
+                }  *@               
             </ul>
 
         </div>

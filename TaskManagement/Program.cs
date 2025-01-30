@@ -14,10 +14,10 @@ using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-// configuration de la connexion a la base de données
 var ConnectionString = builder.Configuration.GetConnectionString("Mysql");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     {
@@ -40,12 +40,19 @@ builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
 builder.Services.AddScoped<UserServiceRepository>();
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddCookie(options =>
-            {
-                options.LoginPath = "/User/MustLogin";
-                options.AccessDeniedPath = "/User/AccesDenied";
-            });
+//var serviceExtensions = new ServiceExtensions(builder.Configuration);
+
+//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+//            .AddCookie(options =>
+//            {
+//                options.Cookie.SecurePolicy = CookieSecurePolicy.None;
+//                options.LoginPath = "/User/MustLogin";
+//                options.AccessDeniedPath = "/User/AccesDenied";
+//            });
+
+//builder.Services.AddDistributedMemoryCache(); // Use memory cache for session storage
+builder.Services.AddSession();
+
 builder.Services.AddScoped<IUserTaskRepository, UserTaskRepository>();
 builder.Services.AddScoped<SUserTaskRepository>();
 
@@ -61,16 +68,12 @@ builder.Services.AddTransient<IDataEncryptorKeyProvider, DataEncryptorKeyProvide
 builder.Services.AddSingleton<DataEncryptor>();
 
 
-// Configuration d'AutoMapper
-//builder.Services.AddAutoMapper(typeof(Program).Assembly);
-
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
+
 }
 app.UseHttpsRedirection();
 app.UseRequestLocalization(new RequestLocalizationOptions
@@ -80,8 +83,6 @@ app.UseRequestLocalization(new RequestLocalizationOptions
     SupportedUICultures = supportedCultures
 });
 
-app.UseStatusCodePagesWithReExecute("/Home/PageNotFound");
-
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -89,6 +90,8 @@ app.UseRouting();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

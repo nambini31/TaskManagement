@@ -21,7 +21,6 @@ namespace Application.Services
             _dataEncryptor = dataEncryptor;
         }
 
-        //definir une exception personnamisé
         public class AfficheException : Exception
         {
             public AfficheException(string message) : base(message) { }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace TaskManagement.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class TasksController : Controller
     {
         private readonly ITasksService _tasksService;

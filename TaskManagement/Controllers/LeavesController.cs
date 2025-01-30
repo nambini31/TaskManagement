@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TaskManagement.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class LeavesController : Controller
     {
         private readonly ILeavesService _leavesService;

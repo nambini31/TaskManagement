@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Domain.DTO.ViewModels.UserVM;
 using static Application.Services.UserServiceRepository;
 using Domain.DTO;
+using Newtonsoft.Json;
 
 namespace TaskManagement.Controllers
 {
@@ -24,7 +25,7 @@ namespace TaskManagement.Controllers
             _userService = userService;
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             @ViewData["titrePage"] = "User Management";
@@ -32,7 +33,7 @@ namespace TaskManagement.Controllers
         }
 
         //-- get all User for datatable
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult GetUserById(int id)
         {
@@ -42,7 +43,7 @@ namespace TaskManagement.Controllers
         //----------------------------------
 
         //-- get all User for datatable with role
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         public IActionResult GetAllUser()
         {
@@ -65,14 +66,14 @@ namespace TaskManagement.Controllers
         }
         //----------------------------------
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         public IActionResult Register(RegisterViewModel model)
         {
@@ -114,57 +115,81 @@ namespace TaskManagement.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model, string? ReturnUrl = null)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-
-            if (ModelState.IsValid)
+            var user = _userService.Authenticate(model.Username, model.Password);
+            if (user != null)
             {
-                var user = _userService.Authenticate(model.Username, model.Password);
-                if (user != null)
-                {
-                    var role = _userService.GetRoleByUserId(user.UserId);
-                    var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, $"{user.Name} {user.Surname}"),
-                        new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
-                    };
-                    if (role != null)
-                    {
-                        claims.Add(new Claim(ClaimTypes.Role, role.Name));
-                    }
-
-                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-
-                    if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
-                    {
-                        return Redirect(ReturnUrl);
-                    }
-                    else
-                    {
-                        // Redirect to default page
-                        //return RedirectToAction("Index", "Home");
-                        return RedirectToAction("Create", "UserTask");
-                    }
-
-                }
-
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return RedirectToAction("Create", "UserTask");
+            }
+            else
+            {
+                return View("Login", model);
             }
 
-            return View("Login", model);
+            //try
+            //{
+
+            //    if (ModelState.IsValid)
+            //    {
+            //        var user = _userService.Authenticate(model.Username, model.Password);
+            //        //set Session
+
+            //        var session = JsonConvert.SerializeObject(user);
+            //        HttpContext.Session.SetString("User", session);
+            //        if (user != null)
+            //        {
+            //            var role = _userService.GetRoleByUserId(user.UserId);                        
+            //            //var claims = new List<Claim>
+            //            //{
+            //            //    new Claim(ClaimTypes.Name, $"{user.Name} {user.Surname}"),
+            //            //    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
+            //            //};
+
+            //            if (role != null)
+            //            {
+            //                //claims.Add(new Claim(ClaimTypes.Role, role.Name));
+            //                HttpContext.Session.SetString("RoleName", role.Name);
+            //            }
+
+            //            //var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            //            //await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+            //            //if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
+            //            //{
+            //            //    return Redirect(ReturnUrl);
+            //            //}
+            //            //else
+            //            //{
+            //            //    // Redirect to default page
+            //            //    //return RedirectToAction("Index", "Home");
+            //            //}
+            //                return RedirectToAction("Create", "UserTask");
+
+            //        }
+
+            //        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            //    }
+
+            //    return View("Login", model);
+            //}
+            //catch (Exception ex) {
+            //    throw ex;
+            //}
         }
 
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            //await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Session.Clear();
             return RedirectToAction("Login", "User");
         }
 
 
         //-- Update User ----
-        [Authorize]
+        //[Authorize]
         public IActionResult Update(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -205,7 +230,7 @@ namespace TaskManagement.Controllers
 
         //-- Delete User ------
         // Action POST pour supprimer un utilisateur
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         public async Task<IActionResult> Delete(int userId)
         {

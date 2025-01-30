@@ -10,7 +10,7 @@ using Domain.DTO.ViewModels;
 
 namespace TaskManagement.Controllers
 {
-   [Authorize]
+   //[Authorize]
     public class UserTaskController : Controller
     {
         private readonly ILogger<HomeController> _logger;
