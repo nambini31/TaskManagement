@@ -7,6 +7,8 @@ using Domain.Entity;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Domain.DTO.ViewModels;
+using System.Net.Mail;
+using Application.Services.Mail;
 
 namespace TaskManagement.Controllers
 {
@@ -16,12 +18,19 @@ namespace TaskManagement.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly SUserTaskRepository _SUserTask;
         private readonly UserServiceRepository _UserService;
+        private readonly ISendMailService _sendMailService;
+        private readonly IFileViewToStringforEmailService _HtmlFileViewToStringforEmail;
 
-        public UserTaskController(ILogger<HomeController> logger, SUserTaskRepository _SUserTask, UserServiceRepository _UserService)
+
+        public UserTaskController(ILogger<HomeController> logger, SUserTaskRepository _SUserTask, UserServiceRepository _UserService, ISendMailService sendMailService,
+            IFileViewToStringforEmailService htmlFileViewToStringforEmail)
         {
             _logger = logger;
             this._SUserTask = _SUserTask;
             this._UserService = _UserService;
+            _sendMailService = sendMailService;
+            _sendMailService = sendMailService;
+            _HtmlFileViewToStringforEmail = htmlFileViewToStringforEmail;
         }
         public  IActionResult Index()
         {
@@ -148,6 +157,19 @@ namespace TaskManagement.Controllers
 
                 byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
                 string fileName = Path.GetFileName(filePath);
+                var destemails = new[] { "jmbolaheriniaiko@saimltd.mu" };
+                string subject = $"TIMELINE : {filter.startDate} TO {filter.endDate}";
+                var content = _HtmlFileViewToStringforEmail
+                    .GetHtmlFileContent("timeline.html");
+                //.Replace("-_-", "Le " + formattedDate)
+                //.Replace("-Commande-", $"Une facture Collectivité a été générée.<a href='{Url + numCommande}'>Voir la commande</a>")
+                //.Replace("dans le fichier Excel ci-joint.", "dans le fichier pdf ci-joint.");
+                var destemailsCC = new List<string>();
+                var attachments = new List<string>
+                {
+                    filePath
+                };
+                _sendMailService.sendMail(destemails, subject, content, true, destemailsCC, attachments);
                 return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
 
 

@@ -1,6 +1,12 @@
 ﻿$(document).ready(function () {
     projecProcccess()
-    taskPrecessByProject()
+    var projectId = $("#selectedProject").val()
+    taskPrecessByProject(projectId)
+
+    $("#selectedProject").on("change", function () {
+        var projectId = $(this).val();
+        taskPrecessByProject(projectId)
+    });
 });
 
 function projecProcccess(){
@@ -10,12 +16,9 @@ function projecProcccess(){
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-            // Préparer les données pour Chart.js
             const labels = data.map(task => task.projectName);
             const timeTotalData = data.map(task => task.timeTotal);
             const statusData = data.map(task => task.status);
-
-            // Créer le graphique
             const ctx = document.getElementById('projectProccess').getContext('2d');
             const tasksChart = new Chart(ctx, {
                 type: 'bar',
@@ -46,7 +49,8 @@ function projecProcccess(){
                         }
                     }
                 }
-            });
+
+            });            
         },
         error: function (err) {
             console.error("Erreur lors de la récupération des données :", err);
@@ -54,26 +58,45 @@ function projecProcccess(){
     });
 }
 
-function taskPrecessByProject() {
-    const ctx = document.getElementById('taskProcessByProject').getContext('2d');
-    const config = new Chart(ctx, {
-        type: 'doughnut',
+function taskPrecessByProject(projectId) {
+    var chartInstance = null;
+    $.ajax({
+        type: "POST",
+        url: "/Home/ChartTaskProcessByProject",
+        dataType: "JSON",
         data: {
-            labels: [
-                'Red',
-                'Blue',
-                'Yellow'
-            ],
-            datasets: [{
-                label: 'My First Dataset',
-                data: [300, 50, 100],
-                backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)'
-                ],
-                hoverOffset: 4
-            }]
+            projectId: projectId
         },
-    });
+        success: function (data) {        
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+            $("#taskProcessByProject").remove(); // Supprime l'ancien canvas
+            $("#afficheCanva").append('<canvas id="taskProcessByProject" style="width:100%; height:200px"></canvas>');
+
+            const ctx = document.getElementById('taskProcessByProject').getContext('2d');
+            const statusData = data.map(task => task.status);
+            const nomTache = data.map(task => task.name);
+            chartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: nomTache,
+                    datasets: [{
+                        label: data.projectName,
+                        data: statusData,
+                        backgroundColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(54, 162, 235)',
+                            'rgb(255, 205, 86)'
+                        ],
+                        hoverOffset: 4
+                    }]
+                },
+            });
+        },
+        error: function (err) {
+            console.error("Erreur lors de la récupération des données :", err);
+        }
+    });    
 }
+

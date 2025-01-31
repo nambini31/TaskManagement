@@ -29,7 +29,6 @@ namespace Application.Services
                 projectId = p.projectId,
                 name = p.name,
                 description = p.description
-                
             });
         }
 

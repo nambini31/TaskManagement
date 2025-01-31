@@ -143,7 +143,7 @@ namespace Application.Services
                         range.Style.Fill.PatternType = ExcelFillStyle.Solid;
                         range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGreen);
                     }
-
+                    worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
                     package.SaveAs(new FileInfo(filePath));
                 }
 

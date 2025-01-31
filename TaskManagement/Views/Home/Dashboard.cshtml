@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     Layout = "Layout/_LayoutWithMenu";
     ViewData["Title"] = "Tasks";
 }
@@ -8,6 +7,7 @@
     <link href="~/assets/libs/datatables/responsive.bootstrap4.css" rel="stylesheet" type="text/css" />
     <link href="~/assets/libs/datatables/buttons.bootstrap4.css" rel="stylesheet" type="text/css" />
     <link href="~/assets/libs/datatables/select.bootstrap4.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/libs/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
 }
 
 @section VendorScripts {
@@ -24,6 +24,7 @@
     <script src="~/assets/libs/datatables/dataTables.select.min.js"></script>
     <script src="~/assets/libs/pdfmake/pdfmake.min.js"></script>
     <script src="~/assets/libs/pdfmake/vfs_fonts.js"></script>
+    <script src="~/assets/libs/bootstrap-select/bootstrap-select.min.js"></script>
 }
 
 @section PageScripts {
@@ -48,14 +49,34 @@
             </div>
         </div>
     </div>
-    <div class="col-6">
+    <div class="col-8">
         <div class="card">
             <div class="card-header">
                 <b>Tasks Process by project</b>
             </div>
             <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <label class ="me-2">Select Project : </label>
+                    <select class="selectpicker  form-control w-50" name="ProjectId" data-silent-initial-value-set="true" id="selectedProject">
+                        @{
+                            try{
+                                if (ViewBag.Projects != null)
+                                {
+                                    foreach (var project in ViewBag.Projects)
+                                    {
+                                        <option value="@project.projectId">@project.name</option>
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                throw;
+                            }
+                        }
+                    </select>
+                </div>
                 <div class="responsive-table-plugin">
-                    <div style="width: 100%; height: 100%;">
+                    <div style="width: 100%; height: 100%;" id="afficheCanva">
                         <canvas id="taskProcessByProject" style="width:100%; height:200px "></canvas>
                     </div>
                 </div>
@@ -65,14 +86,11 @@
             </div>
         </div>
     </div>
-    <div class="col-4">
-        <div class="card-box">
-            <div class="responsive-table-plugin">
-                <h1>Biby</h1>
-            </div>
-        </div>
-    </div>
 </div>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js" type="text/javascript"></script>
+<script>
+    var projectId = document.getElementById("projectToChart").value;
+    alert(projectId)
+</script>

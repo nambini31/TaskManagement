@@ -3,6 +3,7 @@ using Application.Interface;
 using Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using System.Data;
 using System.Diagnostics;
 using TaskManagement.Models;
@@ -33,6 +34,8 @@ namespace TaskManagement.Controllers
 
         public async Task<IActionResult> Dashboard()
         {
+            var projects = await _projectService.GetAllProjectAsync();
+            ViewBag.Projects = projects;
             @ViewData["titrePage"] = "Dashboard";
             return View("Dashboard");
         }
@@ -45,9 +48,9 @@ namespace TaskManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> ChartTaskProcessByProject()
+        public async Task<JsonResult> ChartTaskProcessByProject(int projectId)
         {
-            var tasks = await _tasksService.ChartTaskProcessByProject();
+            var tasks = await _tasksService.ChartTaskProcessByProject(projectId);
             return Json(tasks);
         }
 

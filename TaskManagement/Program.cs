@@ -1,6 +1,8 @@
 
+using Application.Classes.Mail;
 using Application.Interface;
 using Application.Services;
+using Application.Services.Mail;
 using Domain.Helper;
 using Domain.Interface;
 using Infrastructure.Data;
@@ -9,7 +11,10 @@ using Infrastructure.Repository;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using OfficeOpenXml;
+using System.Configuration;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -59,6 +64,12 @@ builder.Services.AddScoped<ITasksRepository, TasksRepository>();
 builder.Services.AddScoped<ITasksService, TasksService>();
 builder.Services.AddTransient<IDataEncryptorKeyProvider, DataEncryptorKeyProvider>();
 builder.Services.AddSingleton<DataEncryptor>();
+
+builder.Services.AddTransient<IFileViewToStringforEmailService, FileViewToStringforEmailService>();
+builder.Services.AddTransient<ISendMailWithornoAttacheService, SendMailWithornoAttacheService>();
+builder.Services.AddTransient<ISendMailService, SendMailService>();
+builder.Services.AddSingleton<ISmtpMailSender, SmtpMailSender>();
+builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 
 
 // Configuration d'AutoMapper
