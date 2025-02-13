@@ -30,59 +30,13 @@ namespace Application.Services
         //-- Initialiser une uesr par default --
         public void InitialiseUser()
         {
-            // Liste des noms d'utilisateur à exclure
-            var usernamesToCheck = new List<string> { "defaultUser","jeanpierre" };
-            // Vérifie s'il y a déjà un utilisateur avec l'un des noms d'utilisateur spécifiés
-            var existingUser = _userRepository.Get(u => usernamesToCheck.Contains(u.Username));
-
-            if (existingUser == null)
+            // Insère un Role admin par défaut
+            var adminRole = _roleRepository.Get(r => r.Name == "Admin");
+            if (adminRole == null)
             {
-                // Insère un compte admin par défaut
-                var adminRole = _roleRepository.Get(r => r.Name == "Admin");
-                if (adminRole == null)
-                {
-                    adminRole = new Role { Name = "Admin" };
-                    _roleRepository.Add(adminRole);
-                    _roleRepository.Save();
-                }
-
-                var adminUser = new User
-                {
-                    Name = "Default Admin",
-                    Surname = "User",
-                    Username = "defaultUser",
-                    Password = _dataEncryptor.Encrypt("SAIMLtd2024"), // Hash du mot de passe par défaut
-                    Email = ""
-                };
-
-                var adminJeaPierre = new User
-                {
-                    Name = "Jean Pierre",
-                    Surname = "MBOLAHERINIAIKO",
-                    Username = "jeanpierre",
-                    Password = _dataEncryptor.Encrypt("jpA"), // Hash du mot de passe par défaut
-                    Email = "jp1234user@gmail.com"
-                };
-
-                _userRepository.Add(adminUser);
-                _userRepository.Add(adminJeaPierre);
-                _userRepository.Save();
-
-                // Associe l'utilisateur admin avec le rôle admin
-                var adminUserRole = new UserRole
-                {
-                    UserId = adminUser.UserId,
-                    RoleId = adminRole.RoleId
-                };
-                var jpUserRole = new UserRole
-                {
-                    UserId = adminJeaPierre.UserId,
-                    RoleId = adminRole.RoleId
-                };
-
-                _userRoleRepository.Add(adminUserRole);
-                _userRoleRepository.Add(jpUserRole);
-                _userRoleRepository.Save();
+                adminRole = new Role { Name = "Admin" };
+                _roleRepository.Add(adminRole);
+                _roleRepository.Save();
             }
         }
         //---------------------------------------------------

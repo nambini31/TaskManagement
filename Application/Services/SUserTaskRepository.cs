@@ -70,14 +70,14 @@ namespace Application.Services
                 IEnumerable<UserTaskVM> data = await IUserTask.GetUserTasksByUsersVM(filter);
                 IEnumerable<UserTaskVM> tasks = await IUserTask.GetUserTasksGrouperVM(filter);
 
-                var uploadsFolderPath = Path.Combine(_env.WebRootPath, "assets", "uploads");
-                if (!Directory.Exists(uploadsFolderPath))
-                {
-                    Directory.CreateDirectory(uploadsFolderPath);
-                }
-
+                //var uploadsFolderPath = Path.Combine(_env.WebRootPath, "assets", "uploads");
+                //if (!Directory.Exists(uploadsFolderPath))
+                //{
+                //    Directory.CreateDirectory(uploadsFolderPath);
+                //}
+                string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                 var fileName = $"UserTask_{DateTime.Now:yyyyMMddHHmmss}.xlsx";
-                var filePath = Path.Combine(uploadsFolderPath, fileName);
+                var filePath = Path.Combine(desktopPath, fileName);
 
                 using (var package = new ExcelPackage())
                 {

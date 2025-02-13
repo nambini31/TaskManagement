@@ -157,7 +157,7 @@ namespace TaskManagement.Controllers
 
                 byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
                 string fileName = Path.GetFileName(filePath);
-                var destemails = new[] { "jmbolaheriniaiko@saimltd.mu" };
+                var destemails = new[] { "jmbolaheriniaiko@saimltd.mu", "assistance@saimltd.mu" };
                 string subject = $"TIMELINE : {filter.startDate} TO {filter.endDate}";
                 var content = _HtmlFileViewToStringforEmail
                     .GetHtmlFileContent("timeline.html");
@@ -171,8 +171,6 @@ namespace TaskManagement.Controllers
                 };
                 _sendMailService.sendMail(destemails, subject, content, true, destemailsCC, attachments);
                 return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
-
-
 
             }
             catch (Exception ex)
