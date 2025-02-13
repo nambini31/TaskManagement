@@ -205,16 +205,16 @@
 
         var newRow = $(`<div class="task-row${taskRowIdCounter} row align-items-end mb-3"  data-row-id="${taskRowIdCounter}">` +
                             '<div class="col-12 col-md-1 mt-3">' +
-                            `<input type="checkbox" class="checkleave${taskRowIdCounter}" />` +
+                                `<input type="checkbox" class="form-control checkleave${taskRowIdCounter}" />` +
                             '</div>' +
                             '<div class="col-12 col-md-3 mt-3">' +
-                            `<select placeholder="Selectpicker project" name="projectId" data-search="true" data-silent-initial-value-set="true" id="selectProjectIdCreate${taskRowIdCounter}" class="form-control w-100 selectProjectIdCreate${taskRowIdCounter}"></select>` +
+                                `<select placeholder="Selectpicker project" name="projectId" data-search="true" data-silent-initial-value-set="true" id="selectProjectIdCreate${taskRowIdCounter}" class="form-control w-100 selectProjectIdCreate${taskRowIdCounter}"></select>` +
                             '</div>' +
                             '<div class="col-12 col-md-4 mt-3">' +
-                            `<select placeholder="Selectpicker task" name="taskId" data-search="true" data-silent-initial-value-set="true" id="selectTaskId${taskRowIdCounter}" class="form-control w-100 selectTaskId${taskRowIdCounter}"></select>` +
+                                `<select placeholder="Selectpicker task" name="taskId" data-search="true" data-silent-initial-value-set="true" id="selectTaskId${taskRowIdCounter}" class="form-control w-100 selectTaskId${taskRowIdCounter}"></select>` +
                             '</div>' +
                             '<div class="col-12 col-md-1 mt-3">' +
-                            `<input name="hours" type="text" required class="form-control  hoursEditUsrTask${taskRowIdCounter}" />` +
+                                `<input name="hours" type="text" required class="form-control  hoursEditUsrTask${taskRowIdCounter}" />` +
                             '</div>' +
                             '<div class="col-12 col-md-1 mt-3 btn-container">' +
                                 `<button type="button" class="btn btn-delete btn-sm mt-auto">` +
@@ -222,6 +222,20 @@
                                 '</button>' +
                             '</div>' +
             '</div>');
+
+        var newRow = $(`
+            <tr class="task-row${taskRowIdCounter}" data-row-id="${taskRowIdCounter}">
+                <td><input type="checkbox" class="form-control checkleave${taskRowIdCounter}" /></td>
+                <td><select placeholder="Select project" name="projectId" data-search="true" data-silent-initial-value-set="true" id="selectProjectIdCreate${taskRowIdCounter}" class="form-control w-100 selectProjectIdCreate${taskRowIdCounter}"></select></td>
+                <td><select placeholder="Select task" name="taskId" data-search="true" data-silent-initial-value-set="true" id="selectTaskId${taskRowIdCounter}" class="form-control w-100 selectTaskId${taskRowIdCounter}"></select></td>
+                <td><input asp-for="hours" type="text" required class="form-control hoursEditUsrTask${taskRowIdCounter}" /></td>
+                <td>
+                    <button type="button" class="btn btn-delete btn-sm mt-auto">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `)
         $('.task-container').append(newRow);
 
         var container = $('.task-container').find(`.task-row${taskRowIdCounter}`);

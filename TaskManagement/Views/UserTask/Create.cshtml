@@ -75,9 +75,35 @@
                             <input type="datetime-local" required class="form-control" id="date" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
                         </div>
                     </div>
-
+                    <div class="col-12 col-md-1 btn-container">
+                        <button type="button" class="btn btn-success btn-sm rounded-circle btn-plus-small mb-2">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                    <div class="table">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Leave</th>
+                                    <th id="labelleaveproject">Project</th>
+                                    <th>Tasks</th>
+                                    <th>Hours</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="task-container">
+                                <tr class="task-row1" data-row-id="1">
+                                    <td><input type="checkbox" class="form-control checkleave1" /></td>
+                                    <td><select placeholder="Select project" name="projectId" data-search="true" data-silent-initial-value-set="true" id="selectProjectIdCreate1" class="form-control w-100"></select></td>
+                                    <td><select style="z-index:1050 !important" placeholder="Select task" name="taskId" data-search="true" data-silent-initial-value-set="true" id="selectTaskId1" class="form-control w-100"></select></td>
+                                    <td><input asp-for="hours" type="text" required class="form-control hoursEditUsrTask1" /></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <!-- Labels and "Add" button row -->
-                    <div class="row align-items-end mb-1">
+                    @*< div class="row align-items-end mb-1">
                         <div class="col-12 col-md-1">
                             <label class="form-label">Leave</label>
                         </div>
@@ -90,19 +116,15 @@
                         <div class="col-12 col-md-1">
                             <label class="form-label">Hours</label>
                         </div>
-                        <div class="col-12 col-md-1">
-                            <label class="form-label">Finished</label>
-                        </div>
                         <div class="col-12 col-md-1 btn-container">
                             <button type="button" class="btn btn-success btn-sm rounded-circle btn-plus-small mb-2">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
-                    </div>
+                    </div> *@
 
                     <!-- Container for dynamically added task rows -->
-                    <div class="task-container">
-                        <!-- Initial row -->
+                   @*  <div class="task-container">
                         <div class="task-row1 row align-items-end mb-3" data-row-id="1">
                             <div class="col-12 col-md-1 mt-4">
                                 <input type="checkbox" class="form-control checkleave1" />
@@ -116,13 +138,10 @@
                             <div class="col-12 col-md-1 mt-4">
                                 <input asp-for="hours" type="text" required class="form-control hoursEditUsrTask1" />
                             </div>
-                            <div class="col-12 col-md-1 mt-4">
-                                <input type="checkbox" class="form-control finishedCheckleave1" />
-                            </div>
                             <div class="col-12 col-md-1 mt-4 btn-container">
                             </div>
                         </div>
-                    </div>
+                    </div> *@
 
                     <!-- Save button -->
                     <div class="row justify-content-center mt-3">
